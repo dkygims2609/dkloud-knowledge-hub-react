@@ -71,11 +71,7 @@ const Index = () => {
               <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">loud Tech</span>
             </h1>
             <div className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 slide-up" style={{animationDelay: "0.2s"}}>
-              <DecodingAnimation 
-                text="Decoding Knowledge" 
-                className="inline-block"
-                delay={1000}
-              />
+              Decoding Knowledge
             </div>
             <p className="text-xl md:text-2xl font-bold text-orange-500 mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
               Library Of Unique Discoveries

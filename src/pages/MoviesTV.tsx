@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Search, Filter, Star, Award, Calendar, Users } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Search, Filter, Star, Award, Calendar, Users, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,6 +47,10 @@ const MoviesTV = () => {
   const [languageFilter, setLanguageFilter] = useState("all");
   const [awardsFilter, setAwardsFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("movies");
+  const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
+  const [currentTvIndex, setCurrentTvIndex] = useState(0);
+  const moviesScrollRef = useRef<HTMLDivElement>(null);
+  const tvScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchData();
@@ -158,6 +162,28 @@ const MoviesTV = () => {
     setRatingFilter("all");
     setLanguageFilter("all");
     setAwardsFilter("all");
+  };
+
+  const scrollMovies = (direction: 'left' | 'right') => {
+    const itemsPerView = 12; // 2 rows of 6 items each
+    const maxIndex = Math.ceil(filteredMovies.length / itemsPerView) - 1;
+    
+    if (direction === 'right' && currentMovieIndex < maxIndex) {
+      setCurrentMovieIndex(prev => prev + 1);
+    } else if (direction === 'left' && currentMovieIndex > 0) {
+      setCurrentMovieIndex(prev => prev - 1);
+    }
+  };
+
+  const scrollTv = (direction: 'left' | 'right') => {
+    const itemsPerView = 12; // 2 rows of 6 items each
+    const maxIndex = Math.ceil(filteredTvSeries.length / itemsPerView) - 1;
+    
+    if (direction === 'right' && currentTvIndex < maxIndex) {
+      setCurrentTvIndex(prev => prev + 1);
+    } else if (direction === 'left' && currentTvIndex > 0) {
+      setCurrentTvIndex(prev => prev - 1);
+    }
   };
 
   if (loading) {
@@ -279,9 +305,43 @@ const MoviesTV = () => {
 
           {/* Movies Tab */}
           <TabsContent value="movies">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredMovies.map((movie, index) => (
-                <Card key={index} className="dkloud-card dkloud-card-interactive h-full">
+            <div className="relative">
+              {/* Navigation Controls */}
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold">Movies ({filteredMovies.length})</h3>
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => scrollMovies('left')}
+                    disabled={currentMovieIndex === 0}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => scrollMovies('right')}
+                    disabled={currentMovieIndex >= Math.ceil(filteredMovies.length / 12) - 1}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div ref={moviesScrollRef} className="overflow-hidden">
+                <div 
+                  className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 pb-4 transition-transform duration-300" 
+                  style={{ 
+                    gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
+                    width: `${Math.ceil(filteredMovies.length / 2) * 320}px`,
+                    transform: `translateX(-${currentMovieIndex * (6 * 320)}px)`
+                  }}
+                >
+                  {filteredMovies.map((movie, index) => (
+                    <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-lg">{movie.Name}</CardTitle>
@@ -323,16 +383,52 @@ const MoviesTV = () => {
                       </div>
                     )}
                   </CardContent>
-                </Card>
-              ))}
+                    </Card>
+                  ))}
+                </div>
+              </div>
             </div>
           </TabsContent>
 
           {/* TV Series Tab */}
           <TabsContent value="tv">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTvSeries.map((show, index) => (
-                <Card key={index} className="dkloud-card dkloud-card-interactive h-full">
+            <div className="relative">
+              {/* Navigation Controls */}
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold">TV Series ({filteredTvSeries.length})</h3>
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => scrollTv('left')}
+                    disabled={currentTvIndex === 0}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => scrollTv('right')}
+                    disabled={currentTvIndex >= Math.ceil(filteredTvSeries.length / 12) - 1}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div ref={tvScrollRef} className="overflow-hidden">
+                <div 
+                  className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 pb-4 transition-transform duration-300" 
+                  style={{ 
+                    gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
+                    width: `${Math.ceil(filteredTvSeries.length / 2) * 320}px`,
+                    transform: `translateX(-${currentTvIndex * (6 * 320)}px)`
+                  }}
+                >
+                  {filteredTvSeries.map((show, index) => (
+                <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-lg">{show.Name}</CardTitle>
@@ -398,8 +494,10 @@ const MoviesTV = () => {
                       </div>
                     )}
                   </CardContent>
-                </Card>
-              ))}
+                    </Card>
+                  ))}
+                </div>
+              </div>
             </div>
           </TabsContent>
         </Tabs>

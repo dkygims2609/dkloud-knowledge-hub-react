@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Search, Filter, ExternalLink, Zap, Star } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Search, Filter, ExternalLink, Zap, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +22,8 @@ const AITools = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [pricingFilter, setPricingFilter] = useState("all");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchTools();
@@ -69,6 +71,17 @@ const AITools = () => {
 
   const handleToolClick = (link: string) => {
     window.open(link, "_blank", "noopener,noreferrer");
+  };
+
+  const scrollTools = (direction: 'left' | 'right') => {
+    const itemsPerView = 12; // 2 rows of 6 items each
+    const maxIndex = Math.ceil(filteredTools.length / itemsPerView) - 1;
+    
+    if (direction === 'right' && currentIndex < maxIndex) {
+      setCurrentIndex(prev => prev + 1);
+    } else if (direction === 'left' && currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1);
+    }
   };
 
   if (loading) {
@@ -154,9 +167,43 @@ const AITools = () => {
         </div>
 
         {/* Tools Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTools.map((tool, index) => (
-            <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleToolClick(tool["Tools Link"])}>
+        <div className="relative">
+          {/* Navigation Controls */}
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold">AI Tools ({filteredTools.length})</h3>
+            <div className="flex space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => scrollTools('left')}
+                disabled={currentIndex === 0}
+                className="h-8 w-8 p-0"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"  
+                size="sm"
+                onClick={() => scrollTools('right')}
+                disabled={currentIndex >= Math.ceil(filteredTools.length / 12) - 1}
+                className="h-8 w-8 p-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          
+          <div ref={scrollRef} className="overflow-hidden">
+            <div 
+              className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 pb-4 transition-transform duration-300" 
+              style={{ 
+                gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
+                width: `${Math.ceil(filteredTools.length / 2) * 320}px`,
+                transform: `translateX(-${currentIndex * (6 * 320)}px)`
+              }}
+            >
+              {filteredTools.map((tool, index) => (
+                <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0" onClick={() => handleToolClick(tool["Tools Link"])}>
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div className="flex items-center space-x-2">
@@ -208,8 +255,10 @@ const AITools = () => {
                   </Button>
                 </div>
               </CardContent>
-            </Card>
-          ))}
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
 
         {filteredTools.length === 0 && !loading && (
