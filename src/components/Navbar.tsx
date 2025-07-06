@@ -35,30 +35,25 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-2 bg-muted/30 rounded-full p-1 backdrop-blur-sm">
+          <div className="hidden lg:flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "relative flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 overflow-hidden",
+                  "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
                   location.pathname === item.href
-                    ? "bg-gradient-to-r text-white shadow-lg scale-105"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
+                    ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
                 )}
-                style={location.pathname === item.href && item.color ? {
-                  backgroundImage: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                  '--tw-gradient-from': `hsl(var(--primary))`,
-                  '--tw-gradient-to': `hsl(var(--accent))`,
-                } as any : {}}
               >
                 {item.icon ? (
-                  <item.icon className="h-4 w-4" />
+                  <item.icon className="h-3 w-3" />
                 ) : (
-                  <span className="text-base">{item.emoji}</span>
+                  <span className="text-sm">{item.emoji}</span>
                 )}
-                <span className="hidden xl:inline">{item.name}</span>
-                <span className="xl:hidden text-xs font-semibold">
+                <span className="hidden xl:inline text-xs">{item.name}</span>
+                <span className="xl:hidden text-[10px] font-semibold">
                   {item.name.split(' ')[0]}
                 </span>
               </Link>

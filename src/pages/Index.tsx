@@ -59,28 +59,13 @@ const Index = () => {
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-10" />
         
-        {/* Brand Logo - Top Left */}
-        <div className="absolute top-8 left-8 z-10 fade-in">
-          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-xl">dK</span>
-          </div>
-        </div>
-        
-        {/* Founder Photo - Top Right */}
-        <div className="absolute top-8 right-8 z-10 fade-in" style={{animationDelay: "0.2s"}}>
-          <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-full overflow-hidden shadow-lg border-2 border-white/20">
-            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-white font-bold">
-              DY
-            </div>
-          </div>
-        </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-6 glow">
               dKloud Tech
             </h1>
-            <div className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
                 className="inline-block"
@@ -121,10 +106,8 @@ const Index = () => {
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold mb-8 slide-up">Explore Our Sections</h3>
-            
-            {/* Header-style Tabs */}
-            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto">
+            {/* Smart Glass Tabs */}
+            <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-5xl mx-auto bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-2 shadow-lg">
               {[
                 { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-purple-500 to-pink-500" },
                 { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
@@ -135,13 +118,13 @@ const Index = () => {
                 { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My Work", color: "from-teal-500 to-green-500" },
               ].map((tab, index) => (
                 <Link key={tab.name} to={tab.href} className="group">
-                  <div className="relative overflow-hidden rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[140px] max-w-[160px] fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="p-4 text-center">
-                      <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">{tab.emoji}</div>
-                      <h4 className="font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tab.name}</h4>
-                      <p className="text-xs text-muted-foreground group-hover:text-muted-foreground/80">{tab.desc}</p>
+                  <div className="relative overflow-hidden rounded-xl bg-background/60 backdrop-blur-md border border-border/30 hover:border-primary/40 hover:bg-background/80 transition-all duration-300 hover:scale-105 hover:shadow-md min-w-[100px] max-w-[120px] fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
+                    <div className="p-3 text-center">
+                      <div className="text-lg mb-2 group-hover:scale-110 transition-transform duration-300">{tab.emoji}</div>
+                      <h4 className="font-medium text-xs mb-1 group-hover:text-primary transition-colors">{tab.name}</h4>
+                      <p className="text-[10px] text-muted-foreground/80 group-hover:text-muted-foreground">{tab.desc}</p>
                     </div>
-                    <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl`} />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl`} />
                   </div>
                 </Link>
               ))}
@@ -244,8 +227,21 @@ const Index = () => {
           <div className="slide-up">
             <h3 className="text-3xl md:text-4xl font-bold mb-12">Meet the Founder</h3>
             <div className="dkloud-card dkloud-card-interactive p-12">
-              <div className="w-40 h-40 mx-auto mb-8 bg-gradient-to-br from-primary via-accent to-primary rounded-full flex items-center justify-center text-white text-5xl font-bold glow float">
-                DK
+              <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-xl border-4 border-primary/20 glow float">
+                <img 
+                  src="/src/assets/founder-photo.jpg" 
+                  alt="Dileep Yadav - Founder" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+                <div className="w-full h-full bg-gradient-to-br from-primary via-accent to-primary flex items-center justify-center text-white text-5xl font-bold" style={{display: 'none'}}>
+                  DK
+                </div>
               </div>
               <h4 className="text-2xl font-semibold mb-2">Dileep Yadav</h4>
               <p className="text-lg text-accent font-medium mb-6">Founder & Creative Director</p>
