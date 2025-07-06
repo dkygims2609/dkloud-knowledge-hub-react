@@ -90,14 +90,7 @@ export function ContentGrid({ items, type }: ContentGridProps) {
   };
 
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      const slideWidth = container.scrollWidth / totalViews;
-      container.scrollTo({
-        left: slideWidth * currentIndex,
-        behavior: 'smooth'
-      });
-    }
+    // No need for scrollTo anymore since we're using transform
   }, [currentIndex, totalViews]);
 
   const currentItems = items.slice(
@@ -148,17 +141,23 @@ export function ContentGrid({ items, type }: ContentGridProps) {
         </div>
       </div>
 
-      {/* Content Grid - 2 Rows */}
+      {/* Content Grid - 2 Rows with Horizontal Scroll */}
       <div 
         ref={scrollContainerRef}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6"
+        className="overflow-hidden mb-6"
       >
-        {currentItems.map((item, index) => (
-          <Card 
-            key={index} 
-            className="dkloud-card cursor-pointer group hover:scale-105 transition-all duration-300" 
-            onClick={() => handleItemClick(getItemLink(item))}
-          >
+        <div className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 pb-4" style={{ 
+          gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
+          width: `${Math.ceil(currentItems.length / 2) * 320}px`,
+          transition: 'transform 0.3s ease-in-out',
+          transform: `translateX(-${currentIndex * (Math.ceil(itemsPerView / 2) * 320)}px)`
+        }}>
+          {currentItems.map((item, index) => (
+            <Card 
+              key={index} 
+              className="dkloud-card cursor-pointer group hover:scale-105 transition-all duration-300 w-72 flex-shrink-0" 
+              onClick={() => handleItemClick(getItemLink(item))}
+            >
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center space-x-1 flex-1 mr-1">
@@ -210,8 +209,9 @@ export function ContentGrid({ items, type }: ContentGridProps) {
                 </Button>
               </div>
             </CardContent>
-          </Card>
-        ))}
+            </Card>
+          ))}
+        </div>
       </div>
 
       {/* Progress Indicators */}

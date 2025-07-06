@@ -7,7 +7,7 @@ import { ContentGrid } from "@/components/ContentGrid";
 import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
 import { FloatingIcons } from "@/components/FloatingIcons";
-import dkphoto from "@/assets/dkphoto.jpg";
+import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
@@ -234,7 +234,7 @@ const Index = () => {
             <div className="dkloud-card dkloud-card-interactive p-12">
               <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-xl border-4 border-primary/20 glow float">
                 <img 
-                  src={dkphoto} 
+                  src={founderPhoto} 
                   alt="Dileep Yadav - Founder & Creative Director" 
                   className="w-full h-full object-cover"
                 />
