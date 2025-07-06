@@ -77,8 +77,8 @@ const MoviesTV = () => {
   const filterContent = () => {
     // Filter Movies
     let filteredMoviesData = movies.filter((movie) =>
-      (movie.Name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (movie.Director?.toLowerCase() || "").includes(searchTerm.toLowerCase())
+      (String(movie.Name || "").toLowerCase()).includes(searchTerm.toLowerCase()) ||
+      (String(movie.Director || "").toLowerCase()).includes(searchTerm.toLowerCase())
     );
 
     if (genreFilter !== "all") {
@@ -96,8 +96,8 @@ const MoviesTV = () => {
 
     // Filter TV Series
     let filteredTvData = tvSeries.filter((show) =>
-      (show.Name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (show.Creator?.toLowerCase() || "").includes(searchTerm.toLowerCase())
+      (String(show.Name || "").toLowerCase()).includes(searchTerm.toLowerCase()) ||
+      (String(show.Creator || "").toLowerCase()).includes(searchTerm.toLowerCase())
     );
 
     if (genreFilter !== "all") {
