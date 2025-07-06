@@ -3,7 +3,7 @@ import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brai
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { ContentCarousel } from "@/components/ContentCarousel";
+import { ContentGrid } from "@/components/ContentGrid";
 import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
 
@@ -77,10 +77,10 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-4 glow">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-6 glow">
               dKloud Tech
             </h1>
-            <div className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
                 className="inline-block"
@@ -122,63 +122,61 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold mb-8 slide-up">Explore Our Sections</h3>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-5xl mx-auto">
+            
+            {/* Header-style Tabs */}
+            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto">
               {[
-                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & shows", color: "from-purple-500 to-pink-500" },
-                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top channels", color: "from-red-500 to-orange-500" },
+                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-purple-500 to-pink-500" },
+                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
                 { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-blue-500 to-cyan-500" },
                 { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-green-500 to-emerald-500" },
-                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart gadgets", color: "from-yellow-500 to-amber-500" },
-                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest updates", color: "from-indigo-500 to-purple-500" },
-                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work", color: "from-teal-500 to-green-500" },
-                { name: "Services", href: "/services", emoji: "🎵", desc: "What I Offer", color: "from-pink-500 to-rose-500" },
+                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart Gadgets", color: "from-yellow-500 to-amber-500" },
+                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest Updates", color: "from-indigo-500 to-purple-500" },
+                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My Work", color: "from-teal-500 to-green-500" },
               ].map((tab, index) => (
                 <Link key={tab.name} to={tab.href} className="group">
-                  <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${tab.color} p-[2px] transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[120px] max-w-[140px] fade-in`} style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="bg-background/95 backdrop-blur-sm rounded-[10px] p-3 h-full text-center transition-colors group-hover:bg-background/90">
-                      <div className="text-2xl mb-2 transition-transform group-hover:scale-110 duration-300">{tab.emoji}</div>
-                      <h4 className="font-semibold text-xs mb-1 group-hover:text-primary transition-colors">{tab.name}</h4>
-                      <p className="text-[10px] text-muted-foreground group-hover:text-muted-foreground/80">{tab.desc}</p>
+                  <div className="relative overflow-hidden rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[140px] max-w-[160px] fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="p-4 text-center">
+                      <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">{tab.emoji}</div>
+                      <h4 className="font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tab.name}</h4>
+                      <p className="text-xs text-muted-foreground group-hover:text-muted-foreground/80">{tab.desc}</p>
                     </div>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl`} />
                   </div>
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Content Previews with Carousels */}
-          <div className="space-y-12 mt-16">
-            <ContentCarousel
-              title="🎬 Featured Movies & TV Series"
-              items={previewData.movies}
-              type="movies"
-              viewAllLink="/movies-tv"
-              maxItems={6}
-            />
+          {/* Content Previews with 2-Row Grids */}
+          <div className="space-y-16 mt-16">
+            <div className="fade-in">
+              <ContentGrid
+                items={previewData.movies.slice(0, 12)}
+                type="movies"
+              />
+            </div>
             
-            <ContentCarousel
-              title="📹 Top YouTube Channels"
-              items={previewData.youtube}
-              type="youtube"
-              viewAllLink="/ytchannels"
-              maxItems={6}
-            />
+            <div className="fade-in" style={{animationDelay: "0.2s"}}>
+              <ContentGrid
+                items={previewData.youtube.slice(0, 12)}
+                type="youtube"
+              />
+            </div>
             
-            <ContentCarousel
-              title="🤖 Latest AI Tools"
-              items={previewData.aitools}
-              type="aitools"
-              viewAllLink="/aitools"
-              maxItems={6}
-            />
+            <div className="fade-in" style={{animationDelay: "0.4s"}}>
+              <ContentGrid
+                items={previewData.aitools.slice(0, 12)}
+                type="aitools"
+              />
+            </div>
             
-            <ContentCarousel
-              title="📚 Tech Corner Resources"
-              items={previewData.techcorner}
-              type="techcorner"
-              viewAllLink="/techcorner"
-              maxItems={6}
-            />
+            <div className="fade-in" style={{animationDelay: "0.6s"}}>
+              <ContentGrid
+                items={previewData.techcorner.slice(0, 12)}
+                type="techcorner"
+              />
+            </div>
           </div>
         </div>
       </section>

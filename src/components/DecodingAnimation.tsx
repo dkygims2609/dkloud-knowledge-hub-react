@@ -17,28 +17,35 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
       setIsDecoding(true);
       const originalText = text;
       let iterations = 0;
-      const maxIterations = 15;
 
       const interval = setInterval(() => {
-        setDisplayText((prev) =>
+        setDisplayText(
           originalText
             .split("")
             .map((char, index) => {
               if (char === " ") return " ";
-              if (index < iterations) return originalText[index];
+              
+              // Show correct character if we've decoded up to this point
+              if (index < iterations) {
+                return originalText[index];
+              }
+              
+              // Show random character for positions we haven't decoded yet
               return characters[Math.floor(Math.random() * characters.length)];
             })
             .join("")
         );
 
+        // Increment iterations more smoothly
+        iterations += 0.3;
+
+        // Stop when we've decoded all characters
         if (iterations >= originalText.length) {
           clearInterval(interval);
           setDisplayText(originalText);
           setIsDecoding(false);
         }
-
-        iterations += 1 / 3;
-      }, 50);
+      }, 30); // Faster animation for smoother effect
     };
 
     const timer = setTimeout(() => {
