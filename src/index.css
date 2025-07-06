@@ -161,7 +161,7 @@
   /* Enhanced Button Variants */
   .btn-gradient {
     @apply bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold px-8 py-3 rounded-xl;
-    @apply transition-all duration-400 hover:scale-105 hover:shadow-2xl;
+    @apply transition-all duration-500 hover:scale-105 hover:shadow-2xl;
     box-shadow: 0 4px 15px hsl(221.2 83.2% 53.3% / 0.4);
   }
 
