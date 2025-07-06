@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { ContentCarousel } from "@/components/ContentCarousel";
+import { DecodingAnimation } from "@/components/DecodingAnimation";
+import { InfographicAnimation } from "@/components/InfographicAnimation";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
@@ -56,14 +58,35 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-10" />
+        
+        {/* Brand Logo - Top Left */}
+        <div className="absolute top-8 left-8 z-10 fade-in">
+          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
+            <span className="text-white font-bold text-xl">dK</span>
+          </div>
+        </div>
+        
+        {/* Founder Photo - Top Right */}
+        <div className="absolute top-8 right-8 z-10 fade-in" style={{animationDelay: "0.2s"}}>
+          <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-full overflow-hidden shadow-lg border-2 border-white/20">
+            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-white font-bold">
+              DY
+            </div>
+          </div>
+        </div>
+        
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-4 glow">
               dKloud Tech
             </h1>
-            <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 slide-up" style={{animationDelay: "0.2s"}}>
-              Decoding Knowledge
-            </p>
+            <div className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 slide-up" style={{animationDelay: "0.2s"}}>
+              <DecodingAnimation 
+                text="Decoding Knowledge" 
+                className="inline-block"
+                delay={1000}
+              />
+            </div>
             <p className="text-xl md:text-2xl font-bold text-orange-500 mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
               Library Of Unique Discoveries
             </p>
@@ -198,43 +221,29 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* How dKloud Works */}
+          {/* How dKloud Works - Animated Infographic */}
           <div className="text-center mb-20">
             <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">How dKloud Works</h3>
-            <div className="bg-card/30 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-border/50">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-sm font-medium">
-                <div className="flex items-center space-x-2 bg-primary/10 rounded-lg px-4 py-2">
-                  <span>User Clicks</span>
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground rotate-90 md:rotate-0" />
-                <div className="flex items-center space-x-2 bg-accent/10 rounded-lg px-4 py-2">
-                  <span>Frontend Request (React)</span>
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground rotate-90 md:rotate-0" />
-                <div className="flex items-center space-x-2 bg-success/10 rounded-lg px-4 py-2">
-                  <span>API Gateway</span>
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground rotate-90 md:rotate-0" />
-                <div className="flex items-center space-x-2 bg-warning/10 rounded-lg px-4 py-2">
-                  <span>Google Sheet</span>
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground rotate-90 md:rotate-0" />
-                <div className="flex items-center space-x-2 bg-primary/10 rounded-lg px-4 py-2">
-                  <span>Render UI</span>
-                </div>
-              </div>
+            <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Experience the seamless flow of data from your interaction to real-time content delivery
+            </p>
+            
+            {/* Interactive Infographic */}
+            <div className="mb-12">
+              <InfographicAnimation />
             </div>
             
             {/* Tech Stack */}
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               {[
-                "React + TypeScript",
-                "Tailwind CSS + Shadcn UI", 
-                "Google Sheets + API",
-                "GitHub Pages"
+                { name: "React + TypeScript", color: "from-blue-500 to-cyan-500" },
+                { name: "Tailwind CSS + Shadcn UI", color: "from-purple-500 to-pink-500" }, 
+                { name: "Google Sheets + API", color: "from-green-500 to-emerald-500" },
+                { name: "GitHub Pages", color: "from-gray-500 to-slate-600" },
+                { name: "Supabase Backend", color: "from-indigo-500 to-purple-500" }
               ].map((tech, index) => (
-                <div key={tech} className="bg-gradient-to-r from-primary/20 to-accent/20 rounded-full px-6 py-3 font-medium bounce-in" style={{animationDelay: `${index * 0.1}s`}}>
-                  {tech}
+                <div key={tech.name} className={`bg-gradient-to-r ${tech.color} text-white rounded-full px-6 py-3 font-medium bounce-in shadow-lg`} style={{animationDelay: `${index * 0.1}s`}}>
+                  {tech.name}
                 </div>
               ))}
             </div>

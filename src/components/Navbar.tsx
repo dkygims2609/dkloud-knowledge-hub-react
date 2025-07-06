@@ -7,14 +7,13 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Movies & TV", href: "/movies-tv", emoji: "🎬📺" },
-  { name: "YouTube Picks", href: "/ytchannels", emoji: "📹" },
-  { name: "AI Tools", href: "/aitools", emoji: "🤖" },
-  { name: "Tech Corner", href: "/techcorner", emoji: "📚" },
-  { name: "SmartTech", href: "/smarttech", emoji: "💡" },
-  { name: "Tech News", href: "/technews", emoji: "📰" },
-  { name: "Portfolio", href: "/portfolio", emoji: "💼" },
-  { name: "Services", href: "/services", emoji: "🎵" },
+  { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", color: "from-purple-500 to-pink-500" },
+  { name: "YouTube Picks", href: "/ytchannels", emoji: "📹", color: "from-red-500 to-orange-500" },
+  { name: "AI Tools", href: "/aitools", emoji: "🤖", color: "from-blue-500 to-cyan-500" },
+  { name: "Tech Corner", href: "/techcorner", emoji: "📚", color: "from-green-500 to-emerald-500" },
+  { name: "SmartTech", href: "/smarttech", emoji: "💡", color: "from-yellow-500 to-amber-500" },
+  { name: "Tech News", href: "/technews", emoji: "📰", color: "from-indigo-500 to-purple-500" },
+  { name: "Portfolio", href: "/portfolio", emoji: "💼", color: "from-teal-500 to-green-500" },
 ];
 
 export function Navbar() {
@@ -36,24 +35,32 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-2 bg-muted/30 rounded-full p-1 backdrop-blur-sm">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "relative flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 overflow-hidden",
                   location.pathname === item.href
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    ? "bg-gradient-to-r text-white shadow-lg scale-105"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
                 )}
+                style={location.pathname === item.href && item.color ? {
+                  backgroundImage: `linear-gradient(135deg, var(--tw-gradient-stops))`,
+                  '--tw-gradient-from': `hsl(var(--primary))`,
+                  '--tw-gradient-to': `hsl(var(--accent))`,
+                } as any : {}}
               >
                 {item.icon ? (
                   <item.icon className="h-4 w-4" />
                 ) : (
-                  <span className="text-sm">{item.emoji}</span>
+                  <span className="text-base">{item.emoji}</span>
                 )}
-                <span>{item.name}</span>
+                <span className="hidden xl:inline">{item.name}</span>
+                <span className="xl:hidden text-xs font-semibold">
+                  {item.name.split(' ')[0]}
+                </span>
               </Link>
             ))}
           </div>

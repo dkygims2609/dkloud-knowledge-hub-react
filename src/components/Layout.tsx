@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
+import { ServicesSidebar } from "./ServicesSidebar";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,6 +19,7 @@ export function Layout({ children }: LayoutProps) {
       <Footer />
       <WhatsAppButton />
       <ScrollToTop />
+      <ServicesSidebar />
     </div>
   );
 }
