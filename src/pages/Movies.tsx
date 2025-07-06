@@ -51,8 +51,8 @@ const Movies = () => {
 
   const filterMovies = () => {
     let filtered = movies.filter((movie) =>
-      movie.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      movie.director.toLowerCase().includes(searchTerm.toLowerCase())
+      (movie.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (movie.director?.toLowerCase() || "").includes(searchTerm.toLowerCase())
     );
 
     if (genreFilter !== "all") {
@@ -172,9 +172,9 @@ const Movies = () => {
         </div>
 
         {/* Movies Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredMovies.map((movie, index) => (
-            <Card key={index} className="dkloud-card h-full">
+            <Card key={index} className="dkloud-card dkloud-card-interactive h-full fade-in" style={{animationDelay: `${index * 0.1}s`}}>
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-lg">{movie.name}</CardTitle>

@@ -11,23 +11,23 @@ const Index = () => {
         <div className="absolute inset-0 hero-gradient opacity-10" />
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-8 glow">
               dKloud
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-3xl mx-auto">
+            <p className="text-2xl md:text-3xl text-muted-foreground mb-6 max-w-4xl mx-auto font-medium slide-up" style={{animationDelay: "0.2s"}}>
               Decoding Knowledge - Library Of Unique Discoveries
             </p>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed bounce-in" style={{animationDelay: "0.4s"}}>
               Your ultimate educational & creative tech hub. Discover curated movies, AI tools, tech resources, and more.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="btn-gradient">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.6s"}}>
+              <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4">
                 <Link to="/movies">
                   Explore Content
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="btn-glass text-lg px-10 py-4">
                 <Link to="/portfolio">View Portfolio</Link>
               </Button>
             </div>
@@ -47,36 +47,36 @@ const Index = () => {
           </div>
 
           {/* How It Works */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <Card className="dkloud-card bounce-in text-center">
-              <CardHeader>
-                <Database className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Google Sheets</CardTitle>
-                <CardDescription>Data stored and managed in organized spreadsheets</CardDescription>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
+            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center">
+              <CardHeader className="pb-8">
+                <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
+                <CardTitle className="text-2xl">Google Sheets</CardTitle>
+                <CardDescription className="text-lg">Data stored and managed in organized spreadsheets</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="dkloud-card bounce-in text-center" style={{ animationDelay: "0.2s" }}>
-              <CardHeader>
-                <Zap className="h-12 w-12 text-accent mx-auto mb-4" />
-                <CardTitle>Live APIs</CardTitle>
-                <CardDescription>Real-time data fetching via Google Apps Script</CardDescription>
+            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.2s" }}>
+              <CardHeader className="pb-8">
+                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
+                <CardTitle className="text-2xl">Live APIs</CardTitle>
+                <CardDescription className="text-lg">Real-time data fetching via Google Apps Script</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="dkloud-card bounce-in text-center" style={{ animationDelay: "0.4s" }}>
-              <CardHeader>
-                <Sparkles className="h-12 w-12 text-success mx-auto mb-4" />
-                <CardTitle>Dynamic Site</CardTitle>
-                <CardDescription>Always up-to-date content without manual updates</CardDescription>
+            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.4s" }}>
+              <CardHeader className="pb-8">
+                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
+                <CardTitle className="text-2xl">Dynamic Site</CardTitle>
+                <CardDescription className="text-lg">Always up-to-date content without manual updates</CardDescription>
               </CardHeader>
             </Card>
           </div>
 
           {/* Tabs Preview */}
-          <div className="text-center mb-16">
-            <h3 className="text-2xl md:text-3xl font-bold mb-8">Explore Our Sections</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="text-center mb-20">
+            <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">Explore Our Sections</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {[
                 { name: "Movies", href: "/movies", emoji: "🎬", desc: "Curated films" },
                 { name: "TV Series", href: "/tvseries", emoji: "📺", desc: "Best shows" },
@@ -88,12 +88,12 @@ const Index = () => {
                 { name: "Poetry", href: "/poetry", emoji: "✍️", desc: "Creative writing" },
                 { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work" },
               ].map((tab, index) => (
-                <Card key={tab.name} className="dkloud-card hover:scale-105 transition-transform cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={tab.name} className="dkloud-card dkloud-card-interactive cursor-pointer fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                   <Link to={tab.href}>
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl mb-2">{tab.emoji}</div>
-                      <h4 className="font-semibold text-sm">{tab.name}</h4>
-                      <p className="text-xs text-muted-foreground">{tab.desc}</p>
+                    <CardContent className="p-6 text-center">
+                      <div className="text-3xl mb-3 float">{tab.emoji}</div>
+                      <h4 className="font-semibold text-base mb-2">{tab.name}</h4>
+                      <p className="text-sm text-muted-foreground">{tab.desc}</p>
                     </CardContent>
                   </Link>
                 </Card>
@@ -104,24 +104,24 @@ const Index = () => {
       </section>
 
       {/* Founder Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/20">
+        <div className="max-w-5xl mx-auto text-center">
           <div className="slide-up">
-            <h3 className="text-2xl md:text-3xl font-bold mb-8">Meet the Founder</h3>
-            <div className="bg-card rounded-2xl p-8 shadow-lg">
-              <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-4xl font-bold">
+            <h3 className="text-3xl md:text-4xl font-bold mb-12">Meet the Founder</h3>
+            <div className="dkloud-card dkloud-card-interactive p-12">
+              <div className="w-40 h-40 mx-auto mb-8 bg-gradient-to-br from-primary via-accent to-primary rounded-full flex items-center justify-center text-white text-5xl font-bold glow float">
                 DK
               </div>
-              <h4 className="text-xl font-semibold mb-4">Tech Enthusiast & Knowledge Curator</h4>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              <h4 className="text-2xl font-semibold mb-6">Tech Enthusiast & Knowledge Curator</h4>
+              <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
                 Passionate about Windows Server, VMware, AWS, and creating educational content. 
                 Building dKloud to scale knowledge sharing and connect with fellow tech enthusiasts.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Button asChild size="lg" className="btn-gradient text-lg px-8 py-3">
                   <Link to="/portfolio">View Full Portfolio</Link>
                 </Button>
-                <Button variant="outline" asChild>
+                <Button variant="outline" size="lg" asChild className="btn-glass text-lg px-8 py-3">
                   <a href="https://github.com/dkygims2609" target="_blank" rel="noopener noreferrer">
                     GitHub Profile
                   </a>
