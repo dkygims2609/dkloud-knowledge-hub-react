@@ -1,9 +1,56 @@
+import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { ContentCarousel } from "@/components/ContentCarousel";
 
 const Index = () => {
+  const [previewData, setPreviewData] = useState({
+    movies: [],
+    youtube: [],
+    aitools: [],
+    techcorner: [],
+    smarttech: [],
+    technews: []
+  });
+
+  useEffect(() => {
+    // Fetch preview data for all sections
+    const fetchPreviewData = async () => {
+      try {
+        // Movies & TV
+        const moviesResponse = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec");
+        const moviesData = await moviesResponse.json();
+        
+        // YouTube Channels
+        const youtubeResponse = await fetch("https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799");
+        const youtubeData = await youtubeResponse.json();
+        
+        // AI Tools
+        const aitoolsResponse = await fetch("https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec");
+        const aitoolsData = await aitoolsResponse.json();
+        
+        // Tech Corner
+        const techcornerResponse = await fetch("https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec");
+        const techcornerData = await techcornerResponse.json();
+
+        setPreviewData({
+          movies: moviesData || [],
+          youtube: youtubeData || [],
+          aitools: aitoolsData || [],
+          techcorner: techcornerData || [],
+          smarttech: [], // Will be populated with real API later
+          technews: [] // Will be populated with real API later
+        });
+      } catch (error) {
+        console.error("Error fetching preview data:", error);
+      }
+    };
+
+    fetchPreviewData();
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -47,33 +94,68 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Sections Preview */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/20">
+      {/* Explore Our Sections */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">Explore Our Sections</h3>
-            <div className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold mb-8 slide-up">Explore Our Sections</h3>
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-5xl mx-auto">
               {[
-                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬📺", desc: "Films & shows" },
-                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top channels" },
-                { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI" },
-                { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips" },
-                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart gadgets" },
-                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest updates" },
-                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work" },
-                { name: "Services", href: "/services", emoji: "🎵", desc: "What I Offer" },
+                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & shows", color: "from-purple-500 to-pink-500" },
+                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top channels", color: "from-red-500 to-orange-500" },
+                { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-blue-500 to-cyan-500" },
+                { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-green-500 to-emerald-500" },
+                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart gadgets", color: "from-yellow-500 to-amber-500" },
+                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest updates", color: "from-indigo-500 to-purple-500" },
+                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work", color: "from-teal-500 to-green-500" },
+                { name: "Services", href: "/services", emoji: "🎵", desc: "What I Offer", color: "from-pink-500 to-rose-500" },
               ].map((tab, index) => (
-                <Card key={tab.name} className="dkloud-card dkloud-card-interactive cursor-pointer fade-in min-w-[140px] max-w-[160px]" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <Link to={tab.href}>
-                    <CardContent className="p-4 text-center">
-                      <div className="text-lg mb-2 float">{tab.emoji}</div>
-                      <h4 className="font-semibold text-sm mb-1">{tab.name}</h4>
-                      <p className="text-xs text-muted-foreground">{tab.desc}</p>
-                    </CardContent>
-                  </Link>
-                </Card>
+                <Link key={tab.name} to={tab.href} className="group">
+                  <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${tab.color} p-[2px] transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[120px] max-w-[140px] fade-in`} style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="bg-background/95 backdrop-blur-sm rounded-[10px] p-3 h-full text-center transition-colors group-hover:bg-background/90">
+                      <div className="text-2xl mb-2 transition-transform group-hover:scale-110 duration-300">{tab.emoji}</div>
+                      <h4 className="font-semibold text-xs mb-1 group-hover:text-primary transition-colors">{tab.name}</h4>
+                      <p className="text-[10px] text-muted-foreground group-hover:text-muted-foreground/80">{tab.desc}</p>
+                    </div>
+                  </div>
+                </Link>
               ))}
             </div>
+          </div>
+
+          {/* Content Previews with Carousels */}
+          <div className="space-y-12 mt-16">
+            <ContentCarousel
+              title="🎬 Featured Movies & TV Series"
+              items={previewData.movies}
+              type="movies"
+              viewAllLink="/movies-tv"
+              maxItems={6}
+            />
+            
+            <ContentCarousel
+              title="📹 Top YouTube Channels"
+              items={previewData.youtube}
+              type="youtube"
+              viewAllLink="/ytchannels"
+              maxItems={6}
+            />
+            
+            <ContentCarousel
+              title="🤖 Latest AI Tools"
+              items={previewData.aitools}
+              type="aitools"
+              viewAllLink="/aitools"
+              maxItems={6}
+            />
+            
+            <ContentCarousel
+              title="📚 Tech Corner Resources"
+              items={previewData.techcorner}
+              type="techcorner"
+              viewAllLink="/techcorner"
+              maxItems={6}
+            />
           </div>
         </div>
       </section>
