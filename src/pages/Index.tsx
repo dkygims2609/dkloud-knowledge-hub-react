@@ -49,6 +49,15 @@ const Index = () => {
         });
       } catch (error) {
         console.error("Error fetching preview data:", error);
+        // Set empty arrays as fallback to prevent UI issues
+        setPreviewData({
+          movies: [],
+          youtube: [],
+          aitools: [],
+          techcorner: [],
+          smarttech: [],
+          technews: []
+        });
       }
     };
 
@@ -59,43 +68,65 @@ const Index = () => {
     <div className="min-h-screen relative">
       <FloatingIcons />
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient opacity-10" />
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
+        {/* Enhanced Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.1_0%,_transparent_50%)]" />
+        </div>
         
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+        </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 glow">
-              <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">d</span>
-              <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">K</span>
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">loud Tech</span>
+            {/* Enhanced Logo Design */}
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 relative">
+              <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent drop-shadow-lg">d</span>
+              <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 bg-clip-text text-transparent drop-shadow-lg">K</span>
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg">loud Tech</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 blur-xl -z-10 animate-pulse" />
             </h1>
-            <div className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 slide-up" style={{animationDelay: "0.2s"}}>
-              Decoding Knowledge
+            
+            {/* Static Tagline with Enhanced Design */}
+            <div className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 slide-up" style={{animationDelay: "0.2s"}}>
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                Decoding Knowledge
+              </span>
             </div>
-            <p className="text-xl md:text-2xl font-bold text-orange-500 mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              Library Of Unique Discoveries
-            </p>
-            <p className="text-lg text-muted-foreground mb-6 max-w-4xl mx-auto leading-relaxed" style={{animationDelay: "0.4s"}}>
-              Powered by: dKloud Tech
+            
+            {/* Enhanced Subtitle */}
+            <p className="text-xl md:text-2xl font-bold mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
+              <span className="bg-gradient-to-r from-orange-500 to-red-500 dark:from-orange-400 dark:to-red-400 bg-clip-text text-transparent">
+                Library Of Unique Discoveries
+              </span>
             </p>
             
-            {/* Mission Statement */}
-            <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 mb-10 max-w-5xl mx-auto border border-border/50 fade-in" style={{animationDelay: "0.5s"}}>
+            {/* Company Attribution */}
+            <p className="text-lg text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed fade-in" style={{animationDelay: "0.4s"}}>
+              <span className="font-medium text-primary">Powered by:</span> dKloud Tech
+            </p>
+            
+            {/* Enhanced Mission Statement */}
+            <div className="bg-card/80 backdrop-blur-md rounded-2xl p-8 mb-10 max-w-5xl mx-auto border border-border/50 shadow-xl fade-in" style={{animationDelay: "0.5s"}}>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 We're on a mission to blend creativity, cloud technology, AI, and community-driven learning into one cohesive platform.
                 Whether you're a tech explorer, a creative mind, or a curious learner, you'll find something meaningful here.
               </p>
             </div>
             
+            {/* Enhanced CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.6s"}}>
-              <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4">
+              <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl">
                 <Link to="/movies-tv">
                   Explore Content
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="btn-glass text-lg px-10 py-4">
+              <Button asChild variant="outline" size="lg" className="btn-glass text-lg px-10 py-4 shadow-lg hover:shadow-xl">
                 <Link to="/portfolio">View Portfolio</Link>
               </Button>
             </div>

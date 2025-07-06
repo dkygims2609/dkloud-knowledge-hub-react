@@ -16,6 +16,9 @@ import SmartTech from "./pages/SmartTech";
 import Portfolio from "./pages/Portfolio";
 import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import Disclaimer from "./pages/Disclaimer";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +39,9 @@ const App = () => (
             <Route path="/smarttech" element={<SmartTech />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
             {/* Legacy routes for backwards compatibility */}
             <Route path="/movies" element={<MoviesTV />} />
             <Route path="/tvseries" element={<MoviesTV />} />
