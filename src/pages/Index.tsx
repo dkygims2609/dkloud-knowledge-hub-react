@@ -148,36 +148,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Content Previews with 2-Row Grids */}
-          <div className="space-y-16 mt-16">
-            <div className="fade-in">
-              <ContentGrid
-                items={previewData.movies.slice(0, 12)}
-                type="movies"
-              />
-            </div>
-            
-            <div className="fade-in" style={{animationDelay: "0.2s"}}>
-              <ContentGrid
-                items={previewData.youtube.slice(0, 12)}
-                type="youtube"
-              />
-            </div>
-            
-            <div className="fade-in" style={{animationDelay: "0.4s"}}>
-              <ContentGrid
-                items={previewData.aitools.slice(0, 12)}
-                type="aitools"
-              />
-            </div>
-            
-            <div className="fade-in" style={{animationDelay: "0.6s"}}>
-              <ContentGrid
-                items={previewData.techcorner.slice(0, 12)}
-                type="techcorner"
-              />
-            </div>
-          </div>
         </div>
       </section>
 
@@ -221,29 +191,48 @@ const Index = () => {
 
           {/* How dKloud Works - Animated Infographic */}
           <div className="text-center mb-20">
-            <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">How dKloud Works</h3>
-            <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Experience the seamless flow of data from your interaction to real-time content delivery
-            </p>
-            
-            {/* Interactive Infographic */}
-            <div className="mb-12">
-              <InfographicAnimation />
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <h3 className="text-3xl md:text-4xl font-bold slide-up">How dKloud Works</h3>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const section = document.getElementById('how-dkloud-works');
+                  if (section) {
+                    const isHidden = section.style.display === 'none';
+                    section.style.display = isHidden ? 'block' : 'none';
+                  }
+                }}
+                className="ml-4"
+              >
+                Show/Hide
+              </Button>
             </div>
             
-            {/* Tech Stack */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-              {[
-                { name: "React + TypeScript", color: "from-blue-500 to-cyan-500" },
-                { name: "Tailwind CSS + Shadcn UI", color: "from-purple-500 to-pink-500" }, 
-                { name: "Google Sheets + API", color: "from-green-500 to-emerald-500" },
-                { name: "GitHub Pages", color: "from-gray-500 to-slate-600" },
-                { name: "Supabase Backend", color: "from-indigo-500 to-purple-500" }
-              ].map((tech, index) => (
-                <div key={tech.name} className={`bg-gradient-to-r ${tech.color} text-white rounded-full px-6 py-3 font-medium bounce-in shadow-lg`} style={{animationDelay: `${index * 0.1}s`}}>
-                  {tech.name}
-                </div>
-              ))}
+            <div id="how-dkloud-works">
+              <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+                Experience the seamless flow of data from your interaction to real-time content delivery
+              </p>
+              
+              {/* Interactive Infographic */}
+              <div className="mb-12">
+                <InfographicAnimation />
+              </div>
+              
+              {/* Tech Stack */}
+              <div className="flex flex-wrap justify-center gap-4 mb-12">
+                {[
+                  { name: "React + TypeScript", color: "from-blue-500 to-cyan-500" },
+                  { name: "Tailwind CSS + Shadcn UI", color: "from-purple-500 to-pink-500" }, 
+                  { name: "Google Sheets + API", color: "from-green-500 to-emerald-500" },
+                  { name: "GitHub Pages", color: "from-gray-500 to-slate-600" },
+                  { name: "Supabase Backend", color: "from-indigo-500 to-purple-500" }
+                ].map((tech, index) => (
+                  <div key={tech.name} className={`bg-gradient-to-r ${tech.color} text-white rounded-full px-6 py-3 font-medium bounce-in shadow-lg`} style={{animationDelay: `${index * 0.1}s`}}>
+                    {tech.name}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
