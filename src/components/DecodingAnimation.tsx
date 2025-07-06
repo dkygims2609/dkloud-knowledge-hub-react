@@ -25,7 +25,7 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
             if (char === " ") return " ";
             
             // Show correct character if we've decoded up to this point
-            if (index < iterations) {
+            if (index < Math.floor(iterations)) {
               return originalText[index];
             }
             
@@ -36,8 +36,8 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
 
         setDisplayText(newText);
 
-        // Increment iterations more smoothly for letter-by-letter reveal
-        iterations += 0.5;
+        // Increment iterations by whole numbers to prevent disappearing letters
+        iterations += 1;
 
         // Stop when we've decoded all characters and always show original text
         if (iterations >= originalText.length) {
@@ -45,7 +45,7 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
           setDisplayText(originalText);
           setIsDecoding(false);
         }
-      }, 40); // Slightly slower for better readability
+      }, 80); // Slower timing for smoother animation
     };
 
     const timer = setTimeout(() => {
