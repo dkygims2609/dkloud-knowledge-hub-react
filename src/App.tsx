@@ -13,9 +13,10 @@ import YouTubeChannels from "./pages/YouTubeChannels";
 import AITools from "./pages/AITools";
 import TechCorner from "./pages/TechCorner";
 import TechNews from "./pages/TechNews";
-import Gadgets from "./pages/Gadgets";
+import SmartTech from "./pages/SmartTech";
 import Poetry from "./pages/Poetry";
 import Portfolio from "./pages/Portfolio";
+import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,9 +36,10 @@ const App = () => (
             <Route path="/aitools" element={<AITools />} />
             <Route path="/techcorner" element={<TechCorner />} />
             <Route path="/technews" element={<TechNews />} />
-            <Route path="/gadgets" element={<Gadgets />} />
+            <Route path="/smarttech" element={<SmartTech />} />
             <Route path="/poetry" element={<Poetry />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/services" element={<Services />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

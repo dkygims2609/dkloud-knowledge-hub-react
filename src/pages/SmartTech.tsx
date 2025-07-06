@@ -19,7 +19,7 @@ interface Gadget {
   brand: string;
 }
 
-const Gadgets = () => {
+const SmartTech = () => {
   const [gadgets, setGadgets] = useState<Gadget[]>([]);
   const [filteredGadgets, setFilteredGadgets] = useState<Gadget[]>([]);
   const [loading, setLoading] = useState(true);
@@ -98,7 +98,7 @@ const Gadgets = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            💡 Smart Gadgets
+            💡 SmartTech Gadgets
           </h1>
           <p className="text-xl text-muted-foreground">
             Discover innovative gadgets and smart devices to enhance your lifestyle
@@ -254,4 +254,4 @@ const Gadgets = () => {
   );
 };
 
-export default Gadgets;
+export default SmartTech;

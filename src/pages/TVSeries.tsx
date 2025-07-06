@@ -40,7 +40,7 @@ const TVSeries = () => {
   const fetchSeries = async () => {
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbxr64a2W4VL2ymbigPXUB3EQmMULCmUhMuDDwvhGNaG4lSwgqAQitXO_hTY2lhh3n1f/exec?type=tvseries"
+        "https://api.sheetbest.com/sheets/a9b35d33-f03a-463d-8df6-8ae470fdcda7"
       );
       const data = await response.json();
       setSeries(data);
