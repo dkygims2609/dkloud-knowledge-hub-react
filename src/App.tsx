@@ -17,6 +17,7 @@ import SmartTech from "./pages/SmartTech";
 import Poetry from "./pages/Poetry";
 import Portfolio from "./pages/Portfolio";
 import Services from "./pages/Services";
+import OriginalCompositions from "./pages/OriginalCompositions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/poetry" element={<Poetry />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/original-compositions" element={<OriginalCompositions />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

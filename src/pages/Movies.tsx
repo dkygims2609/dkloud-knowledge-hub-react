@@ -38,7 +38,7 @@ const Movies = () => {
   const fetchMovies = async () => {
     try {
       const response = await fetch(
-        "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7"
+        "https://script.google.com/macros/s/AKfycbzO53FfgLV-2Kq5pP0fYF7yjFw1CQmMULCmULCmUhMuDDwvhGNaG4lSwgqAQitXO_hTY2lhh3n1f/exec"
       );
       const data = await response.json();
       setMovies(data);

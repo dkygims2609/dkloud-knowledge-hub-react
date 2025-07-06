@@ -13,9 +13,10 @@ const navigation = [
   { name: "AI Tools", href: "/aitools", emoji: "🤖" },
   { name: "Tech Corner", href: "/techcorner", emoji: "📚" },
   { name: "Tech News", href: "/technews", emoji: "📰" },
-  { name: "Gadgets", href: "/gadgets", emoji: "💡" },
+  { name: "SmartTech", href: "/smarttech", emoji: "💡" },
   { name: "Poetry", href: "/poetry", emoji: "✍️" },
   { name: "Portfolio", href: "/portfolio", emoji: "💼" },
+  { name: "Services", href: "/services", emoji: "🎵" },
 ];
 
 export function Navbar() {
