@@ -25,13 +25,22 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-primary to-accent text-white font-bold text-xl px-3 py-1 rounded-lg">
-              dK
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="relative">
+              <div className="flex items-center">
+                <span className="text-2xl font-bold text-white">d</span>
+                <span className="text-2xl font-bold text-blue-500">K</span>
+              </div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-transparent to-blue-500 rounded-lg opacity-20 blur-sm"></div>
             </div>
-            <span className="font-bold text-xl text-foreground">
-              dKloud
-            </span>
+            <div className="flex flex-col">
+              <span className="font-bold text-lg text-foreground leading-tight">
+                dKloud
+              </span>
+              <span className="text-xs text-muted-foreground leading-tight">
+                .in
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

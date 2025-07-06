@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { ContentGrid } from "@/components/ContentGrid";
 import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
+import { FloatingIcons } from "@/components/FloatingIcons";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
@@ -54,7 +55,8 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      <FloatingIcons />
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-10" />
@@ -62,8 +64,10 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-6 glow">
-              dKloud Tech
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 glow">
+              <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">d</span>
+              <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">K</span>
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">loud Tech</span>
             </h1>
             <div className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
@@ -228,19 +232,10 @@ const Index = () => {
             <h3 className="text-3xl md:text-4xl font-bold mb-12">Meet the Founder</h3>
             <div className="dkloud-card dkloud-card-interactive p-12">
               <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-xl border-4 border-primary/20 glow float">
-                <img 
-                  src="/src/assets/founder-photo.jpg" 
-                  alt="Dileep Yadav - Founder" 
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const fallback = target.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div className="w-full h-full bg-gradient-to-br from-primary via-accent to-primary flex items-center justify-center text-white text-5xl font-bold" style={{display: 'none'}}>
-                  DK
+                <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-slate-300 to-slate-400 flex items-center justify-center">
+                    <span className="text-4xl font-bold text-slate-600">DY</span>
+                  </div>
                 </div>
               </div>
               <h4 className="text-2xl font-semibold mb-2">Dileep Yadav</h4>
