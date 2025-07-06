@@ -14,6 +14,7 @@ const navigation = [
   { name: "SmartTech", href: "/smarttech", emoji: "💡" },
   { name: "Tech News", href: "/technews", emoji: "📰" },
   { name: "Portfolio", href: "/portfolio", emoji: "💼" },
+  { name: "Services", href: "/services", emoji: "🎵" },
 ];
 
 export function Navbar() {

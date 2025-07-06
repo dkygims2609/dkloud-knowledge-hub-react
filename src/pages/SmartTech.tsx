@@ -51,9 +51,9 @@ const SmartTech = () => {
 
   const filterGadgets = () => {
     let filtered = gadgets.filter((gadget) =>
-      gadget.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      gadget.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      gadget.brand.toLowerCase().includes(searchTerm.toLowerCase())
+      String(gadget.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(gadget.description || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(gadget.brand || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (categoryFilter !== "all") {

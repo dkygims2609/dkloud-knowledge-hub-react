@@ -45,6 +45,7 @@ const MoviesTV = () => {
   const [platformFilter, setPlatformFilter] = useState("all");
   const [ratingFilter, setRatingFilter] = useState("all");
   const [languageFilter, setLanguageFilter] = useState("all");
+  const [awardsFilter, setAwardsFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("movies");
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const MoviesTV = () => {
 
   useEffect(() => {
     filterContent();
-  }, [movies, tvSeries, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, activeTab]);
+  }, [movies, tvSeries, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter, activeTab]);
 
   const fetchData = async () => {
     try {
@@ -88,10 +89,24 @@ const MoviesTV = () => {
       filteredMoviesData = filteredMoviesData.filter((movie) => String(movie.Platform) === platformFilter);
     }
     if (ratingFilter !== "all") {
-      filteredMoviesData = filteredMoviesData.filter((movie) => String(movie.DKcloudRating) === ratingFilter);
+      if (ratingFilter === "high") {
+        filteredMoviesData = filteredMoviesData.filter((movie) => parseFloat(String(movie.DKcloudRating)) >= 8);
+      } else if (ratingFilter === "medium") {
+        filteredMoviesData = filteredMoviesData.filter((movie) => {
+          const rating = parseFloat(String(movie.DKcloudRating));
+          return rating >= 6 && rating < 8;
+        });
+      } else if (ratingFilter === "low") {
+        filteredMoviesData = filteredMoviesData.filter((movie) => parseFloat(String(movie.DKcloudRating)) < 6);
+      }
     }
+
     if (languageFilter !== "all") {
       filteredMoviesData = filteredMoviesData.filter((movie) => String(movie.Language) === languageFilter);
+    }
+
+    if (awardsFilter !== "all") {
+      filteredMoviesData = filteredMoviesData.filter((movie) => String(movie.Awards) === awardsFilter);
     }
 
     // Filter TV Series
@@ -107,10 +122,24 @@ const MoviesTV = () => {
       filteredTvData = filteredTvData.filter((show) => String(show.Platform) === platformFilter);
     }
     if (ratingFilter !== "all") {
-      filteredTvData = filteredTvData.filter((show) => String(show.DKcloudRating) === ratingFilter);
+      if (ratingFilter === "high") {
+        filteredTvData = filteredTvData.filter((show) => parseFloat(String(show.DKcloudRating)) >= 8);
+      } else if (ratingFilter === "medium") {
+        filteredTvData = filteredTvData.filter((show) => {
+          const rating = parseFloat(String(show.DKcloudRating));
+          return rating >= 6 && rating < 8;
+        });
+      } else if (ratingFilter === "low") {
+        filteredTvData = filteredTvData.filter((show) => parseFloat(String(show.DKcloudRating)) < 6);
+      }
     }
+
     if (languageFilter !== "all") {
       filteredTvData = filteredTvData.filter((show) => String(show.Language) === languageFilter);
+    }
+
+    if (awardsFilter !== "all") {
+      filteredTvData = filteredTvData.filter((show) => String(show.Awards) === awardsFilter);
     }
 
     setFilteredMovies(filteredMoviesData);
@@ -128,6 +157,7 @@ const MoviesTV = () => {
     setPlatformFilter("all");
     setRatingFilter("all");
     setLanguageFilter("all");
+    setAwardsFilter("all");
   };
 
   if (loading) {
@@ -157,7 +187,7 @@ const MoviesTV = () => {
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search..."
+                placeholder="Search by title/name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"

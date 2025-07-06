@@ -47,6 +47,37 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Sections Preview */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">Explore Our Sections</h3>
+            <div className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto">
+              {[
+                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬📺", desc: "Films & shows" },
+                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top channels" },
+                { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI" },
+                { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips" },
+                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart gadgets" },
+                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest updates" },
+                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work" },
+                { name: "Services", href: "/services", emoji: "🎵", desc: "What I Offer" },
+              ].map((tab, index) => (
+                <Card key={tab.name} className="dkloud-card dkloud-card-interactive cursor-pointer fade-in min-w-[140px] max-w-[160px]" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <Link to={tab.href}>
+                    <CardContent className="p-4 text-center">
+                      <div className="text-lg mb-2 float">{tab.emoji}</div>
+                      <h4 className="font-semibold text-sm mb-1">{tab.name}</h4>
+                      <p className="text-xs text-muted-foreground">{tab.desc}</p>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -123,32 +154,6 @@ const Index = () => {
                 <div key={tech} className="bg-gradient-to-r from-primary/20 to-accent/20 rounded-full px-6 py-3 font-medium bounce-in" style={{animationDelay: `${index * 0.1}s`}}>
                   {tech}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sections Preview */}
-          <div className="text-center mb-20">
-            <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">Explore Our Sections</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[
-                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬📺", desc: "Films & shows" },
-                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top channels" },
-                { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI" },
-                { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips" },
-                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart gadgets" },
-                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest updates" },
-                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work" },
-              ].map((tab, index) => (
-                <Card key={tab.name} className="dkloud-card dkloud-card-interactive cursor-pointer fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <Link to={tab.href}>
-                    <CardContent className="p-6 text-center">
-                      <div className="text-3xl mb-3 float">{tab.emoji}</div>
-                      <h4 className="font-semibold text-base mb-2">{tab.name}</h4>
-                      <p className="text-sm text-muted-foreground">{tab.desc}</p>
-                    </CardContent>
-                  </Link>
-                </Card>
               ))}
             </div>
           </div>

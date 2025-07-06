@@ -14,6 +14,7 @@ import TechCorner from "./pages/TechCorner";
 import TechNews from "./pages/TechNews";
 import SmartTech from "./pages/SmartTech";
 import Portfolio from "./pages/Portfolio";
+import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/technews" element={<TechNews />} />
             <Route path="/smarttech" element={<SmartTech />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/services" element={<Services />} />
             {/* Legacy routes for backwards compatibility */}
             <Route path="/movies" element={<MoviesTV />} />
             <Route path="/tvseries" element={<MoviesTV />} />

@@ -47,9 +47,9 @@ const AITools = () => {
 
   const filterTools = () => {
     let filtered = tools.filter((tool) =>
-      tool.Toolname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tool.Purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tool.Category.toLowerCase().includes(searchTerm.toLowerCase())
+      String(tool.Toolname || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(tool.Purpose || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(tool.Category || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (categoryFilter !== "all") {
