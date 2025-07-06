@@ -10,15 +10,22 @@ export function ServicesSidebar() {
   return (
     <>
       {/* Toggle Button */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40">
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 group">
         <Button
           onClick={() => setIsOpen(!isOpen)}
           size="sm"
           variant="outline"
-          className="rounded-l-lg rounded-r-none border-r-0 bg-background/90 backdrop-blur-sm shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 w-8 h-16"
+          className="rounded-l-xl rounded-r-none border-r-0 bg-background/80 backdrop-blur-sm shadow-md hover:shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-500 w-12 h-20 border-primary/20 hover:border-primary/40"
+          title={isOpen ? "Close Services" : "View Services"}
         >
-          {isOpen ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          <div className="flex flex-col items-center gap-1">
+            {isOpen ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            <Music className="h-3 w-3 opacity-60" />
+          </div>
         </Button>
+        
+        {/* Subtle indicator */}
+        <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary/40 to-accent/40 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Sidebar */}
@@ -79,11 +86,8 @@ export function ServicesSidebar() {
             <Button 
               asChild 
               className="w-full btn-glass"
-              onClick={() => {
-                window.open('https://script.google.com/macros/s/AKfycbwSYJRWE0JHzmGig1bYm3RPMcSpIaCqOBDT5rRMEgoIjDMzrwU6wS3UHDpwTw9Aw0m_hg/exec', '_blank');
-              }}
             >
-              <a href="https://script.google.com/macros/s/AKfycbwSYJRWE0JHzmGig1bYm3RPMcSpIaCqOBDT5rRMEgoIjDMzrwU6wS3UHDpwTw9Aw0m_hg/exec" target="_blank" rel="noopener noreferrer">
+              <a href="https://docs.google.com/forms/d/1h8LA5GRuRAXq7ylecOKmH5myRHGFG90aT4FIuvV6uGM/viewform?edit_requested=true" target="_blank" rel="noopener noreferrer">
                 Contact Form
               </a>
             </Button>

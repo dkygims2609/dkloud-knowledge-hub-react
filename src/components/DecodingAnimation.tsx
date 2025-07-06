@@ -24,8 +24,8 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
           .map((char, index) => {
             if (char === " ") return " ";
             
-            // Show correct character if we've decoded up to this point
-            if (index < Math.floor(iterations)) {
+            // Always show correct character if we've decoded up to this point
+            if (index < iterations) {
               return originalText[index];
             }
             
@@ -35,27 +35,25 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
           .join("");
 
         setDisplayText(newText);
-
-        // Increment iterations by whole numbers to prevent disappearing letters
         iterations += 1;
 
-        // Stop when we've decoded all characters and always show original text
-        if (iterations >= originalText.length) {
+        // Stop when we've decoded all characters
+        if (iterations > originalText.length) {
           clearInterval(interval);
-          setDisplayText(originalText);
+          setDisplayText(originalText); // Always ensure original text is displayed
           setIsDecoding(false);
         }
-      }, 80); // Slower timing for smoother animation
+      }, 100); // Consistent timing
     };
 
     const timer = setTimeout(() => {
       startDecoding();
     }, delay);
 
-    // Repeat every 8 seconds for more frequent shuffling
+    // Repeat every 6 seconds for regular shuffling
     const repeatTimer = setInterval(() => {
       startDecoding();
-    }, 8000);
+    }, 6000);
 
     return () => {
       clearTimeout(timer);
