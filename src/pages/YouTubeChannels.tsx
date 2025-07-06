@@ -6,13 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 
 interface YouTubeChannel {
-  "Channel Name": string;
-  "Channel Logo": string;
-  "Description": string;
-  "Category": string;
-  "Subscribers": string;
-  "Link": string;
-  "Why Recommended": string;
+  Name: string;
+  Category: string;
+  Description: string;
+  YouTubeLink: string;
 }
 
 const YouTubeChannels = () => {
@@ -45,7 +42,7 @@ const YouTubeChannels = () => {
 
   const filterChannels = () => {
     const filtered = channels.filter((channel) =>
-      channel["Channel Name"].toLowerCase().includes(searchTerm.toLowerCase()) ||
+      channel.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       channel.Description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       channel.Category.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -98,37 +95,20 @@ const YouTubeChannels = () => {
         {/* Channels Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredChannels.map((channel, index) => (
-            <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleChannelClick(channel.Link)}>
+            <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleChannelClick(channel.YouTubeLink)}>
               <CardHeader>
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
-                    {channel["Channel Logo"] ? (
-                      <img
-                        src={channel["Channel Logo"]}
-                        alt={`${channel["Channel Name"]} logo`}
-                        className="w-16 h-16 rounded-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = "/placeholder.svg";
-                        }}
-                      />
-                    ) : (
-                      <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
-                        <Play className="h-8 w-8 text-white" />
-                      </div>
-                    )}
+                    <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
+                      <Play className="h-8 w-8 text-white" />
+                    </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                      {channel["Channel Name"]}
+                      {channel.Name}
                     </CardTitle>
                     <div className="flex items-center space-x-2 mt-2">
                       <Badge variant="secondary">{channel.Category}</Badge>
-                      {channel.Subscribers && (
-                        <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                          <Users className="h-3 w-3" />
-                          <span>{channel.Subscribers}</span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -138,15 +118,6 @@ const YouTubeChannels = () => {
                 <CardDescription className="text-sm">
                   {channel.Description}
                 </CardDescription>
-                
-                {channel["Why Recommended"] && (
-                  <div>
-                    <h4 className="font-semibold text-sm mb-2">Why Recommended:</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {channel["Why Recommended"]}
-                    </p>
-                  </div>
-                )}
                 
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <div className="flex items-center space-x-1 text-sm text-muted-foreground">
@@ -159,7 +130,7 @@ const YouTubeChannels = () => {
                     className="group-hover:bg-primary group-hover:text-primary-foreground"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleChannelClick(channel.Link);
+                      handleChannelClick(channel.YouTubeLink);
                     }}
                   >
                     <ExternalLink className="h-4 w-4" />

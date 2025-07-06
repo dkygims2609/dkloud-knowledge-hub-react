@@ -7,16 +7,13 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Movies", href: "/movies", emoji: "🎬" },
-  { name: "TV Series", href: "/tvseries", emoji: "📺" },
+  { name: "Movies & TV", href: "/movies-tv", emoji: "🎬📺" },
   { name: "YouTube Picks", href: "/ytchannels", emoji: "📹" },
   { name: "AI Tools", href: "/aitools", emoji: "🤖" },
   { name: "Tech Corner", href: "/techcorner", emoji: "📚" },
-  { name: "Tech News", href: "/technews", emoji: "📰" },
   { name: "SmartTech", href: "/smarttech", emoji: "💡" },
-  { name: "Poetry", href: "/poetry", emoji: "✍️" },
+  { name: "Tech News", href: "/technews", emoji: "📰" },
   { name: "Portfolio", href: "/portfolio", emoji: "💼" },
-  { name: "Services", href: "/services", emoji: "🎵" },
 ];
 
 export function Navbar() {

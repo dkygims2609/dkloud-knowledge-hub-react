@@ -34,7 +34,7 @@ const Index = () => {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.6s"}}>
               <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4">
-                <Link to="/movies">
+                <Link to="/movies-tv">
                   Explore Content
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
@@ -132,16 +132,13 @@ const Index = () => {
             <h3 className="text-3xl md:text-4xl font-bold mb-12 slide-up">Explore Our Sections</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[
-                { name: "Movies", href: "/movies", emoji: "🎬", desc: "Curated films" },
-                { name: "TV Series", href: "/tvseries", emoji: "📺", desc: "Best shows" },
+                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬📺", desc: "Films & shows" },
                 { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top channels" },
                 { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI" },
                 { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips" },
                 { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart gadgets" },
                 { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest updates" },
-                { name: "Poetry", href: "/poetry", emoji: "✍️", desc: "Creative writing" },
                 { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My work" },
-                { name: "Services", href: "/services", emoji: "🎵", desc: "What I offer" },
               ].map((tab, index) => (
                 <Card key={tab.name} className="dkloud-card dkloud-card-interactive cursor-pointer fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                   <Link to={tab.href}>

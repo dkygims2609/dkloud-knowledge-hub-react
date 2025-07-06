@@ -8,14 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface TechDocument {
-  title: string;
-  category: string;
-  description: string;
-  type: string;
-  link: string;
-  tags: string;
-  "last-updated": string;
-  difficulty: string;
+  Title: string;
+  Category: string;
+  Type: string;
+  Link: string;
 }
 
 const TechCorner = () => {
@@ -25,8 +21,6 @@ const TechCorner = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [difficultyFilter, setDifficultyFilter] = useState("all");
-  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
 
   useEffect(() => {
     fetchDocuments();
@@ -34,7 +28,7 @@ const TechCorner = () => {
 
   useEffect(() => {
     filterDocuments();
-  }, [documents, searchTerm, categoryFilter, typeFilter, difficultyFilter]);
+  }, [documents, searchTerm, categoryFilter, typeFilter]);
 
   const fetchDocuments = async () => {
     try {
@@ -52,21 +46,17 @@ const TechCorner = () => {
 
   const filterDocuments = () => {
     let filtered = documents.filter((doc) =>
-      doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doc.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doc.tags.toLowerCase().includes(searchTerm.toLowerCase())
+      doc.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doc.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doc.Type.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (categoryFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.category === categoryFilter);
+      filtered = filtered.filter((doc) => doc.Category === categoryFilter);
     }
 
     if (typeFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.type === typeFilter);
-    }
-
-    if (difficultyFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.difficulty === difficultyFilter);
+      filtered = filtered.filter((doc) => doc.Type === typeFilter);
     }
 
     setFilteredDocuments(filtered);
@@ -78,19 +68,6 @@ const TechCorner = () => {
 
   const handleDocumentClick = (link: string) => {
     window.open(link, "_blank", "noopener,noreferrer");
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
-      case "beginner":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-      case "intermediate":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "advanced":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-      default:
-        return "";
-    }
   };
 
   if (loading) {
@@ -116,7 +93,7 @@ const TechCorner = () => {
 
         {/* Filters */}
         <div className="bg-card rounded-xl p-6 mb-8 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
@@ -134,7 +111,7 @@ const TechCorner = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {getUniqueValues("category").map((category) => (
+                {getUniqueValues("Category").map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
@@ -148,23 +125,9 @@ const TechCorner = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                {getUniqueValues("type").map((type) => (
+                {getUniqueValues("Type").map((type) => (
                   <SelectItem key={type} value={type}>
                     {type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Difficulty" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Levels</SelectItem>
-                {getUniqueValues("difficulty").map((difficulty) => (
-                  <SelectItem key={difficulty} value={difficulty}>
-                    {difficulty}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -175,154 +138,61 @@ const TechCorner = () => {
             <p className="text-sm text-muted-foreground">
               Showing {filteredDocuments.length} of {documents.length} documents
             </p>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setSearchTerm("");
-                  setCategoryFilter("all");
-                  setTypeFilter("all");
-                  setDifficultyFilter("all");
-                }}
-              >
-                Clear Filters
-              </Button>
-              <div className="flex bg-muted rounded-lg p-1">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("grid")}
-                  className="h-8"
-                >
-                  Grid
-                </Button>
-                <Button
-                  variant={viewMode === "table" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("table")}
-                  className="h-8"
-                >
-                  Table
-                </Button>
-              </div>
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSearchTerm("");
+                setCategoryFilter("all");
+                setTypeFilter("all");
+              }}
+            >
+              Clear Filters
+            </Button>
           </div>
         </div>
 
-        {/* Documents Display */}
-        {viewMode === "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDocuments.map((doc, index) => (
-              <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleDocumentClick(doc.link)}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center space-x-2">
-                      <FileText className="h-6 w-6 text-primary" />
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                        {doc.title}
-                      </CardTitle>
-                    </div>
-                    <Badge variant="outline">{doc.type}</Badge>
+        {/* Documents Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredDocuments.map((doc, index) => (
+            <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleDocumentClick(doc.Link)}>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center space-x-2">
+                    <FileText className="h-6 w-6 text-primary" />
+                    <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                      {doc.Title}
+                    </CardTitle>
                   </div>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    <Badge variant="secondary">{doc.category}</Badge>
-                    <Badge className={getDifficultyColor(doc.difficulty)}>
-                      {doc.difficulty}
-                    </Badge>
+                  <Badge variant="outline">{doc.Type}</Badge>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge variant="secondary">{doc.Category}</Badge>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between pt-4 border-t border-border">
+                  <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                    <FileText className="h-4 w-4" />
+                    <span>Document</span>
                   </div>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <CardDescription>
-                    {doc.description}
-                  </CardDescription>
-                  
-                  {doc.tags && (
-                    <div className="flex flex-wrap gap-1">
-                      <Tag className="h-3 w-3 mr-1 mt-0.5" />
-                      {doc.tags.split(",").map((tag, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {tag.trim()}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-border">
-                    <div className="text-xs text-muted-foreground">
-                      Updated: {doc["last-updated"]}
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="group-hover:bg-primary group-hover:text-primary-foreground"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDocumentClick(doc.link);
-                      }}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <Card>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Difficulty</TableHead>
-                  <TableHead>Last Updated</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredDocuments.map((doc, index) => (
-                  <TableRow key={index} className="cursor-pointer hover:bg-muted/50" onClick={() => handleDocumentClick(doc.link)}>
-                    <TableCell>
-                      <div>
-                        <div className="font-medium">{doc.title}</div>
-                        <div className="text-sm text-muted-foreground">{doc.description}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{doc.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{doc.type}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getDifficultyColor(doc.difficulty)}>
-                        {doc.difficulty}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {doc["last-updated"]}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDocumentClick(doc.link);
-                        }}
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="group-hover:bg-primary group-hover:text-primary-foreground"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDocumentClick(doc.Link);
+                    }}
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
         {filteredDocuments.length === 0 && !loading && (
           <div className="text-center py-12">

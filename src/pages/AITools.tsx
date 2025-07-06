@@ -7,15 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface AITool {
-  name: string;
-  category: string;
-  description: string;
-  features: string;
-  pricing: string;
-  link: string;
-  rating: number;
-  "use-case": string;
-  tags: string;
+  Toolname: string;
+  Category: string;
+  Purpose: string;
+  Pricingmodel: string;
+  "EstimatedCost (per month)": string;
+  "Tools Link": string;
 }
 
 const AITools = () => {
@@ -50,17 +47,17 @@ const AITools = () => {
 
   const filterTools = () => {
     let filtered = tools.filter((tool) =>
-      tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tool.tags.toLowerCase().includes(searchTerm.toLowerCase())
+      tool.Toolname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tool.Purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tool.Category.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (categoryFilter !== "all") {
-      filtered = filtered.filter((tool) => String(tool.category) === categoryFilter);
+      filtered = filtered.filter((tool) => String(tool.Category) === categoryFilter);
     }
 
     if (pricingFilter !== "all") {
-      filtered = filtered.filter((tool) => String(tool.pricing) === pricingFilter);
+      filtered = filtered.filter((tool) => String(tool.Pricingmodel) === pricingFilter);
     }
 
     setFilteredTools(filtered);
@@ -115,7 +112,7 @@ const AITools = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {getUniqueValues("category").map((category) => (
+                {getUniqueValues("Category").map((category) => (
                   <SelectItem key={String(category)} value={String(category)}>
                     {String(category)}
                   </SelectItem>
@@ -129,7 +126,7 @@ const AITools = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Pricing</SelectItem>
-                {getUniqueValues("pricing").map((pricing) => (
+                {getUniqueValues("Pricingmodel").map((pricing) => (
                   <SelectItem key={String(pricing)} value={String(pricing)}>
                     {String(pricing)}
                   </SelectItem>
@@ -159,63 +156,39 @@ const AITools = () => {
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTools.map((tool, index) => (
-            <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleToolClick(tool.link)}>
+            <Card key={index} className="dkloud-card h-full cursor-pointer group" onClick={() => handleToolClick(tool["Tools Link"])}>
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div className="flex items-center space-x-2">
                     <Zap className="h-6 w-6 text-primary" />
                     <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                      {tool.name}
+                      {tool.Toolname}
                     </CardTitle>
                   </div>
-                  {tool.rating && (
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{tool.rating}</span>
-                    </div>
-                  )}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="secondary">{tool.category}</Badge>
+                  <Badge variant="secondary">{tool.Category}</Badge>
                   <Badge 
                     variant="outline"
-                    className={tool.pricing === "Free" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
+                    className={tool.Pricingmodel === "Free" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
                   >
-                    {tool.pricing}
+                    {tool.Pricingmodel}
                   </Badge>
+                  {tool["EstimatedCost (per month)"] && (
+                    <Badge variant="outline">
+                      {tool["EstimatedCost (per month)"]}
+                    </Badge>
+                  )}
                 </div>
               </CardHeader>
               
               <CardContent className="space-y-4">
-                <CardDescription className="text-sm">
-                  {tool.description}
-                </CardDescription>
-                
                 <div>
-                  <h4 className="font-semibold text-sm mb-2">Key Features:</h4>
+                  <h4 className="font-semibold text-sm mb-2">Purpose:</h4>
                   <p className="text-sm text-muted-foreground">
-                    {tool.features}
+                    {tool.Purpose}
                   </p>
                 </div>
-                
-                {tool["use-case"] && (
-                  <div>
-                    <h4 className="font-semibold text-sm mb-2">Use Case:</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {tool["use-case"]}
-                    </p>
-                  </div>
-                )}
-                
-                {tool.tags && (
-                  <div className="flex flex-wrap gap-1">
-                    {tool.tags.split(",").map((tag, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
-                        {tag.trim()}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
                 
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <div className="flex items-center space-x-1 text-sm text-muted-foreground">
@@ -228,7 +201,7 @@ const AITools = () => {
                     className="group-hover:bg-primary group-hover:text-primary-foreground"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleToolClick(tool.link);
+                      handleToolClick(tool["Tools Link"]);
                     }}
                   >
                     <ExternalLink className="h-4 w-4" />

@@ -7,17 +7,13 @@ import { Layout } from "./components/Layout";
 
 // Pages
 import Index from "./pages/Index";
-import Movies from "./pages/Movies";
-import TVSeries from "./pages/TVSeries";
+import MoviesTV from "./pages/MoviesTV";
 import YouTubeChannels from "./pages/YouTubeChannels";
 import AITools from "./pages/AITools";
 import TechCorner from "./pages/TechCorner";
 import TechNews from "./pages/TechNews";
 import SmartTech from "./pages/SmartTech";
-import Poetry from "./pages/Poetry";
 import Portfolio from "./pages/Portfolio";
-import Services from "./pages/Services";
-import OriginalCompositions from "./pages/OriginalCompositions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,17 +27,16 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/movies" element={<Movies />} />
-            <Route path="/tvseries" element={<TVSeries />} />
+            <Route path="/movies-tv" element={<MoviesTV />} />
             <Route path="/ytchannels" element={<YouTubeChannels />} />
             <Route path="/aitools" element={<AITools />} />
             <Route path="/techcorner" element={<TechCorner />} />
             <Route path="/technews" element={<TechNews />} />
             <Route path="/smarttech" element={<SmartTech />} />
-            <Route path="/poetry" element={<Poetry />} />
             <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/original-compositions" element={<OriginalCompositions />} />
+            {/* Legacy routes for backwards compatibility */}
+            <Route path="/movies" element={<MoviesTV />} />
+            <Route path="/tvseries" element={<MoviesTV />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
