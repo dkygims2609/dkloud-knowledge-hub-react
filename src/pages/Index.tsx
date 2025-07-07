@@ -91,11 +91,13 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 blur-xl -z-10 animate-pulse" />
             </h1>
             
-            {/* Static Tagline with Enhanced Design */}
+            {/* Animated Tagline with Enhanced Design */}
             <div className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 slide-up" style={{animationDelay: "0.2s"}}>
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                Decoding Knowledge
-              </span>
+              <DecodingAnimation 
+                text="Decoding Knowledge" 
+                className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
+                delay={1000}
+              />
             </div>
             
             {/* Enhanced Subtitle */}

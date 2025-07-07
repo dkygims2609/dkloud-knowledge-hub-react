@@ -57,7 +57,7 @@ const TechNews = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All Categories</SelectItem>
-              {categories.map((category) => (
+              {categories.length > 0 && categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
                 </SelectItem>
@@ -71,7 +71,7 @@ const TechNews = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All Sources</SelectItem>
-              {sources.map((source) => (
+              {sources.length > 0 && sources.map((source) => (
                 <SelectItem key={source} value={source}>
                   {source}
                 </SelectItem>
