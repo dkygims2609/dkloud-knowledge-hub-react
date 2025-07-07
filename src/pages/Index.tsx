@@ -3,6 +3,7 @@ import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brai
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { ContentGrid } from "@/components/ContentGrid";
 import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
@@ -140,28 +141,47 @@ const Index = () => {
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            {/* Smart Glass Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-5xl mx-auto bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-2 shadow-lg">
-              {[
-                { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-purple-500 to-pink-500" },
-                { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
-                { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-blue-500 to-cyan-500" },
-                { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-green-500 to-emerald-500" },
-                { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart Gadgets", color: "from-yellow-500 to-amber-500" },
-                { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest Updates", color: "from-indigo-500 to-purple-500" },
-                { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My Work", color: "from-teal-500 to-green-500" },
-              ].map((tab, index) => (
-                <Link key={tab.name} to={tab.href} className="group">
-                  <div className="relative overflow-hidden rounded-xl bg-background/60 backdrop-blur-md border border-border/30 hover:border-primary/40 hover:bg-background/80 transition-all duration-300 hover:scale-105 hover:shadow-md min-w-[100px] max-w-[120px] fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-                    <div className="p-3 text-center">
-                      <div className="text-lg mb-2 group-hover:scale-110 transition-transform duration-300">{tab.emoji}</div>
-                      <h4 className="font-medium text-xs mb-1 group-hover:text-primary transition-colors">{tab.name}</h4>
-                      <p className="text-[10px] text-muted-foreground/80 group-hover:text-muted-foreground">{tab.desc}</p>
+            {/* Enhanced Glassmorphism Tabs */}
+            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
+                {[
+                  { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-purple-500 to-pink-500" },
+                  { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
+                  { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-blue-500 to-cyan-500" },
+                  { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-green-500 to-emerald-500" },
+                  { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart Gadgets", color: "from-yellow-500 to-amber-500" },
+                  { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest Updates", color: "from-indigo-500 to-purple-500" },
+                  { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My Work", color: "from-teal-500 to-green-500" },
+                ].map((tab, index) => (
+                  <Link 
+                    key={tab.name} 
+                    to={tab.href} 
+                    className="group relative"
+                    onClick={() => toast.success(`${tab.name} activated`, { 
+                      description: `Loading ${tab.desc.toLowerCase()}...`,
+                      duration: 2000 
+                    })}
+                  >
+                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                      {/* Gradient background on hover */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                      
+                      {/* Glowing border effect */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      <div className="relative p-4 text-center">
+                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg">{tab.emoji}</div>
+                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative">
+                          {tab.name}
+                          {/* Underline effect */}
+                          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
+                        </h4>
+                        <p className="text-xs text-muted-foreground group-hover:text-foreground transition-colors duration-300">{tab.desc}</p>
+                      </div>
                     </div>
-                    <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl`} />
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 

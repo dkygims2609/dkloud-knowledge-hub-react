@@ -15,8 +15,8 @@ const SmartTech = () => {
 
   const handleFilterChange = async () => {
     await fetchGadgets({
-      category: selectedCategory || undefined,
-      brand: selectedBrand || undefined,
+      category: selectedCategory === 'all' ? undefined : selectedCategory || undefined,
+      brand: selectedBrand === 'all' ? undefined : selectedBrand || undefined,
       availableInIndia: indianOnly || undefined,
       limit: 20
     });
@@ -54,8 +54,8 @@ const SmartTech = () => {
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
-                {categories.map((category) => (
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.length > 0 && categories.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
@@ -68,8 +68,8 @@ const SmartTech = () => {
                 <SelectValue placeholder="All Brands" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Brands</SelectItem>
-                {brands.map((brand) => (
+                <SelectItem value="all">All Brands</SelectItem>
+                {brands.length > 0 && brands.map((brand) => (
                   <SelectItem key={brand} value={brand}>
                     {brand}
                   </SelectItem>
