@@ -1,105 +1,35 @@
-import { useState, useEffect } from "react";
-import { ExternalLink, Calendar, Globe, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-interface NewsArticle {
-  title: string;
-  description: string;
-  url: string;
-  image: string;
-  published: string;
-  source: string;
-  category: string;
-}
+import { ExternalLink, Clock, Tag, Filter, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useNewsData } from "@/hooks/useNewsData";
+import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TechNews = () => {
-  const [articles, setArticles] = useState<NewsArticle[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { news, loading, error, categories, sources, fetchNews } = useNewsData();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSource, setSelectedSource] = useState<string>('');
 
-  useEffect(() => {
-    fetchNews();
-  }, []);
-
-  const fetchNews = async () => {
-    try {
-      // Using a mock data structure for demo - replace with actual API
-      const mockArticles: NewsArticle[] = [
-        {
-          title: "AI Revolution: Latest Breakthroughs in Machine Learning",
-          description: "Discover the latest advancements in artificial intelligence and machine learning that are shaping the future of technology.",
-          url: "https://example.com/ai-news",
-          image: "/placeholder.svg",
-          published: "2024-01-15",
-          source: "Tech Today",
-          category: "Artificial Intelligence"
-        },
-        {
-          title: "Cloud Computing Trends for 2024",
-          description: "Explore the upcoming trends in cloud computing, including serverless architecture and edge computing solutions.",
-          url: "https://example.com/cloud-news",
-          image: "/placeholder.svg",
-          published: "2024-01-14",
-          source: "Cloud Weekly",
-          category: "Cloud Computing"
-        },
-        {
-          title: "Cybersecurity: New Threats and Defense Strategies",
-          description: "Stay updated on the latest cybersecurity threats and learn about effective defense strategies to protect your data.",
-          url: "https://example.com/security-news",
-          image: "/placeholder.svg",
-          published: "2024-01-13",
-          source: "Security Now",
-          category: "Cybersecurity"
-        },
-        {
-          title: "Web Development: React 19 Features Preview",
-          description: "Get an early look at the exciting new features coming in React 19 and how they'll improve developer experience.",
-          url: "https://example.com/react-news",
-          image: "/placeholder.svg",
-          published: "2024-01-12",
-          source: "Dev Central",
-          category: "Web Development"
-        },
-        {
-          title: "Space Tech: Satellites Powering Internet Revolution",
-          description: "Learn how satellite technology is revolutionizing global internet connectivity and bridging the digital divide.",
-          url: "https://example.com/space-news",
-          image: "/placeholder.svg",
-          published: "2024-01-11",
-          source: "Space Today",
-          category: "Space Technology"
-        }
-      ];
-      
-      setArticles(mockArticles);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching tech news:", error);
-      setLoading(false);
-    }
-  };
-
-  const handleArticleClick = (url: string) => {
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
+  const handleFilterChange = async () => {
+    await fetchNews({
+      category: selectedCategory || undefined,
+      source: selectedSource || undefined,
+      limit: 20
     });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `${diffInDays} days ago`;
+  };
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -110,76 +40,154 @@ const TechNews = () => {
             📰 Tech News Feed
           </h1>
           <p className="text-xl text-muted-foreground">
-            Stay updated with the latest technology news and trends
+            Latest technology news with focus on Indian market
           </p>
         </div>
 
-        {/* News Articles */}
-        <div className="space-y-6">
-          {articles.map((article, index) => (
-            <Card key={index} className="dkloud-card cursor-pointer group" onClick={() => handleArticleClick(article.url)}>
-              <div className="md:flex">
-                <div className="md:w-1/3 lg:w-1/4">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-48 md:h-full object-cover rounded-l-xl"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/placeholder.svg";
-                    }}
-                  />
-                </div>
-                <div className="md:w-2/3 lg:w-3/4 p-6">
-                  <CardHeader className="p-0 mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge variant="secondary">{article.category}</Badge>
-                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>{formatDate(article.published)}</span>
+        {/* Filters */}
+        <div className="flex flex-wrap gap-4 mb-8 items-center">
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium">Filters:</span>
+          </div>
+          
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All Categories</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={selectedSource} onValueChange={setSelectedSource}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="All Sources" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All Sources</SelectItem>
+              {sources.map((source) => (
+                <SelectItem key={source} value={source}>
+                  {source}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Button 
+            onClick={handleFilterChange}
+            variant="outline"
+            size="sm"
+            disabled={loading}
+          >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Apply Filters
+          </Button>
+        </div>
+
+        {/* News Grid */}
+        {error && (
+          <div className="text-center py-8">
+            <p className="text-destructive mb-4">Error loading news: {error}</p>
+            <Button onClick={() => fetchNews()} variant="outline">
+              Try Again
+            </Button>
+          </div>
+        )}
+
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Card key={i} className="h-full">
+                <CardHeader>
+                  <Skeleton className="h-4 w-20 mb-2" />
+                  <Skeleton className="h-6 w-full mb-2" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-8 w-full" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {news.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground">No news articles found. Try adjusting your filters.</p>
+              </div>
+            ) : (
+              news.map((item) => (
+                <Card key={item.id} className="dkloud-card h-full group hover:shadow-lg transition-all duration-300">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <Badge variant="secondary" className="shrink-0">
+                        {item.category}
+                      </Badge>
+                      <div className="flex items-center text-xs text-muted-foreground gap-1">
+                        <Clock className="h-3 w-3" />
+                        {formatTimeAgo(item.published_date)}
                       </div>
                     </div>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                      {article.title}
+                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
+                      {item.title}
                     </CardTitle>
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <Globe className="h-4 w-4" />
-                      <span>{article.source}</span>
-                    </div>
+                    <CardDescription className="text-sm line-clamp-3">
+                      {item.description}
+                    </CardDescription>
                   </CardHeader>
                   
-                  <CardContent className="p-0">
-                    <CardDescription className="text-base mb-4">
-                      {article.description}
-                    </CardDescription>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-1 text-primary">
-                        <TrendingUp className="h-4 w-4" />
-                        <span className="text-sm font-medium">Tech News</span>
+                  <CardContent className="pt-0">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span className="font-medium">{item.source}</span>
+                        <span>• India Focus</span>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="group-hover:bg-primary group-hover:text-primary-foreground"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleArticleClick(article.url);
-                        }}
+                      
+                      {item.tags && item.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {item.tags.slice(0, 3).map((tag, tagIndex) => (
+                            <Badge key={tagIndex} variant="outline" className="text-xs px-2 py-0.5">
+                              <Tag className="h-2 w-2 mr-1" />
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                        onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
                       >
-                        Read More
-                        <ExternalLink className="ml-2 h-4 w-4" />
+                        <ExternalLink className="h-3 w-3 mr-2" />
+                        Read Article
                       </Button>
                     </div>
                   </CardContent>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+                </Card>
+              ))
+            )}
+          </div>
+        )}
 
         {/* Load More Button */}
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
+          <Button 
+            variant="outline" 
+            size="lg"
+            onClick={() => fetchNews({ limit: 40 })}
+            disabled={loading}
+          >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Load More Articles
           </Button>
         </div>
@@ -187,7 +195,7 @@ const TechNews = () => {
         {/* Note */}
         <div className="text-center mt-8">
           <p className="text-sm text-muted-foreground">
-            News articles are updated regularly from various tech publications
+            News articles are automatically updated from Indian and global tech sources
           </p>
         </div>
       </div>

@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      rss_feeds: {
+        Row: {
+          category: string
+          created_at: string
+          feed_url: string
+          id: string
+          is_active: boolean | null
+          last_fetched: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          feed_url: string
+          id?: string
+          is_active?: boolean | null
+          last_fetched?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          feed_url?: string
+          id?: string
+          is_active?: boolean | null
+          last_fetched?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      smart_gadgets: {
+        Row: {
+          affiliate_url: string | null
+          availability_india: boolean | null
+          brand: string | null
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price_inr: number | null
+          price_usd: number | null
+          product_url: string | null
+          rating: number | null
+          release_date: string | null
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          affiliate_url?: string | null
+          availability_india?: boolean | null
+          brand?: string | null
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price_inr?: number | null
+          price_usd?: number | null
+          product_url?: string | null
+          rating?: number | null
+          release_date?: string | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          affiliate_url?: string | null
+          availability_india?: boolean | null
+          brand?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price_inr?: number | null
+          price_usd?: number | null
+          product_url?: string | null
+          rating?: number | null
+          release_date?: string | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tech_news: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          published_date: string
+          source: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          published_date: string
+          source: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          published_date?: string
+          source?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

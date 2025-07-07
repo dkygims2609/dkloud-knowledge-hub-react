@@ -6,30 +6,51 @@ interface DecodingAnimationProps {
   delay?: number;
 }
 
-const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*![]{}()<>?/\\|~`+=_-.:;,αβγδεζηθικλμνξοπρστυφχψω⌐¬½¼¡™£¢∞§¶•ªº–≠";
 
 export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingAnimationProps) {
   const [displayText, setDisplayText] = useState(text);
   const [isDecoding, setIsDecoding] = useState(false);
+  const [glitchIntensity, setGlitchIntensity] = useState(0);
 
   useEffect(() => {
     const startDecoding = () => {
       setIsDecoding(true);
+      setGlitchIntensity(1);
       const originalText = text;
       let iterations = 0;
+      const totalIterations = originalText.length + 3;
 
       const interval = setInterval(() => {
+        const progress = iterations / totalIterations;
+        setGlitchIntensity(Math.max(0, 1 - progress));
+
         const newText = originalText
           .split("")
           .map((char, index) => {
             if (char === " ") return " ";
             
-            // Always show correct character if we've decoded up to this point
-            if (index < iterations) {
-              return originalText[index];
+            // Add some chaos at the beginning
+            if (iterations < 2) {
+              return characters[Math.floor(Math.random() * characters.length)];
             }
             
-            // Show random character for positions we haven't decoded yet
+            // Progressive decoding with occasional glitches
+            if (index < iterations - 2) {
+              // Rare random glitch on already decoded characters
+              return Math.random() < 0.05 ? 
+                characters[Math.floor(Math.random() * characters.length)] : 
+                originalText[index];
+            }
+            
+            // Current decoding position gets special treatment
+            if (index === iterations - 2) {
+              return Math.random() < 0.7 ? 
+                originalText[index] : 
+                characters[Math.floor(Math.random() * characters.length)];
+            }
+            
+            // Future characters are random
             return characters[Math.floor(Math.random() * characters.length)];
           })
           .join("");
@@ -38,12 +59,13 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
         iterations += 1;
 
         // Stop when we've decoded all characters
-        if (iterations > originalText.length) {
+        if (iterations > totalIterations) {
           clearInterval(interval);
-          setDisplayText(originalText); // Always ensure original text is displayed
+          setDisplayText(originalText);
           setIsDecoding(false);
+          setGlitchIntensity(0);
         }
-      }, 100); // Consistent timing
+      }, 80); // Slightly faster for more dynamic feel
     };
 
     const timer = setTimeout(() => {
@@ -62,7 +84,17 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
   }, [text, delay]);
 
   return (
-    <span className={`${className} ${isDecoding ? 'animate-pulse' : ''} font-mono tracking-wider`}>
+    <span 
+      className={`${className} font-mono tracking-wider transition-all duration-200`}
+      style={{
+        textShadow: isDecoding ? 
+          `0 0 ${5 + glitchIntensity * 10}px hsl(var(--primary)), 
+           ${glitchIntensity * 2}px 0 0 hsl(var(--accent)), 
+           -${glitchIntensity * 2}px 0 0 hsl(var(--destructive))` : 
+          'none',
+        filter: isDecoding ? `hue-rotate(${glitchIntensity * 180}deg)` : 'none'
+      }}
+    >
       {displayText}
     </span>
   );
