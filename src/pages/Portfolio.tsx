@@ -230,13 +230,6 @@ const Portfolio = () => {
 
         {activeTab === 'poetry' && (
           <div className="space-y-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ✍️ Penned Down
-              </h2>
-              <p className="text-lg text-muted-foreground">Collection of original poetry and shayari from Google Docs</p>
-            </div>
-            
             <Poetry />
           </div>
         )}

@@ -89,10 +89,10 @@ const Index = () => {
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
             {/* Modern dKloud Logo Design - Enhanced Size */}
-            <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
               <span className="text-foreground/90">d</span>
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">K</span>
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">loud</span>
+              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 dark:from-purple-400 dark:via-blue-400 dark:to-indigo-500 bg-clip-text text-transparent">K</span>
+              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 dark:from-purple-400 dark:via-blue-400 dark:to-indigo-500 bg-clip-text text-transparent">loud</span>
             </h1>
             
             {/* Animated Tagline */}
@@ -140,7 +140,7 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.7s"}}>
               <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl">
                 <Link to="/movies-tv">
-                  Explore Content
+                  Dive into dKloud Tech Universe
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
               </Button>
