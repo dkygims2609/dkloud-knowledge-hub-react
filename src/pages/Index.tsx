@@ -88,15 +88,15 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            {/* Modern dKloud Logo Design */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+            {/* Modern dKloud Logo Design - Enhanced Size */}
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
               <span className="text-foreground/90">d</span>
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">K</span>
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">loud</span>
             </h1>
             
             {/* Animated Tagline */}
-            <div className="text-xl md:text-2xl lg:text-3xl font-medium mb-6 slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
                 className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 dark:from-purple-400 dark:via-violet-400 dark:to-blue-400 bg-clip-text text-transparent"
@@ -104,8 +104,15 @@ const Index = () => {
               />
             </div>
             
+            {/* Restored Tagline - Library Of Unique Discoveries */}
+            <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
+              <span className="bg-gradient-to-r from-orange-500 via-red-500 to-red-600 dark:from-orange-400 dark:via-red-400 dark:to-red-500 bg-clip-text text-transparent">
+                Library Of Unique Discoveries
+              </span>
+            </div>
+            
             {/* Minimalistic Mission Statement */}
-            <div className="text-center mb-6 fade-in max-w-3xl mx-auto" style={{animationDelay: "0.3s"}}>
+            <div className="text-center mb-6 fade-in max-w-3xl mx-auto" style={{animationDelay: "0.4s"}}>
               <h2 className="text-lg md:text-xl font-medium mb-3 leading-relaxed">
                 <span className="text-foreground/80">
                   At dKloud, we're crafting a universe where creativity meets the cloud, AI fuels curiosity, and learning becomes a shared adventure.
@@ -119,18 +126,18 @@ const Index = () => {
               </p>
             </div>
 
-            {/* Color Band Section */}
-            <div className="fade-in" style={{animationDelay: "0.6s"}}>
+            {/* Color Band Section - Individual Cards */}
+            <div className="fade-in" style={{animationDelay: "0.5s"}}>
               <ColorBandSection />
             </div>
             
             {/* Feature Buttons */}
-            <div className="fade-in" style={{animationDelay: "0.7s"}}>
+            <div className="fade-in" style={{animationDelay: "0.6s"}}>
               <FeatureButtons />
             </div>
             
             {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.8s"}}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.7s"}}>
               <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl">
                 <Link to="/movies-tv">
                   Explore Content
