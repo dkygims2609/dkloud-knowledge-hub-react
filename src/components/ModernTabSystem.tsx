@@ -108,15 +108,15 @@ export function ModernTabSystem({ activeTab, onTabChange, tabs, className }: Mod
                   className={cn(
                     "group relative flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 flex-1 overflow-hidden",
                     isActive
-                      ? "bg-background/80 backdrop-blur-sm shadow-lg shadow-primary/20 border border-border/50 animate-neon-pulse"
-                      : "hover:bg-background/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/10"
+                      ? "bg-gradient-to-r from-primary to-secondary backdrop-blur-sm shadow-lg border border-primary/50 neon-pulse text-background"
+                      : "hover:bg-background/40 hover:scale-105 hover:shadow-lg hover:border-primary/30 border border-transparent"
                   )}
                 >
-                  <div className={cn(
+                <div className={cn(
                     "relative p-2 rounded-lg transition-all duration-300",
                     isActive 
-                      ? `bg-gradient-to-r ${tab.gradient} text-white shadow-lg animate-neon-pulse` 
-                      : "bg-muted/50 text-muted-foreground group-hover:bg-muted group-hover:scale-110"
+                      ? "bg-background/20 text-background shadow-lg" 
+                      : "bg-muted/50 text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary group-hover:scale-110"
                   )}>
                     <Icon className="h-5 w-5 transition-transform duration-300" />
                     {isActive && (
@@ -128,10 +128,10 @@ export function ModernTabSystem({ activeTab, onTabChange, tabs, className }: Mod
                   </div>
                   
                   <div className="flex flex-col items-start">
-                    <span className={cn(
-                      "font-semibold text-sm transition-colors",
-                      isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"
-                    )}>
+                  <span className={cn(
+                    "font-semibold text-sm transition-colors",
+                    isActive ? "text-background" : "text-muted-foreground group-hover:text-primary"
+                  )}>
                       {tab.label}
                     </span>
                     <span className="text-xs text-muted-foreground opacity-70">
@@ -139,11 +139,8 @@ export function ModernTabSystem({ activeTab, onTabChange, tabs, className }: Mod
                     </span>
                   </div>
                   
-                  {isActive && (
-                    <div className={cn(
-                      "absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r rounded-full animate-neon-pulse",
-                      tab.gradient
-                    )} />
+                {isActive && (
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-accent to-success rounded-full neon-pulse" />
                   )}
                 </button>
               );

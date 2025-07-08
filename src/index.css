@@ -6,110 +6,110 @@
 
 @layer base {
   :root {
-    /* Core Colors - dKloud.in Inspired Indigo-Blue Palette */
-    --background: 0 0% 99%;
-    --foreground: 222 84% 4.9%;
+    /* NeonRain Inspired Dark Neon Theme */
+    --background: 220 27% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 84% 4.9%;
+    --card: 220 27% 9%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 84% 4.9%;
+    --popover: 220 27% 9%;
+    --popover-foreground: 0 0% 95%;
 
-    /* Primary - Deep Indigo (dKloud Brand) */
-    --primary: 233 84% 64%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 233 84% 58%;
+    /* Neon Blue Primary */
+    --primary: 180 100% 50%;
+    --primary-foreground: 220 27% 8%;
+    --primary-hover: 180 100% 45%;
 
-    /* Secondary - Lighter Indigo */
-    --secondary: 243 75% 95%;
-    --secondary-foreground: 233 84% 20%;
+    /* Electric Purple Secondary */
+    --secondary: 280 100% 56%;
+    --secondary-foreground: 0 0% 95%;
 
-    /* Muted - Cool Gray */
-    --muted: 215 20% 95%;
-    --muted-foreground: 215 16% 50%;
+    /* Dark Muted */
+    --muted: 220 27% 12%;
+    --muted-foreground: 0 0% 70%;
 
-    /* Accent - Electric Blue */
-    --accent: 214 95% 68%;
-    --accent-foreground: 0 0% 100%;
+    /* Neon Green Accent */
+    --accent: 120 100% 55%;
+    --accent-foreground: 220 27% 8%;
 
-    /* Success - Emerald */
-    --success: 160 84% 39%;
-    --success-foreground: 0 0% 100%;
+    /* Success - Neon Green */
+    --success: 120 100% 55%;
+    --success-foreground: 220 27% 8%;
 
-    /* Warning - Amber */
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    /* Warning - Neon Orange */
+    --warning: 30 100% 50%;
+    --warning-foreground: 220 27% 8%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 233 84% 64%;
+    --border: 220 27% 15%;
+    --input: 220 27% 12%;
+    --ring: 180 100% 50%;
 
     --radius: 0.75rem;
 
-    /* Custom dKloud Variables - Indigo Theme */
-    --hero-gradient: linear-gradient(135deg, hsl(233 84% 64%) 0%, hsl(214 95% 68%) 50%, hsl(253 75% 70%) 100%);
-    --card-gradient: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(243 75% 98%) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(0 0% 100% / 0.25) 0%, hsl(233 84% 64% / 0.1) 100%);
-    --card-shadow: 0 1px 3px hsl(233 84% 64% / 0.12), 0 1px 2px hsl(0 0% 0% / 0.08);
-    --hover-shadow: 0 4px 15px hsl(233 84% 64% / 0.25), 0 2px 6px hsl(0 0% 0% / 0.1);
-    --glow-shadow: 0 0 30px hsl(233 84% 64% / 0.4);
-    --banner-gradient: linear-gradient(90deg, hsl(233 84% 64%) 0%, hsl(214 95% 68%) 25%, hsl(253 75% 70%) 50%, hsl(214 95% 68%) 75%, hsl(233 84% 64%) 100%);
+    /* Neon Theme Variables */
+    --neon-cyan: 180 100% 50%;
+    --neon-purple: 280 100% 56%;
+    --neon-green: 120 100% 55%;
+    --neon-pink: 320 100% 70%;
+    --neon-orange: 30 100% 50%;
+
+    /* Enhanced Gradients */
+    --hero-gradient: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(280 100% 56%) 50%, hsl(320 100% 70%) 100%);
+    --card-gradient: linear-gradient(145deg, hsl(220 27% 9% / 0.8) 0%, hsl(220 27% 12% / 0.6) 100%);
+    --glass-gradient: linear-gradient(135deg, hsl(180 100% 50% / 0.1) 0%, hsl(280 100% 56% / 0.05) 100%);
+    --neon-glow: 0 0 20px hsl(180 100% 50%), 0 0 40px hsl(180 100% 50%), 0 0 60px hsl(180 100% 50%);
+    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.4), 0 0 10px hsl(180 100% 50% / 0.2);
+    --hover-shadow: 0 8px 40px hsl(180 100% 50% / 0.4), 0 0 20px hsl(280 100% 56% / 0.3);
+    --glow-shadow: 0 0 30px hsl(180 100% 50% / 0.6), 0 0 60px hsl(280 100% 56% / 0.4);
+    --banner-gradient: linear-gradient(90deg, hsl(180 100% 50%) 0%, hsl(280 100% 56%) 25%, hsl(120 100% 55%) 50%, hsl(320 100% 70%) 75%, hsl(180 100% 50%) 100%);
     
     /* Animation Variables */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-glow: all 0.3s ease-in-out;
   }
 
   .dark {
-    /* Dark Mode Colors - Deep Indigo Tech Theme */
-    --background: 233 84% 3.5%;
-    --foreground: 210 40% 98%;
+    /* Enhanced Dark Mode with Neon Accents */
+    --background: 220 27% 6%;
+    --foreground: 0 0% 98%;
 
-    --card: 233 84% 5%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 27% 7%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 233 84% 5%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 27% 7%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 233 84% 68%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 233 84% 72%;
+    --primary: 180 100% 55%;
+    --primary-foreground: 220 27% 6%;
+    --primary-hover: 180 100% 60%;
 
-    --secondary: 233 84% 12%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 280 100% 60%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 233 84% 8%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 27% 10%;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 214 95% 72%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 120 100% 60%;
+    --accent-foreground: 220 27% 6%;
 
-    --success: 160 84% 42%;
-    --success-foreground: 0 0% 100%;
+    --border: 220 27% 18%;
+    --input: 220 27% 10%;
+    --ring: 180 100% 55%;
 
-    --warning: 38 92% 55%;
-    --warning-foreground: 0 0% 100%;
-
-    --destructive: 0 63% 45%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 233 84% 12%;
-    --input: 233 84% 12%;
-    --ring: 233 84% 68%;
-
-    /* Dark Mode Gradients & Shadows */
-    --hero-gradient: linear-gradient(135deg, hsl(233 84% 68%) 0%, hsl(214 95% 72%) 50%, hsl(253 75% 74%) 100%);
-    --card-gradient: linear-gradient(145deg, hsl(233 84% 5%) 0%, hsl(233 84% 8%) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(233 84% 68% / 0.15) 0%, hsl(214 95% 72% / 0.1) 100%);
-    --card-shadow: 0 2px 10px hsl(0 0% 0% / 0.3), 0 1px 4px hsl(233 84% 68% / 0.1);
-    --hover-shadow: 0 8px 30px hsl(233 84% 68% / 0.3), 0 4px 12px hsl(0 0% 0% / 0.25);
-    --glow-shadow: 0 0 40px hsl(233 84% 68% / 0.5);
-    --banner-gradient: linear-gradient(90deg, hsl(233 84% 68%) 0%, hsl(214 95% 72%) 25%, hsl(253 75% 74%) 50%, hsl(214 95% 72%) 75%, hsl(233 84% 68%) 100%);
+    /* Enhanced Dark Gradients & Neon Effects */
+    --hero-gradient: linear-gradient(135deg, hsl(180 100% 55%) 0%, hsl(280 100% 60%) 50%, hsl(320 100% 75%) 100%);
+    --card-gradient: linear-gradient(145deg, hsl(220 27% 7% / 0.9) 0%, hsl(220 27% 10% / 0.7) 100%);
+    --glass-gradient: linear-gradient(135deg, hsl(180 100% 55% / 0.15) 0%, hsl(280 100% 60% / 0.1) 100%);
+    --neon-glow: 0 0 25px hsl(180 100% 55%), 0 0 50px hsl(180 100% 55%), 0 0 75px hsl(180 100% 55%);
+    --card-shadow: 0 6px 25px hsl(0 0% 0% / 0.5), 0 0 15px hsl(180 100% 55% / 0.3);
+    --hover-shadow: 0 10px 50px hsl(180 100% 55% / 0.5), 0 0 30px hsl(280 100% 60% / 0.4);
+    --glow-shadow: 0 0 40px hsl(180 100% 55% / 0.8), 0 0 80px hsl(280 100% 60% / 0.6);
   }
 
   /* Base Styles */
@@ -147,12 +147,13 @@
     background: var(--hero-gradient);
   }
 
-  /* Enhanced Card Styles - dKloud Indigo Theme with Neon Effects */
+  /* Enhanced Neon Card Styles */
   .dkloud-card {
     background: var(--card-gradient);
     @apply border border-border/50 rounded-2xl p-6 transition-all duration-500 relative overflow-hidden;
     box-shadow: var(--card-shadow);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border));
   }
 
   .dkloud-card::before {
@@ -162,8 +163,8 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
-    transition: left 0.8s;
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.2), transparent);
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dkloud-card:hover::before {
@@ -171,15 +172,46 @@
   }
 
   .dkloud-card:hover {
-    @apply border-primary/60;
+    border: 1px solid hsl(var(--neon-cyan) / 0.6);
     background: var(--glass-gradient);
-    box-shadow: var(--hover-shadow), 0 0 20px hsl(var(--primary) / 0.3);
+    box-shadow: var(--hover-shadow);
     transform: translateY(-4px) scale(1.02);
   }
 
   .dkloud-card-interactive:hover {
-    box-shadow: var(--glow-shadow), 0 0 30px hsl(var(--accent) / 0.4);
+    box-shadow: var(--glow-shadow);
+    border: 1px solid hsl(var(--neon-purple) / 0.8);
     transform: translateY(-6px) scale(1.03);
+  }
+
+  /* Neon Button Styles */
+  .btn-neon {
+    background: linear-gradient(45deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)));
+    @apply text-background font-semibold px-6 py-3 rounded-xl border-0;
+    box-shadow: 0 0 20px hsl(var(--neon-cyan) / 0.5);
+    transition: var(--transition-glow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-neon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-green) / 0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-neon:hover::before {
+    left: 100%;
+  }
+
+  .btn-neon:hover {
+    box-shadow: var(--neon-glow);
+    transform: translateY(-2px) scale(1.05);
   }
 
   /* Enhanced Button Variants - Indigo Theme */
@@ -206,11 +238,12 @@
     box-shadow: var(--hover-shadow);
   }
 
-  /* Modern Glass Tab Styles - Enhanced with Neon Highlights */
+  /* Enhanced Neon Glass Tab Styles */
   .glass-tab {
     background: var(--glass-gradient);
     @apply backdrop-blur-md border border-border/30 rounded-xl relative overflow-hidden;
-    @apply transition-all duration-300 hover:border-primary/40;
+    transition: var(--transition-glow);
+    border: 1px solid hsl(var(--border));
   }
 
   .glass-tab::after {
@@ -219,15 +252,18 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: var(--hero-gradient);
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-green)));
     transform: scaleX(0);
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 0 8px 8px;
   }
 
   .glass-tab:hover {
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.15) 0%, hsl(var(--accent) / 0.1) 100%);
-    box-shadow: 0 8px 25px hsl(var(--primary) / 0.2);
+    background: linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15) 0%, hsl(var(--neon-purple) / 0.1) 100%);
+    box-shadow: 0 8px 25px hsl(var(--neon-cyan) / 0.3);
+    border: 1px solid hsl(var(--neon-cyan) / 0.5);
+    transform: translateY(-2px);
   }
 
   .glass-tab:hover::after {
@@ -235,14 +271,44 @@
   }
 
   .glass-tab-active {
-    background: var(--hero-gradient);
-    @apply border-primary/60 text-primary-foreground shadow-lg;
-    box-shadow: var(--glow-shadow), 0 0 25px hsl(var(--primary) / 0.4);
+    background: linear-gradient(135deg, hsl(var(--neon-cyan)) 0%, hsl(var(--neon-purple)) 100%);
+    @apply text-background shadow-lg;
+    box-shadow: var(--neon-glow);
+    border: 1px solid hsl(var(--neon-cyan));
   }
 
   .glass-tab-active::after {
     transform: scaleX(1);
-    background: hsl(var(--accent));
+    background: hsl(var(--neon-green));
+    height: 4px;
+  }
+
+  /* Neon Pulse Animation */
+  .neon-pulse {
+    animation: neonPulse 2s ease-in-out infinite alternate;
+  }
+
+  /* Scroll to Top Button */
+  .scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(45deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)));
+    border: 1px solid hsl(var(--neon-cyan));
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px hsl(var(--neon-cyan) / 0.5);
+    transition: var(--transition-glow);
+    z-index: 1000;
+  }
+
+  .scroll-to-top:hover {
+    box-shadow: var(--neon-glow);
+    transform: translateY(-4px) scale(1.1);
   }
 
   /* Running Banner Styles */
@@ -474,10 +540,30 @@
 
 @keyframes neonPulse {
   0% {
-    box-shadow: 0 0 5px hsl(var(--primary) / 0.4), 0 0 10px hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 10px hsl(var(--neon-cyan) / 0.5), 0 0 20px hsl(var(--neon-cyan) / 0.3);
   }
   100% {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.6), 0 0 30px hsl(var(--accent) / 0.4), 0 0 40px hsl(var(--primary) / 0.2);
+    box-shadow: 0 0 30px hsl(var(--neon-cyan) / 0.8), 0 0 60px hsl(var(--neon-purple) / 0.6), 0 0 90px hsl(var(--neon-cyan) / 0.4);
+  }
+}
+
+@keyframes neonGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px hsl(var(--neon-cyan)), 0 0 20px hsl(var(--neon-cyan)), 0 0 30px hsl(var(--neon-cyan));
+  }
+  50% {
+    text-shadow: 0 0 20px hsl(var(--neon-purple)), 0 0 30px hsl(var(--neon-purple)), 0 0 40px hsl(var(--neon-purple));
+  }
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 1;
   }
 }
 

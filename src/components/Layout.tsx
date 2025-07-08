@@ -19,6 +19,7 @@ export function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <Footer />
+      <ScrollToTop />
       <WhatsAppButton />
       <ScrollToTop />
       <ServicesSidebar />

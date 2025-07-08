@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface TechNewsItem {
   id: string;
@@ -28,100 +29,9 @@ export interface NewsFilters {
   offset?: number;
 }
 
-const TECH_NEWS_DATA: TechNewsItem[] = [
-  {
-    id: '1',
-    title: 'OnePlus 13 Launched in India: Snapdragon 8 Elite, 120Hz Display at ₹69,999',
-    description: 'OnePlus 13 officially arrives in India with flagship Snapdragon 8 Elite processor, stunning 120Hz LTPO display, and advanced camera system. Starting price is ₹69,999 for 12GB+256GB variant.',
-    url: 'https://www.oneplus.in/13',
-    category: 'Smartphones',
-    published_date: new Date().toISOString(),
-    source: 'OnePlus India',
-    image_url: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop',
-    tags: ['OnePlus', 'Snapdragon 8 Elite', 'India Launch', '5G']
-  },
-  {
-    id: '2',
-    title: 'Samsung Galaxy S25 Ultra Teased: 200MP Camera, S Pen, AI Features',
-    description: 'Samsung teases Galaxy S25 Ultra with revolutionary 200MP main camera, enhanced S Pen functionality, and advanced Galaxy AI features. Expected launch in February 2025.',
-    url: 'https://www.samsung.com/in/',
-    category: 'Smartphones',
-    published_date: new Date(Date.now() - 3600000).toISOString(),
-    source: 'Samsung',
-    image_url: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&h=400&fit=crop',
-    tags: ['Samsung', 'Galaxy S25', 'AI Camera', 'S Pen']
-  },
-  {
-    id: '3',
-    title: 'iPhone 16 Pro India Sales Surge: A18 Pro Chip Performance Impresses',
-    description: 'iPhone 16 Pro sees massive sales growth in India thanks to A18 Pro chip performance and enhanced camera system. Apple reports 40% increase in Indian market share.',
-    url: 'https://www.apple.com/in/iphone-16-pro/',
-    category: 'Apple',
-    published_date: new Date(Date.now() - 7200000).toISOString(),
-    source: 'Apple India',
-    image_url: 'https://images.unsplash.com/photo-1592286130895-6e4b19efb85c?w=600&h=400&fit=crop',
-    tags: ['iPhone 16', 'A18 Pro', 'India Sales', 'Camera']
-  },
-  {
-    id: '4',
-    title: 'Nothing Phone 3 Confirmed: Transparent Design, Snapdragon 8 Gen 3',
-    description: 'Nothing officially confirms Phone 3 with enhanced transparent design, Snapdragon 8 Gen 3 processor, and improved Glyph Interface. Launch expected in Q2 2025.',
-    url: 'https://nothing.tech/',
-    category: 'Smartphones',
-    published_date: new Date(Date.now() - 10800000).toISOString(),
-    source: 'Nothing Tech',
-    image_url: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600&h=400&fit=crop',
-    tags: ['Nothing Phone', 'Transparent Design', 'Glyph', 'Snapdragon']
-  },
-  {
-    id: '5',
-    title: 'Google Pixel 9 Pro India Launch: AI Photography at ₹1,09,999',
-    description: 'Google Pixel 9 Pro launches in India with revolutionary AI photography features, Magic Eraser Pro, and Tensor G4 chip. Available for ₹1,09,999.',
-    url: 'https://store.google.com/in/product/pixel_9_pro',
-    category: 'Google',
-    published_date: new Date(Date.now() - 14400000).toISOString(),
-    source: 'Google India',
-    image_url: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=400&fit=crop',
-    tags: ['Google Pixel', 'AI Photography', 'Tensor G4', 'India']
-  },
-  {
-    id: '6',
-    title: 'MacBook Air M4 Rumors: 15-inch Model, Enhanced Performance Expected',
-    description: 'Apple reportedly working on MacBook Air M4 with improved M4 chip, enhanced battery life, and new 15-inch model. Launch expected in early 2025.',
-    url: 'https://www.apple.com/in/macbook-air/',
-    category: 'Laptops',
-    published_date: new Date(Date.now() - 18000000).toISOString(),
-    source: 'Apple',
-    image_url: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&h=400&fit=crop',
-    tags: ['MacBook Air', 'M4 Chip', 'Apple Silicon', 'Laptop']
-  },
-  {
-    id: '7',
-    title: 'ChatGPT-5 India Launch: Advanced AI with Real-time Capabilities',
-    description: 'OpenAI announces ChatGPT-5 launch in India with real-time processing, multimodal capabilities, and enhanced reasoning. Available to Plus subscribers.',
-    url: 'https://openai.com/chatgpt',
-    category: 'AI',
-    published_date: new Date(Date.now() - 21600000).toISOString(),
-    source: 'OpenAI',
-    image_url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop',
-    tags: ['ChatGPT', 'AI', 'OpenAI', 'India Launch']
-  },
-  {
-    id: '8',
-    title: 'Tesla Model Y India Delivery Begins: ₹65 Lakh Starting Price',
-    description: 'Tesla starts Model Y deliveries in India with competitive pricing at ₹65 lakh. Features 500km range, Autopilot, and Supercharger network access.',
-    url: 'https://www.tesla.com/modely',
-    category: 'Electric Vehicles',
-    published_date: new Date(Date.now() - 25200000).toISOString(),
-    source: 'Tesla India',
-    image_url: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&h=400&fit=crop',
-    tags: ['Tesla', 'Model Y', 'Electric Vehicle', 'India']
-  }
-];
-
 export function useRealTechNews(): UseRealTechNewsResult {
-  const [news, setNews] = useState<TechNewsItem[]>(TECH_NEWS_DATA);
-  const [loading, setLoading] = useState(false);
+  const [news, setNews] = useState<TechNewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [sources, setSources] = useState<string[]>([]);
@@ -131,39 +41,169 @@ export function useRealTechNews(): UseRealTechNewsResult {
       setLoading(true);
       setError(null);
 
-      let filteredNews = [...TECH_NEWS_DATA];
+      // Check if we're getting data from Supabase
+      let query = supabase
+        .from('tech_news')
+        .select('*')
+        .order('published_date', { ascending: false });
 
       if (filters.category) {
-        filteredNews = filteredNews.filter(item => 
-          item.category.toLowerCase() === filters.category?.toLowerCase()
-        );
+        query = query.eq('category', filters.category);
       }
 
       if (filters.source) {
-        filteredNews = filteredNews.filter(item => 
-          item.source.toLowerCase().includes(filters.source?.toLowerCase() || '')
-        );
+        query = query.ilike('source', `%${filters.source}%`);
       }
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      query = query.limit(filters.limit || 20);
 
-      setNews(filteredNews.slice(0, filters.limit || 20));
+      const { data: supabaseNews, error: supabaseError } = await query;
+
+      if (supabaseError) {
+        console.error('Supabase error:', supabaseError);
+        throw new Error('Failed to fetch from database');
+      }
+
+      if (supabaseNews && supabaseNews.length > 0) {
+        setNews(supabaseNews);
+      } else {
+        // Fallback to mock data if no real data available
+        const mockNews = generateMockNews(filters);
+        setNews(mockNews);
+      }
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch news');
+      console.error('Error fetching news:', err);
+      
+      // Always provide fallback data
+      const mockNews = generateMockNews(filters);
+      setNews(mockNews);
     } finally {
       setLoading(false);
     }
   };
 
+  const generateMockNews = (filters: NewsFilters = {}): TechNewsItem[] => {
+    const mockData: TechNewsItem[] = [
+      {
+        id: '1',
+        title: 'OpenAI GPT-4o Advanced Reasoning Released: Enhanced AI Capabilities',
+        description: 'OpenAI releases GPT-4o with advanced reasoning capabilities, better multimodal understanding, and improved performance in coding and mathematical tasks.',
+        url: 'https://openai.com/gpt-4o',
+        category: 'AI',
+        published_date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        source: 'OpenAI',
+        image_url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop',
+        tags: ['OpenAI', 'GPT-4o', 'AI', 'Machine Learning']
+      },
+      {
+        id: '2',
+        title: 'Google Gemini Pro 2.0 Launched: Competing with ChatGPT in India',
+        description: 'Google launches Gemini Pro 2.0 with enhanced multilingual support for Indian languages, better reasoning, and competitive pricing for Indian market.',
+        url: 'https://gemini.google.com',
+        category: 'AI',
+        published_date: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+        source: 'Google',
+        image_url: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop',
+        tags: ['Google', 'Gemini', 'AI', 'India']
+      },
+      {
+        id: '3',
+        title: 'iPhone 16 Pro Max India Sales Surge: A18 Pro Performance Review',
+        description: 'iPhone 16 Pro Max sees record sales in India with A18 Pro chip delivering 40% faster performance and enhanced camera capabilities.',
+        url: 'https://www.apple.com/in/iphone-16-pro/',
+        category: 'Smartphones',
+        published_date: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+        source: 'Apple India',
+        image_url: 'https://images.unsplash.com/photo-1592286130895-6e4b19efb85c?w=600&h=400&fit=crop',
+        tags: ['iPhone 16', 'A18 Pro', 'Apple', 'India']
+      },
+      {
+        id: '4',
+        title: 'Samsung Galaxy S25 Ultra Leak: 200MP Camera, Enhanced S Pen',
+        description: 'Latest leaks reveal Samsung Galaxy S25 Ultra will feature revolutionary 200MP main camera, improved S Pen with AI features, and Snapdragon 8 Gen 4.',
+        url: 'https://www.samsung.com/in/',
+        category: 'Smartphones',
+        published_date: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+        source: 'Samsung',
+        image_url: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&h=400&fit=crop',
+        tags: ['Samsung', 'Galaxy S25', 'Camera', 'S Pen']
+      },
+      {
+        id: '5',
+        title: 'Tesla Model Y India Production Begins: ₹65 Lakh Starting Price',
+        description: 'Tesla starts local production of Model Y in India at Gigafactory, reducing price to ₹65 lakh with 500km range and Autopilot features.',
+        url: 'https://www.tesla.com/modely',
+        category: 'Electric Vehicles',
+        published_date: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(),
+        source: 'Tesla India',
+        image_url: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&h=400&fit=crop',
+        tags: ['Tesla', 'Model Y', 'Electric Vehicle', 'India']
+      },
+      {
+        id: '6',
+        title: 'MacBook Air M4 Official: 15-inch Model with Enhanced Neural Engine',
+        description: 'Apple officially announces MacBook Air M4 with 15-inch option, enhanced Neural Engine for AI workloads, and improved battery life up to 22 hours.',
+        url: 'https://www.apple.com/in/macbook-air/',
+        category: 'Laptops',
+        published_date: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+        source: 'Apple',
+        image_url: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&h=400&fit=crop',
+        tags: ['MacBook Air', 'M4 Chip', 'Apple Silicon', 'Neural Engine']
+      },
+      {
+        id: '7',
+        title: 'Microsoft Copilot+ PCs Launch in India: AI-Powered Windows Experience',
+        description: 'Microsoft launches Copilot+ PCs in India with local AI processing, enhanced security, and seamless integration with Microsoft 365 services.',
+        url: 'https://www.microsoft.com/copilot',
+        category: 'Laptops',
+        published_date: new Date(Date.now() - 14 * 60 * 60 * 1000).toISOString(),
+        source: 'Microsoft',
+        image_url: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=600&h=400&fit=crop',
+        tags: ['Microsoft', 'Copilot', 'AI PC', 'Windows']
+      },
+      {
+        id: '8',
+        title: 'Nothing Phone 3 Confirmed: Enhanced Glyph Interface, Snapdragon 8 Gen 4',
+        description: 'Nothing officially confirms Phone 3 with redesigned Glyph Interface, Snapdragon 8 Gen 4 processor, and transparent design evolution.',
+        url: 'https://nothing.tech/',
+        category: 'Smartphones',
+        published_date: new Date(Date.now() - 16 * 60 * 60 * 1000).toISOString(),
+        source: 'Nothing Tech',
+        image_url: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600&h=400&fit=crop',
+        tags: ['Nothing Phone', 'Glyph Interface', 'Transparent Design']
+      }
+    ];
+
+    let filteredNews = [...mockData];
+
+    if (filters.category) {
+      filteredNews = filteredNews.filter(item => 
+        item.category.toLowerCase() === filters.category?.toLowerCase()
+      );
+    }
+
+    if (filters.source) {
+      filteredNews = filteredNews.filter(item => 
+        item.source.toLowerCase().includes(filters.source?.toLowerCase() || '')
+      );
+    }
+
+    return filteredNews.slice(0, filters.limit || 20);
+  };
+
   useEffect(() => {
-    // Extract unique categories and sources
-    const uniqueCategories = [...new Set(TECH_NEWS_DATA.map(item => item.category))];
-    const uniqueSources = [...new Set(TECH_NEWS_DATA.map(item => item.source))];
+    // Extract unique categories and sources from mock data
+    const mockData = generateMockNews();
+    const uniqueCategories = [...new Set(mockData.map(item => item.category))];
+    const uniqueSources = [...new Set(mockData.map(item => item.source))];
     
     setCategories(uniqueCategories);
     setSources(uniqueSources);
-    setNews(TECH_NEWS_DATA);
+    
+    // Initial fetch
+    fetchNews();
   }, []);
 
   return {
