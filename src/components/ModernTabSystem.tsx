@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Cpu, Zap, Rss, User, Music, PenTool, Briefcase, Sparkles, Youtube, Monitor, Clapperboard, Newspaper, Lightbulb } from "lucide-react";
+import { LucideIcon, Brain, Cpu, Zap, Rss, User, Music, PenTool, Briefcase, Sparkles, Youtube, Monitor, Clapperboard, Newspaper, Lightbulb, Play, Bot, Server, Laptop2, FileText, User2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TabData {
@@ -23,7 +23,7 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
       {
         id: 'about',
         label: 'About Founder',
-        icon: User,
+        icon: User2,
         gradient: 'from-indigo-500 to-blue-600',
         description: 'Personal story and mission'
       },
@@ -36,8 +36,8 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
       },
       {
         id: 'poetry',
-        label: 'Penned Down',
-        icon: Sparkles,
+        label: 'Poetry & Writings',
+        icon: PenTool,
         gradient: 'from-blue-500 to-indigo-500',
         description: 'Poetry and creative writings'
       }
@@ -48,7 +48,7 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
     {
       id: 'movies',
       label: 'Movies & TV',
-      icon: Monitor,
+      icon: Play,
       gradient: 'from-violet-500 to-purple-600',
       description: 'Entertainment content'
     },
@@ -62,21 +62,21 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
     {
       id: 'ai-tools',
       label: 'AI Tools',
-      icon: Brain,
+      icon: Bot,
       gradient: 'from-cyan-500 to-blue-600',
       description: 'AI-powered solutions'
     },
     {
       id: 'tech-corner',
       label: 'Tech Corner',
-      icon: Cpu,
+      icon: FileText,
       gradient: 'from-emerald-500 to-teal-600',
       description: 'Tech tutorials and guides'
     },
     {
       id: 'smarttech',
       label: 'SmartTech',
-      icon: Lightbulb,
+      icon: Laptop2,
       gradient: 'from-amber-500 to-orange-600',
       description: 'Latest gadgets and reviews'
     },
@@ -90,7 +90,7 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
     {
       id: 'portfolio',
       label: 'Portfolio',
-      icon: Briefcase,
+      icon: User2,
       gradient: 'from-pink-500 to-purple-600',
       description: 'Creative showcase'
     }

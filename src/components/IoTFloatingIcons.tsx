@@ -14,25 +14,35 @@ import {
   Gamepad2,
   Headphones,
   Tablet,
-  Laptop
+  Laptop,
+  Brain,
+  Server,
+  Cpu,
+  Cloud,
+  Shield
 } from "lucide-react";
 
 const iotIcons = [
-  { Icon: Wifi, color: "text-blue-400" },
-  { Icon: Smartphone, color: "text-purple-400" },
-  { Icon: Watch, color: "text-indigo-400" },
-  { Icon: Car, color: "text-cyan-400" },
-  { Icon: Home, color: "text-violet-400" },
-  { Icon: Lightbulb, color: "text-blue-300" },
-  { Icon: Thermometer, color: "text-purple-300" },
-  { Icon: Camera, color: "text-indigo-300" },
-  { Icon: Speaker, color: "text-cyan-300" },
-  { Icon: Router, color: "text-violet-300" },
-  { Icon: Tv, color: "text-blue-500" },
-  { Icon: Gamepad2, color: "text-purple-500" },
-  { Icon: Headphones, color: "text-indigo-500" },
-  { Icon: Tablet, color: "text-cyan-500" },
-  { Icon: Laptop, color: "text-violet-500" }
+  { Icon: Wifi, color: "text-primary" },
+  { Icon: Smartphone, color: "text-secondary" },
+  { Icon: Watch, color: "text-accent" },
+  { Icon: Car, color: "text-primary" },
+  { Icon: Home, color: "text-secondary" },
+  { Icon: Lightbulb, color: "text-accent" },
+  { Icon: Thermometer, color: "text-primary" },
+  { Icon: Camera, color: "text-secondary" },
+  { Icon: Speaker, color: "text-accent" },
+  { Icon: Router, color: "text-primary" },
+  { Icon: Tv, color: "text-secondary" },
+  { Icon: Gamepad2, color: "text-accent" },
+  { Icon: Headphones, color: "text-primary" },
+  { Icon: Tablet, color: "text-secondary" },
+  { Icon: Laptop, color: "text-accent" },
+  { Icon: Brain, color: "text-primary" },
+  { Icon: Server, color: "text-secondary" },
+  { Icon: Cpu, color: "text-accent" },
+  { Icon: Cloud, color: "text-primary" },
+  { Icon: Shield, color: "text-secondary" }
 ];
 
 interface FloatingIcon {

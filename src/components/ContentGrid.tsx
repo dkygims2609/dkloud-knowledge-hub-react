@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, ExternalLink, Play, Zap, FileText, TrendingUp } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Play, Zap, FileText, TrendingUp, Bot, Laptop2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ContentItem {
   id?: string;
@@ -74,10 +75,24 @@ export function ContentGrid({ items, type }: ContentGridProps) {
   const renderIcon = () => {
     switch (type) {
       case "youtube": return <Play className="h-4 w-4 text-red-500" />;
-      case "aitools": return <Zap className="h-4 w-4 text-primary" />;
-      case "techcorner": return <FileText className="h-4 w-4 text-primary" />;
-      case "technews": return <TrendingUp className="h-4 w-4 text-primary" />;
+      case "aitools": return <Bot className="h-4 w-4 text-cyan-500" />;
+      case "techcorner": return <FileText className="h-4 w-4 text-emerald-500" />;
+      case "technews": return <TrendingUp className="h-4 w-4 text-blue-500" />;
+      case "smarttech": return <Laptop2 className="h-4 w-4 text-amber-500" />;
+      case "movies": return <Play className="h-4 w-4 text-violet-500" />;
       default: return <ExternalLink className="h-4 w-4 text-primary" />;
+    }
+  };
+
+  const getCardCategory = () => {
+    switch (type) {
+      case "movies": return "movies";
+      case "aitools": return "aitools";
+      case "techcorner": return "tech";
+      case "smarttech": return "tech";
+      case "technews": return "tech";
+      case "youtube": return "youtube";
+      default: return "default";
     }
   };
 
@@ -155,7 +170,13 @@ export function ContentGrid({ items, type }: ContentGridProps) {
           {currentItems.map((item, index) => (
             <Card 
               key={index} 
-              className="dkloud-card cursor-pointer group hover:scale-105 transition-all duration-300 w-72 flex-shrink-0" 
+              className={cn(
+                "dkloud-card dkloud-card-interactive cursor-pointer group transition-all duration-500 w-72 flex-shrink-0",
+                getCardCategory() === "movies" && "card-movies",
+                getCardCategory() === "aitools" && "card-aitools", 
+                getCardCategory() === "tech" && "card-tech",
+                getCardCategory() === "youtube" && "card-youtube"
+              )}
               onClick={() => handleItemClick(getItemLink(item))}
             >
             <CardHeader className="pb-2">

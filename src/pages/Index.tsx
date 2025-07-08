@@ -103,9 +103,9 @@ const Index = () => {
               />
             </div>
             
-            {/* Enhanced Subtitle */}
-            <p className="text-xl md:text-2xl font-bold mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              <span className="bg-gradient-to-r from-orange-500 to-red-500 dark:from-orange-400 dark:to-red-400 bg-clip-text text-transparent">
+            {/* Enhanced Subtitle with NeonRain-style gradient */}
+            <p className="text-xl md:text-2xl font-bold mb-8 bounce-in neon-gradient-text" style={{animationDelay: "0.3s"}}>
+              <span className="bg-gradient-to-r from-purple-400 via-violet-500 to-blue-500 dark:from-purple-300 dark:via-violet-400 dark:to-blue-400 bg-clip-text text-transparent animate-shimmer">
                 Library Of Unique Discoveries
               </span>
             </p>
@@ -147,13 +147,13 @@ const Index = () => {
             <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
                 {[
-                  { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-purple-500 to-pink-500" },
-                  { name: "YouTube Picks", href: "/youtube-channels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
-                  { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-blue-500 to-cyan-500" },
-                  { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-green-500 to-emerald-500" },
-                  { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart Gadgets", color: "from-yellow-500 to-amber-500" },
-                  { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest Updates", color: "from-indigo-500 to-purple-500" },
-                  { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My Work", color: "from-teal-500 to-green-500" },
+                  { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-violet-500 to-purple-600" },
+                  { name: "YouTube Picks", href: "/youtube-channels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-rose-600" },
+                  { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
+                  { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
+                  { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart Gadgets", color: "from-amber-500 to-orange-600" },
+                  { name: "Tech News", href: "/technews", emoji: "📰", desc: "Latest Updates", color: "from-blue-500 to-indigo-600" },
+                  { name: "Portfolio", href: "/portfolio", emoji: "💼", desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
                     key={tab.name} 
