@@ -9,6 +9,8 @@ import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
 import { FloatingIcons } from "@/components/FloatingIcons";
 import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
+import { ColorBandSection } from "@/components/ColorBandSection";
+import { FeatureButtons } from "@/components/FeatureButtons";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
@@ -115,16 +117,33 @@ const Index = () => {
               <span className="font-medium text-primary">Powered by:</span> dKloud Tech
             </p>
             
-            {/* Enhanced Mission Statement */}
-            <div className="bg-card/80 backdrop-blur-md rounded-2xl p-8 mb-10 max-w-5xl mx-auto border border-border/50 shadow-xl fade-in" style={{animationDelay: "0.5s"}}>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We're on a mission to blend creativity, cloud technology, AI, and community-driven learning into one cohesive platform.
-                Whether you're a tech explorer, a creative mind, or a curious learner, you'll find something meaningful here.
+            {/* Updated Mission Statement */}
+            <div className="text-center mb-8 fade-in" style={{animationDelay: "0.5s"}}>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-tight">
+                <span className="bg-gradient-to-r from-purple-400 via-violet-500 to-blue-500 dark:from-purple-300 dark:via-violet-400 dark:to-blue-400 bg-clip-text text-transparent">
+                  At dKloud, we're crafting a universe where creativity meets the cloud, AI fuels curiosity, and learning becomes a shared adventure.
+                </span>
+              </h2>
+              
+              <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
+                <span className="bg-gradient-to-r from-blue-400 via-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">
+                  Whether you're a tech explorer, a digital creator, or a seeker of knowledge — this is your space to discover, build, and belong.
+                </span>
               </p>
+            </div>
+
+            {/* Color Band Section */}
+            <div className="fade-in" style={{animationDelay: "0.6s"}}>
+              <ColorBandSection />
+            </div>
+            
+            {/* Feature Buttons */}
+            <div className="fade-in" style={{animationDelay: "0.7s"}}>
+              <FeatureButtons />
             </div>
             
             {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.6s"}}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.8s"}}>
               <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl">
                 <Link to="/movies-tv">
                   Explore Content
