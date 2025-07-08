@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNewsData } from "@/hooks/useNewsData";
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
+import { RefreshButton } from "@/components/ui/refresh-button";
 
 const TechNews = () => {
   const { news, loading, error, categories, sources, fetchNews } = useNewsData();
@@ -45,11 +47,15 @@ const TechNews = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-4 mb-8 items-center">
-          <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">Filters:</span>
+        <div className="bg-card rounded-xl p-6 mb-8">
+          <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Filters:</span>
+            </div>
+            <RefreshButton onRefresh={() => fetchNews()} disabled={loading} />
           </div>
+          <div className="flex flex-wrap gap-4 items-center">
           
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger className="w-48">
@@ -88,41 +94,38 @@ const TechNews = () => {
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Apply Filters
           </Button>
+          </div>
         </div>
 
         {/* News Grid */}
         {error && (
-          <div className="text-center py-8">
-            <p className="text-destructive mb-4">Error loading news: {error}</p>
-            <Button onClick={() => fetchNews()} variant="outline">
-              Try Again
-            </Button>
-          </div>
+          <ErrorState 
+            error={error}
+            onRetry={() => fetchNews()}
+            title="Failed to load news"
+            description="We couldn't fetch the latest tech news. Please try again."
+          />
         )}
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="h-full">
-                <CardHeader>
-                  <Skeleton className="h-4 w-20 mb-2" />
-                  <Skeleton className="h-6 w-full mb-2" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-3/4" />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-8 w-full" />
-                </CardContent>
-              </Card>
+              <SkeletonLoader key={i} variant="card" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
             {news.length === 0 ? (
-              <div className="col-span-full text-center py-12">
-                <p className="text-muted-foreground">No news articles found. Try adjusting your filters.</p>
-              </div>
+              <EmptyState 
+                title="No news articles found"
+                description="Try adjusting your filters or check back later for fresh content."
+                action={
+                  <Button onClick={() => fetchNews()} variant="outline">
+                    Reset Filters
+                  </Button>
+                }
+                className="col-span-full"
+              />
             ) : (
               news.map((item) => (
                 <Card key={item.id} className="dkloud-card h-full group hover:shadow-lg transition-all duration-300">

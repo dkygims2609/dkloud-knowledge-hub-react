@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface GadgetItem {
@@ -25,6 +25,8 @@ export interface UseGadgetDataResult {
   categories: string[];
   brands: string[];
   fetchGadgets: (filters?: GadgetFilters) => Promise<void>;
+  refresh: () => Promise<void>;
+  lastUpdated: Date | null;
 }
 
 export interface GadgetFilters {
@@ -43,6 +45,7 @@ export function useGadgetData(): UseGadgetDataResult {
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   const fetchGadgets = async (filters: GadgetFilters = {}) => {
     try {
@@ -80,6 +83,7 @@ export function useGadgetData(): UseGadgetDataResult {
       if (fetchError) throw fetchError;
 
       setGadgets(data || []);
+      setLastUpdated(new Date());
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch gadgets');
       console.error('Error fetching gadgets:', err);
@@ -112,6 +116,11 @@ export function useGadgetData(): UseGadgetDataResult {
     }
   };
 
+  const refresh = useCallback(async () => {
+    await fetchGadgets();
+    await fetchMetadata();
+  }, []);
+
   useEffect(() => {
     fetchGadgets();
     fetchMetadata();
@@ -123,6 +132,8 @@ export function useGadgetData(): UseGadgetDataResult {
     error,
     categories,
     brands,
-    fetchGadgets
+    fetchGadgets,
+    refresh,
+    lastUpdated
   };
 }

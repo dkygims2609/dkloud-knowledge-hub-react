@@ -229,6 +229,29 @@
     animation: floatUp 8s linear infinite;
   }
 
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* Responsive Utilities */
+  @media (max-width: 599px) {
+    .mobile-single-column {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  @media (min-width: 600px) and (max-width: 1023px) {
+    .tablet-two-columns {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .desktop-three-columns {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+  }
+
   /* Navbar Backdrop */
   .navbar-backdrop {
     @apply bg-background/80 backdrop-blur-md border-b border-border/50;
@@ -323,6 +346,17 @@
   100% {
     transform: translateY(-20vh) scale(1.2) rotate(360deg);
     opacity: 0;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 

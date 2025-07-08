@@ -251,7 +251,7 @@ const TechCorner = () => {
         </div>
 
         {/* Enhanced Documents Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
           {filteredDocuments.map((doc, index) => {
             const categoryColors = getCategoryColor(doc.Category);
             const tags = doc.Tags ? doc.Tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [];

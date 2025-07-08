@@ -5,13 +5,17 @@ import { ExternalLink, Star, ShoppingCart, Heart, Filter, Loader2, MapPin } from
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGadgetData } from "@/hooks/useGadgetData";
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
+import { RefreshButton } from "@/components/ui/refresh-button";
+import { useToast } from "@/hooks/useToast";
 
 const SmartTech = () => {
-  const { gadgets, loading, error, categories, brands, fetchGadgets } = useGadgetData();
+  const { gadgets, loading, error, categories, brands, fetchGadgets, refresh, lastUpdated } = useGadgetData();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [indianOnly, setIndianOnly] = useState<boolean>(false);
+  const { success: showSuccess } = useToast();
 
   const handleFilterChange = async () => {
     await fetchGadgets({
@@ -20,6 +24,12 @@ const SmartTech = () => {
       availableInIndia: indianOnly || undefined,
       limit: 20
     });
+    showSuccess("Filters applied", "SmartTech data updated successfully");
+  };
+
+  const handleRefresh = async () => {
+    await refresh();
+    showSuccess("Data refreshed", "Latest gadgets loaded successfully");
   };
 
   const formatPrice = (priceUSD?: number, priceINR?: number) => {
@@ -43,11 +53,21 @@ const SmartTech = () => {
 
         {/* Filters */}
         <div className="bg-card rounded-xl p-6 mb-8">
-          <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Filters:</span>
             </div>
+            <div className="flex items-center gap-4">
+              {lastUpdated && (
+                <span className="text-xs text-muted-foreground">
+                  Last updated: {lastUpdated.toLocaleTimeString()}
+                </span>
+              )}
+              <RefreshButton onRefresh={handleRefresh} disabled={loading} />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-4 items-center">
             
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-48">
@@ -105,37 +125,33 @@ const SmartTech = () => {
 
         {/* Gadgets Grid */}
         {error && (
-          <div className="text-center py-8">
-            <p className="text-destructive mb-4">Error loading gadgets: {error}</p>
-            <Button onClick={() => fetchGadgets()} variant="outline">
-              Try Again
-            </Button>
-          </div>
+          <ErrorState 
+            error={error}
+            onRetry={() => fetchGadgets()}
+            title="Failed to load gadgets"
+            description="We couldn't fetch the latest gadget data. Please try again."
+          />
         )}
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="h-full">
-                <Skeleton className="h-48 w-full mb-4" />
-                <CardHeader>
-                  <Skeleton className="h-4 w-20 mb-2" />
-                  <Skeleton className="h-6 w-full mb-2" />
-                  <Skeleton className="h-4 w-full" />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-8 w-full" />
-                </CardContent>
-              </Card>
+              <SkeletonLoader key={i} variant="card" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
             {gadgets.length === 0 ? (
-              <div className="col-span-full text-center py-12">
-                <p className="text-muted-foreground">No gadgets found. Try adjusting your filters.</p>
-              </div>
+              <EmptyState 
+                title="No gadgets found"
+                description="Try adjusting your filters or check back later for new products."
+                action={
+                  <Button onClick={() => fetchGadgets()} variant="outline">
+                    Reset Filters
+                  </Button>
+                }
+                className="col-span-full"
+              />
             ) : (
               gadgets.map((gadget) => (
                 <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
@@ -151,8 +167,9 @@ const SmartTech = () => {
                     {gadget.image_url ? (
                       <img 
                         src={gadget.image_url} 
-                        alt={gadget.name}
+                        alt={`${gadget.name} - ${gadget.category} by ${gadget.brand || 'Unknown brand'}`}
                         className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
                         onError={(e) => {
                           e.currentTarget.src = '/placeholder.svg';
                         }}
