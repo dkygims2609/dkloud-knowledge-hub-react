@@ -25,8 +25,11 @@ export function usePoetryAPI() {
       
       const data = await response.json();
       
+      // Ensure data is an array before mapping
+      const dataArray = Array.isArray(data) ? data : data.data || [];
+      
       // Transform Google Docs API response to our format
-      const transformedPoetry: PoetryEntry[] = data.map((item: any, index: number) => ({
+      const transformedPoetry: PoetryEntry[] = dataArray.map((item: any, index: number) => ({
         title: item.title || `Poetry ${index + 1}`,
         content: item.content || item.text || '',
         date: item.date || new Date().toISOString().split('T')[0]
