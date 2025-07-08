@@ -5,8 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalLink, User, Music, PenTool } from "lucide-react";
+import { ModernTabSystem, createTabData } from "@/components/ModernTabSystem";
+import Poetry from "./Poetry";
 
 const Portfolio = () => {
+  const [activeTab, setActiveTab] = useState('about');
+  const portfolioTabs = createTabData('portfolio');
+  
   const compositions = [
     {
       title: "Pahla Pyar",
@@ -52,31 +57,32 @@ const Portfolio = () => {
           </p>
         </div>
 
-        {/* Portfolio Tabs */}
-        <Tabs defaultValue="about" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="about" className="flex items-center space-x-2">
-              <User className="h-4 w-4" />
-              <span>About Founder</span>
-            </TabsTrigger>
-            <TabsTrigger value="compositions" className="flex items-center space-x-2">
-              <Music className="h-4 w-4" />
-              <span>Original Compositions</span>
-            </TabsTrigger>
-            <TabsTrigger value="poetry" className="flex items-center space-x-2">
-              <PenTool className="h-4 w-4" />
-              <span>Penned Down</span>
-            </TabsTrigger>
-          </TabsList>
+        {/* Modern Portfolio Tabs */}
+        <ModernTabSystem 
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          tabs={portfolioTabs}
+        />
 
-          {/* About Founder Tab */}
-          <TabsContent value="about">
+        {/* Tab Content */}
+        {activeTab === 'about' && (
             <div className="space-y-8">
               {/* Founder Profile */}
               <Card className="dkloud-card">
                 <CardContent className="p-12 text-center">
-                  <div className="w-40 h-40 mx-auto mb-8 bg-gradient-to-br from-primary via-accent to-primary rounded-full flex items-center justify-center text-white text-5xl font-bold glow float">
-                    DK
+                  <div className="w-40 h-40 mx-auto mb-8 relative">
+                    <img 
+                      src="/src/assets/founder-photo-professional.jpg" 
+                      alt="Dileep Yadav - Founder & Creative Director"
+                      className="w-full h-full rounded-full object-cover border-4 border-primary glow float"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <div className="hidden w-full h-full bg-gradient-to-br from-primary via-accent to-primary rounded-full flex items-center justify-center text-white text-5xl font-bold glow float">
+                      DK
+                    </div>
                   </div>
                   <h2 className="text-2xl font-semibold mb-2">Dileep Yadav</h2>
                   <p className="text-lg text-accent font-medium mb-6">Founder & Creative Director</p>
@@ -150,10 +156,9 @@ const Portfolio = () => {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
+        )}
 
-          {/* Original Compositions Tab */}
-          <TabsContent value="compositions">
+        {activeTab === 'compositions' && (
             <div className="space-y-8">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -197,35 +202,20 @@ const Portfolio = () => {
                 ))}
               </div>
             </div>
-          </TabsContent>
+        )}
 
-          {/* Poetry Tab */}
-          <TabsContent value="poetry">
-            <div className="space-y-8">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  ✍️ Penned Down
-                </h2>
-                <p className="text-lg text-muted-foreground">Collection of original poetry and shayari</p>
-              </div>
-              
-              <div className="text-center">
-                <Card className="dkloud-card max-w-2xl mx-auto">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-semibold mb-4">Poetry Collection Coming Soon</h3>
-                    <p className="text-muted-foreground mb-6">
-                      I'm currently working on curating and organizing my collection of original poetry and shayari. 
-                      This section will feature heartfelt verses, romantic shayari, and philosophical musings.
-                    </p>
-                    <Button asChild className="btn-gradient">
-                      <Link to="/poetry">View Available Poetry</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
+        {activeTab === 'poetry' && (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                ✍️ Penned Down
+              </h2>
+              <p className="text-lg text-muted-foreground">Collection of original poetry and shayari from Google Docs</p>
             </div>
-          </TabsContent>
-        </Tabs>
+            
+            <Poetry />
+          </div>
+        )}
       </div>
     </div>
   );

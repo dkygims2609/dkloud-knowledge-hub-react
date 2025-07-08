@@ -3,14 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Clock, Tag, Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useNewsData } from "@/hooks/useNewsData";
+import { useEnhancedNewsData } from "@/hooks/useEnhancedNewsData";
 import { useState } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
 import { RefreshButton } from "@/components/ui/refresh-button";
 
 const TechNews = () => {
-  const { news, loading, error, categories, sources, fetchNews } = useNewsData();
+  const { news, loading, error, categories, sources, fetchNews } = useEnhancedNewsData();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSource, setSelectedSource] = useState<string>('');
 
@@ -149,6 +149,19 @@ const TechNews = () => {
                   
                   <CardContent className="pt-0">
                     <div className="space-y-3">
+                      {item.image_url && (
+                        <div className="relative h-32 mb-3">
+                          <img 
+                            src={item.image_url} 
+                            alt={item.title}
+                            className="w-full h-full object-cover rounded-lg"
+                            loading="lazy"
+                            onError={(e) => {
+                              e.currentTarget.src = '/placeholder.svg';
+                            }}
+                          />
+                        </div>
+                      )}
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span className="font-medium">{item.source}</span>
                         <span>• India Focus</span>
