@@ -16,26 +16,26 @@
     --popover: 220 27% 9%;
     --popover-foreground: 0 0% 95%;
 
-    /* Neon Blue Primary */
-    --primary: 180 100% 50%;
-    --primary-foreground: 220 27% 8%;
-    --primary-hover: 180 100% 45%;
+    /* Deep Blue Primary */
+    --primary: 224 71% 36%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 224 76% 48%;
 
-    /* Electric Purple Secondary */
-    --secondary: 280 100% 56%;
-    --secondary-foreground: 0 0% 95%;
+    /* Rich Purple Secondary */
+    --secondary: 262 83% 58%;
+    --secondary-foreground: 0 0% 100%;
 
     /* Dark Muted */
     --muted: 220 27% 12%;
     --muted-foreground: 0 0% 70%;
 
-    /* Neon Green Accent */
-    --accent: 120 100% 55%;
-    --accent-foreground: 220 27% 8%;
+    /* Indigo Accent */
+    --accent: 239 84% 67%;
+    --accent-foreground: 0 0% 100%;
 
-    /* Success - Neon Green */
-    --success: 120 100% 55%;
-    --success-foreground: 220 27% 8%;
+    /* Success - Blue Accent */
+    --success: 217 91% 60%;
+    --success-foreground: 0 0% 100%;
 
     /* Warning - Neon Orange */
     --warning: 30 100% 50%;
@@ -50,22 +50,22 @@
 
     --radius: 0.75rem;
 
-    /* Neon Theme Variables */
-    --neon-cyan: 180 100% 50%;
-    --neon-purple: 280 100% 56%;
-    --neon-green: 120 100% 55%;
-    --neon-pink: 320 100% 70%;
-    --neon-orange: 30 100% 50%;
+    /* Modern Blue-Purple Theme Variables */
+    --neon-blue: 224 71% 36%;
+    --neon-purple: 262 83% 58%;
+    --neon-indigo: 239 84% 67%;
+    --neon-violet: 258 90% 66%;
+    --neon-royal: 217 91% 60%;
 
-    /* Enhanced Gradients */
-    --hero-gradient: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(280 100% 56%) 50%, hsl(320 100% 70%) 100%);
+    /* Enhanced Blue-Purple Gradients */
+    --hero-gradient: linear-gradient(135deg, hsl(224 71% 36%) 0%, hsl(262 83% 58%) 50%, hsl(239 84% 67%) 100%);
     --card-gradient: linear-gradient(145deg, hsl(220 27% 9% / 0.8) 0%, hsl(220 27% 12% / 0.6) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(180 100% 50% / 0.1) 0%, hsl(280 100% 56% / 0.05) 100%);
-    --neon-glow: 0 0 20px hsl(180 100% 50%), 0 0 40px hsl(180 100% 50%), 0 0 60px hsl(180 100% 50%);
-    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.4), 0 0 10px hsl(180 100% 50% / 0.2);
-    --hover-shadow: 0 8px 40px hsl(180 100% 50% / 0.4), 0 0 20px hsl(280 100% 56% / 0.3);
-    --glow-shadow: 0 0 30px hsl(180 100% 50% / 0.6), 0 0 60px hsl(280 100% 56% / 0.4);
-    --banner-gradient: linear-gradient(90deg, hsl(180 100% 50%) 0%, hsl(280 100% 56%) 25%, hsl(120 100% 55%) 50%, hsl(320 100% 70%) 75%, hsl(180 100% 50%) 100%);
+    --glass-gradient: linear-gradient(135deg, hsl(224 71% 36% / 0.1) 0%, hsl(262 83% 58% / 0.05) 100%);
+    --neon-glow: 0 0 20px hsl(224 71% 36%), 0 0 40px hsl(224 71% 36%), 0 0 60px hsl(224 71% 36%);
+    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.4), 0 0 10px hsl(224 71% 36% / 0.2);
+    --hover-shadow: 0 8px 40px hsl(224 71% 36% / 0.4), 0 0 20px hsl(262 83% 58% / 0.3);
+    --glow-shadow: 0 0 30px hsl(224 71% 36% / 0.6), 0 0 60px hsl(262 83% 58% / 0.4);
+    --banner-gradient: linear-gradient(90deg, hsl(224 71% 36%) 0%, hsl(262 83% 58%) 25%, hsl(239 84% 67%) 50%, hsl(258 90% 66%) 75%, hsl(224 71% 36%) 100%);
     
     /* Animation Variables */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -85,31 +85,31 @@
     --popover: 220 27% 7%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 180 100% 55%;
-    --primary-foreground: 220 27% 6%;
-    --primary-hover: 180 100% 60%;
+    --primary: 224 76% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 224 80% 58%;
 
-    --secondary: 280 100% 60%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 262 90% 68%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 220 27% 10%;
     --muted-foreground: 0 0% 75%;
 
-    --accent: 120 100% 60%;
-    --accent-foreground: 220 27% 6%;
+    --accent: 239 88% 75%;
+    --accent-foreground: 0 0% 100%;
 
     --border: 220 27% 18%;
     --input: 220 27% 10%;
     --ring: 180 100% 55%;
 
-    /* Enhanced Dark Gradients & Neon Effects */
-    --hero-gradient: linear-gradient(135deg, hsl(180 100% 55%) 0%, hsl(280 100% 60%) 50%, hsl(320 100% 75%) 100%);
+    /* Enhanced Dark Blue-Purple Gradients & Effects */
+    --hero-gradient: linear-gradient(135deg, hsl(224 76% 48%) 0%, hsl(262 90% 68%) 50%, hsl(239 88% 75%) 100%);
     --card-gradient: linear-gradient(145deg, hsl(220 27% 7% / 0.9) 0%, hsl(220 27% 10% / 0.7) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(180 100% 55% / 0.15) 0%, hsl(280 100% 60% / 0.1) 100%);
-    --neon-glow: 0 0 25px hsl(180 100% 55%), 0 0 50px hsl(180 100% 55%), 0 0 75px hsl(180 100% 55%);
-    --card-shadow: 0 6px 25px hsl(0 0% 0% / 0.5), 0 0 15px hsl(180 100% 55% / 0.3);
-    --hover-shadow: 0 10px 50px hsl(180 100% 55% / 0.5), 0 0 30px hsl(280 100% 60% / 0.4);
-    --glow-shadow: 0 0 40px hsl(180 100% 55% / 0.8), 0 0 80px hsl(280 100% 60% / 0.6);
+    --glass-gradient: linear-gradient(135deg, hsl(224 76% 48% / 0.15) 0%, hsl(262 90% 68% / 0.1) 100%);
+    --neon-glow: 0 0 25px hsl(224 76% 48%), 0 0 50px hsl(224 76% 48%), 0 0 75px hsl(224 76% 48%);
+    --card-shadow: 0 6px 25px hsl(0 0% 0% / 0.5), 0 0 15px hsl(224 76% 48% / 0.3);
+    --hover-shadow: 0 10px 50px hsl(224 76% 48% / 0.5), 0 0 30px hsl(262 90% 68% / 0.4);
+    --glow-shadow: 0 0 40px hsl(224 76% 48% / 0.8), 0 0 80px hsl(262 90% 68% / 0.6);
   }
 
   /* Base Styles */
@@ -163,7 +163,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.2), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-blue) / 0.2), transparent);
     transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -172,7 +172,7 @@
   }
 
   .dkloud-card:hover {
-    border: 1px solid hsl(var(--neon-cyan) / 0.6);
+    border: 1px solid hsl(var(--neon-blue) / 0.6);
     background: var(--glass-gradient);
     box-shadow: var(--hover-shadow);
     transform: translateY(-4px) scale(1.02);
@@ -184,11 +184,11 @@
     transform: translateY(-6px) scale(1.03);
   }
 
-  /* Neon Button Styles */
+  /* Modern Button Styles */
   .btn-neon {
-    background: linear-gradient(45deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)));
+    background: linear-gradient(45deg, hsl(var(--neon-blue)), hsl(var(--neon-purple)));
     @apply text-background font-semibold px-6 py-3 rounded-xl border-0;
-    box-shadow: 0 0 20px hsl(var(--neon-cyan) / 0.5);
+    box-shadow: 0 0 20px hsl(var(--neon-blue) / 0.5);
     transition: var(--transition-glow);
     position: relative;
     overflow: hidden;
@@ -201,7 +201,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(var(--neon-green) / 0.3), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-indigo) / 0.3), transparent);
     transition: left 0.5s;
   }
 

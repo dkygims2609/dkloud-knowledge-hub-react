@@ -84,12 +84,12 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            {/* Enhanced Logo Design */}
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 relative">
-              <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent drop-shadow-lg">d</span>
-              <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 bg-clip-text text-transparent drop-shadow-lg">K</span>
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg">loud Tech</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 blur-xl -z-10 animate-pulse" />
+            {/* Modern dKloud Logo Design */}
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+              <span className="text-white drop-shadow-lg">d</span>
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">K</span>
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">loud</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-20 blur-xl -z-10 animate-pulse" />
             </h1>
             
             {/* Animated Tagline with Enhanced Design */}

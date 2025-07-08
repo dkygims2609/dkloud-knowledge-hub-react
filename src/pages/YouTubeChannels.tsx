@@ -17,6 +17,7 @@ const YouTubeChannels = () => {
   const [filteredChannels, setFilteredChannels] = useState<YouTubeChannel[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     fetchChannels();
@@ -24,7 +25,7 @@ const YouTubeChannels = () => {
 
   useEffect(() => {
     filterChannels();
-  }, [channels, searchTerm]);
+  }, [channels, searchTerm, selectedCategory]);
 
   const fetchChannels = async () => {
     try {
@@ -41,12 +42,40 @@ const YouTubeChannels = () => {
   };
 
   const filterChannels = () => {
-    const filtered = channels.filter((channel) =>
-      channel.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      channel.Description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      channel.Category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let filtered = channels;
+    
+    // Filter by category
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter((channel) =>
+        channel.Category.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+    
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter((channel) =>
+        channel.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        channel.Description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        channel.Category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
     setFilteredChannels(filtered);
+  };
+
+  // Get unique categories
+  const categories = ["All", ...Array.from(new Set(channels.map(channel => channel.Category)))];
+
+  const getCategoryColor = (category: string) => {
+    const colors = [
+      "from-blue-500 to-indigo-600",
+      "from-purple-500 to-violet-600", 
+      "from-indigo-500 to-purple-600",
+      "from-blue-600 to-purple-500",
+      "from-violet-500 to-blue-600"
+    ];
+    const index = categories.indexOf(category) % colors.length;
+    return colors[index];
   };
 
   const handleChannelClick = (link: string) => {
@@ -74,6 +103,33 @@ const YouTubeChannels = () => {
           </p>
         </div>
 
+        {/* Category Filter */}
+        <div className="bg-card rounded-xl p-6 mb-6">
+          <h3 className="text-lg font-semibold mb-4 text-center">Filter by Category</h3>
+          <div className="flex flex-wrap justify-center gap-3 mb-4">
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory(category)}
+                className={`transition-all duration-300 ${
+                  selectedCategory === category 
+                    ? `bg-gradient-to-r ${getCategoryColor(category)} text-white shadow-lg scale-105` 
+                    : "hover:scale-105"
+                }`}
+              >
+                {category}
+                {category !== "All" && (
+                  <span className="ml-2 text-xs bg-white/20 rounded-full px-2 py-0.5">
+                    {channels.filter(c => c.Category === category).length}
+                  </span>
+                )}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {/* Search */}
         <div className="bg-card rounded-xl p-6 mb-8">
           <div className="relative max-w-md mx-auto">
@@ -88,6 +144,7 @@ const YouTubeChannels = () => {
           <div className="flex justify-center mt-4">
             <p className="text-sm text-muted-foreground">
               Showing {filteredChannels.length} of {channels.length} channels
+              {selectedCategory !== "All" && ` in ${selectedCategory}`}
             </p>
           </div>
         </div>
@@ -108,7 +165,12 @@ const YouTubeChannels = () => {
                       {channel.Name}
                     </CardTitle>
                     <div className="flex items-center space-x-2 mt-2">
-                      <Badge variant="secondary">{channel.Category}</Badge>
+                      <Badge 
+                        variant="secondary" 
+                        className={`bg-gradient-to-r ${getCategoryColor(channel.Category)} text-white border-0 shadow-md`}
+                      >
+                        {channel.Category}
+                      </Badge>
                     </div>
                   </div>
                 </div>
