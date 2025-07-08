@@ -146,7 +146,7 @@ const Index = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
                 {[
                   { name: "Movies & TV", href: "/movies-tv", emoji: "🎬", desc: "Films & Series", color: "from-purple-500 to-pink-500" },
-                  { name: "YouTube", href: "/ytchannels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
+                  { name: "YouTube Picks", href: "/youtube-channels", emoji: "📹", desc: "Top Channels", color: "from-red-500 to-orange-500" },
                   { name: "AI Tools", href: "/aitools", emoji: "🤖", desc: "Latest AI", color: "from-blue-500 to-cyan-500" },
                   { name: "Tech Corner", href: "/techcorner", emoji: "📚", desc: "SOPs & Tips", color: "from-green-500 to-emerald-500" },
                   { name: "SmartTech", href: "/smarttech", emoji: "💡", desc: "Smart Gadgets", color: "from-yellow-500 to-amber-500" },

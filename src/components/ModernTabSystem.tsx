@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Clapperboard, Cpu, Zap, Rss, User, Music, PenTool, Briefcase, Sparkles } from "lucide-react";
+import { LucideIcon, Brain, Play, Cpu, Zap, Rss, User, Music, PenTool, Briefcase, Sparkles, Youtube, Film, Clapperboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TabData {
@@ -48,9 +48,16 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
     {
       id: 'movies',
       label: 'Movies & TV',
-      icon: Clapperboard,
+      icon: Film,
       gradient: 'from-indigo-500 to-purple-500',
       description: 'Entertainment content'
+    },
+    {
+      id: 'youtube',
+      label: 'YouTube Picks',
+      icon: Youtube,
+      gradient: 'from-red-500 to-pink-500',
+      description: 'Curated YouTube channels'
     },
     {
       id: 'ai-tools',
