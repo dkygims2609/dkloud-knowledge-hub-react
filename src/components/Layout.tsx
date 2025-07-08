@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
+import { RunningBanner } from "./RunningBanner";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
@@ -12,6 +13,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-background">
+      <RunningBanner />
       <Navbar />
       <main className="pt-16">
         {children}

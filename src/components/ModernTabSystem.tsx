@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Clapperboard, Cpu, Zap, Rss, User, Music, PenTool, Briefcase } from "lucide-react";
+import { LucideIcon, Brain, Clapperboard, Cpu, Zap, Rss, User, Music, PenTool, Briefcase, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TabData {
@@ -24,21 +24,21 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
         id: 'about',
         label: 'About Founder',
         icon: User,
-        gradient: 'from-blue-500 to-purple-600',
+        gradient: 'from-indigo-500 to-blue-600',
         description: 'Personal story and mission'
       },
       {
         id: 'compositions',
         label: 'Original Compositions',
         icon: Music,
-        gradient: 'from-pink-500 to-red-500',
+        gradient: 'from-purple-500 to-pink-500',
         description: 'Musical creations and covers'
       },
       {
         id: 'poetry',
         label: 'Penned Down',
-        icon: PenTool,
-        gradient: 'from-green-500 to-teal-500',
+        icon: Sparkles,
+        gradient: 'from-blue-500 to-indigo-500',
         description: 'Poetry and creative writings'
       }
     ];
@@ -49,42 +49,42 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
       id: 'movies',
       label: 'Movies & TV',
       icon: Clapperboard,
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-indigo-500 to-purple-500',
       description: 'Entertainment content'
     },
     {
       id: 'ai-tools',
       label: 'AI Tools',
       icon: Brain,
-      gradient: 'from-cyan-500 to-blue-500',
+      gradient: 'from-blue-500 to-indigo-600',
       description: 'AI-powered solutions'
     },
     {
       id: 'tech-corner',
       label: 'Tech Corner',
       icon: Cpu,
-      gradient: 'from-orange-500 to-red-500',
+      gradient: 'from-purple-500 to-blue-500',
       description: 'Tech tutorials and guides'
     },
     {
       id: 'smarttech',
       label: 'SmartTech',
       icon: Zap,
-      gradient: 'from-yellow-500 to-orange-500',
+      gradient: 'from-indigo-600 to-purple-600',
       description: 'Latest gadgets and reviews'
     },
     {
       id: 'tech-news',
       label: 'Tech News',
       icon: Rss,
-      gradient: 'from-green-500 to-teal-500',
+      gradient: 'from-blue-600 to-indigo-500',
       description: 'Latest tech updates'
     },
     {
       id: 'portfolio',
       label: 'Portfolio',
       icon: Briefcase,
-      gradient: 'from-indigo-500 to-purple-500',
+      gradient: 'from-purple-600 to-indigo-600',
       description: 'Creative showcase'
     }
   ];

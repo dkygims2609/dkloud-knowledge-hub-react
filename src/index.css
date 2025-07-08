@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* dKloud Design System - Professional Tech & Educational Hub */
+/* dKloud Design System - Indigo-Blue Professional Theme */
 
 @layer base {
   :root {
-    /* Core Colors - Premium Tech palette */
-    --background: 0 0% 98%;
+    /* Core Colors - dKloud.in Inspired Indigo-Blue Palette */
+    --background: 0 0% 99%;
     --foreground: 222 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -16,45 +16,48 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
 
-    /* Primary - Enhanced Purple-Blue */
-    --primary: 258 90% 65%;
-    --primary-foreground: 210 40% 98%;
-    --primary-hover: 258 90% 70%;
+    /* Primary - Deep Indigo (dKloud Brand) */
+    --primary: 233 84% 64%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 233 84% 58%;
 
-    /* Secondary - Modern Purple */
-    --secondary: 270 50% 90%;
-    --secondary-foreground: 258 90% 20%;
+    /* Secondary - Lighter Indigo */
+    --secondary: 243 75% 95%;
+    --secondary-foreground: 233 84% 20%;
 
-    /* Muted - Sophisticated Gray */
-    --muted: 215 20% 94%;
+    /* Muted - Cool Gray */
+    --muted: 215 20% 95%;
     --muted-foreground: 215 16% 50%;
 
-    /* Accent - Vibrant Blue */
-    --accent: 218 95% 65%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent - Electric Blue */
+    --accent: 214 95% 68%;
+    --accent-foreground: 0 0% 100%;
 
-    /* Success - Green */
-    --success: 142 76% 36%;
+    /* Success - Emerald */
+    --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
 
-    /* Warning - Orange */
+    /* Warning - Amber */
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 217 91% 60%;
+    --ring: 233 84% 64%;
 
     --radius: 0.75rem;
 
-    /* Custom dKloud Variables */
-    --hero-gradient: linear-gradient(135deg, hsl(258 90% 65%) 0%, hsl(218 95% 65%) 100%);
-    --card-shadow: 0 1px 3px hsl(0 0% 0% / 0.12), 0 1px 2px hsl(0 0% 0% / 0.24);
-    --hover-shadow: 0 4px 12px hsl(258 90% 65% / 0.15), 0 2px 4px hsl(0 0% 0% / 0.1);
-    --glow-shadow: 0 0 20px hsl(258 90% 65% / 0.3);
+    /* Custom dKloud Variables - Indigo Theme */
+    --hero-gradient: linear-gradient(135deg, hsl(233 84% 64%) 0%, hsl(214 95% 68%) 50%, hsl(253 75% 70%) 100%);
+    --card-gradient: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(243 75% 98%) 100%);
+    --glass-gradient: linear-gradient(135deg, hsl(0 0% 100% / 0.25) 0%, hsl(233 84% 64% / 0.1) 100%);
+    --card-shadow: 0 1px 3px hsl(233 84% 64% / 0.12), 0 1px 2px hsl(0 0% 0% / 0.08);
+    --hover-shadow: 0 4px 15px hsl(233 84% 64% / 0.25), 0 2px 6px hsl(0 0% 0% / 0.1);
+    --glow-shadow: 0 0 30px hsl(233 84% 64% / 0.4);
+    --banner-gradient: linear-gradient(90deg, hsl(233 84% 64%) 0%, hsl(214 95% 68%) 25%, hsl(253 75% 70%) 50%, hsl(214 95% 68%) 75%, hsl(233 84% 64%) 100%);
     
     /* Animation Variables */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,46 +66,50 @@
   }
 
   .dark {
-    /* Dark Mode Colors - Deep Tech Theme */
-    --background: 222.2 84% 4.9%;
+    /* Dark Mode Colors - Deep Indigo Tech Theme */
+    --background: 233 84% 3.5%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 233 84% 5%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 233 84% 5%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 258 90% 65%;
-    --primary-foreground: 210 40% 98%;
-    --primary-hover: 258 90% 70%;
+    --primary: 233 84% 68%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 233 84% 72%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 233 84% 12%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 233 84% 8%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 218 95% 65%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 214 95% 72%;
+    --accent-foreground: 0 0% 100%;
 
-    --success: 142 76% 36%;
+    --success: 160 84% 42%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
+    --warning: 38 92% 55%;
     --warning-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 213 31% 91%;
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 28% 17%;
-    --input: 215 28% 17%;
-    --ring: 217 91% 60%;
+    --border: 233 84% 12%;
+    --input: 233 84% 12%;
+    --ring: 233 84% 68%;
 
-    /* Dark Mode Shadows */
-    --card-shadow: 0 2px 8px hsl(0 0% 0% / 0.25), 0 1px 3px hsl(0 0% 0% / 0.35);
-    --hover-shadow: 0 8px 25px hsl(258 90% 65% / 0.25), 0 4px 10px hsl(0 0% 0% / 0.2);
-    --glow-shadow: 0 0 30px hsl(258 90% 65% / 0.4);
+    /* Dark Mode Gradients & Shadows */
+    --hero-gradient: linear-gradient(135deg, hsl(233 84% 68%) 0%, hsl(214 95% 72%) 50%, hsl(253 75% 74%) 100%);
+    --card-gradient: linear-gradient(145deg, hsl(233 84% 5%) 0%, hsl(233 84% 8%) 100%);
+    --glass-gradient: linear-gradient(135deg, hsl(233 84% 68% / 0.15) 0%, hsl(214 95% 72% / 0.1) 100%);
+    --card-shadow: 0 2px 10px hsl(0 0% 0% / 0.3), 0 1px 4px hsl(233 84% 68% / 0.1);
+    --hover-shadow: 0 8px 30px hsl(233 84% 68% / 0.3), 0 4px 12px hsl(0 0% 0% / 0.25);
+    --glow-shadow: 0 0 40px hsl(233 84% 68% / 0.5);
+    --banner-gradient: linear-gradient(90deg, hsl(233 84% 68%) 0%, hsl(214 95% 72%) 25%, hsl(253 75% 74%) 50%, hsl(214 95% 72%) 75%, hsl(233 84% 68%) 100%);
   }
 
   /* Base Styles */
@@ -140,15 +147,17 @@
     background: var(--hero-gradient);
   }
 
-  /* Enhanced Card Styles */
+  /* Enhanced Card Styles - dKloud Indigo Theme */
   .dkloud-card {
-    @apply bg-card border border-border/50 rounded-2xl p-6 transition-all duration-500;
+    background: var(--card-gradient);
+    @apply border border-border/50 rounded-2xl p-6 transition-all duration-500;
     box-shadow: var(--card-shadow);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
   }
 
   .dkloud-card:hover {
-    @apply border-primary/30;
+    @apply border-primary/40;
+    background: var(--glass-gradient);
     box-shadow: var(--hover-shadow);
     transform: translateY(-4px) scale(1.02);
   }
@@ -158,31 +167,58 @@
     transform: translateY(-6px) scale(1.03);
   }
 
-    /* Enhanced Button Variants */
+  /* Enhanced Button Variants - Indigo Theme */
   .btn-gradient {
-    @apply bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold px-8 py-3 rounded-xl;
+    background: var(--hero-gradient);
+    @apply text-primary-foreground font-semibold px-8 py-3 rounded-xl;
     @apply transition-all duration-300 hover:scale-105;
-    box-shadow: 0 4px 15px hsl(var(--primary) / 0.4);
+    box-shadow: 0 4px 20px hsl(var(--primary) / 0.4);
   }
 
   .btn-gradient:hover {
-    box-shadow: 0 8px 25px hsl(var(--primary) / 0.6);
+    box-shadow: var(--glow-shadow);
     transform: translateY(-2px) scale(1.05);
   }
 
   .btn-glass {
-    @apply bg-background/20 backdrop-blur-md border border-border/30 text-foreground font-medium px-6 py-3 rounded-xl;
-    @apply transition-all duration-300 hover:bg-background/40 hover:border-border/50 hover:shadow-lg;
+    background: var(--glass-gradient);
+    @apply backdrop-blur-md border border-border/30 text-foreground font-medium px-6 py-3 rounded-xl;
+    @apply transition-all duration-300 hover:border-primary/40;
   }
 
-  /* Modern Glass Tab Styles */
+  .btn-glass:hover {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--accent) / 0.05) 100%);
+    box-shadow: var(--hover-shadow);
+  }
+
+  /* Modern Glass Tab Styles - Enhanced */
   .glass-tab {
-    @apply bg-background/40 backdrop-blur-md border border-border/30 rounded-xl;
-    @apply transition-all duration-300 hover:bg-background/60 hover:border-primary/30;
+    background: var(--glass-gradient);
+    @apply backdrop-blur-md border border-border/30 rounded-xl;
+    @apply transition-all duration-300 hover:border-primary/30;
+  }
+
+  .glass-tab:hover {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--accent) / 0.05) 100%);
   }
 
   .glass-tab-active {
-    @apply bg-primary/90 border-primary/50 text-primary-foreground shadow-md;
+    background: var(--hero-gradient);
+    @apply border-primary/50 text-primary-foreground shadow-lg;
+    box-shadow: var(--glow-shadow);
+  }
+
+  /* Running Banner Styles */
+  .running-banner {
+    background: var(--banner-gradient);
+    background-size: 200% 100%;
+    @apply text-white text-sm py-2 overflow-hidden whitespace-nowrap;
+    animation: bannerSlide 30s linear infinite, gradientShift 10s ease-in-out infinite;
+  }
+
+  .banner-text {
+    @apply inline-block px-4;
+    animation: textScroll 30s linear infinite;
   }
 
   /* Line clamp utilities */
@@ -357,6 +393,33 @@
   100% {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes bannerSlide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes textScroll {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
