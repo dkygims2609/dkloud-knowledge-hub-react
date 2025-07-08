@@ -10,10 +10,19 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="bg-gradient-to-r from-primary to-accent text-white font-bold text-lg px-3 py-1 rounded-lg">
-                dK
-              </div>
+            <div className="flex items-center space-x-3">
+              {/* Dark theme logo */}
+              <img 
+                src="/lovable-uploads/4381e2bd-8639-4d6d-a9ed-f7edd39f22d9.png" 
+                alt="dKloud Logo" 
+                className="h-8 w-8 dark:block hidden"
+              />
+              {/* Light theme logo */}
+              <img 
+                src="/lovable-uploads/108e6b6e-0af2-40ea-830a-23c86caa44d5.png" 
+                alt="dKloud Logo" 
+                className="h-8 w-8 dark:hidden block"
+              />
               <span className="font-bold text-lg text-foreground">dKloud Tech</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -82,7 +91,7 @@ export function Footer() {
                 <span>WhatsApp</span>
               </a>
               <a 
-                href="https://www.linkedin.com/in/dileep-yadav-63500158" 
+                href="https://www.linkedin.com/in/dkloud-in-87109b374/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"

@@ -27,12 +27,19 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="relative">
+              {/* Dark theme logo */}
               <img 
-                src="/lovable-uploads/ee1833ab-bad9-4cb7-9fba-b36f2c77858b.png" 
+                src="/lovable-uploads/4381e2bd-8639-4d6d-a9ed-f7edd39f22d9.png" 
                 alt="dKloud Logo" 
-                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110"
+                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110 dark:block hidden"
               />
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-xl opacity-20 blur-md group-hover:opacity-40 transition-opacity duration-300"></div>
+              {/* Light theme logo */}
+              <img 
+                src="/lovable-uploads/108e6b6e-0af2-40ea-830a-23c86caa44d5.png" 
+                alt="dKloud Logo" 
+                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110 dark:hidden block"
+              />
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-xl opacity-20 blur-md group-hover:opacity-40 transition-opacity duration-300 animate-pulse"></div>
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-lg text-foreground leading-tight group-hover:text-primary transition-colors duration-300">

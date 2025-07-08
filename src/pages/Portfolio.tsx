@@ -88,24 +88,48 @@ const Portfolio = () => {
                   <p className="text-lg text-accent font-medium mb-6">Founder & Creative Director</p>
                   
                   <div className="max-w-4xl mx-auto">
-                    <div className="bg-muted/20 rounded-lg p-6 mb-6">
-                      <h3 className="text-lg font-semibold mb-4 text-primary">Passionate Creative Techy</h3>
+                    <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-lg p-6 mb-6 border border-primary/20">
+                      <h3 className="text-xl font-bold mb-4 text-primary">Founder Note</h3>
                       <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                        A passionate, self-taught professional combining technology, creativity, and community upliftment. I believe in making knowledge accessible and building bridges between tech and people—one tool, one story at a time.
+                        I'm Dileep Yadav, the mind and heart behind dKloud.in.
+                      </p>
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                        I like to think of myself as a passionate creative techy — someone who blends the power of technology with the soul of creativity. What started as a curiosity for tech has evolved into a full-fledged mission to make digital knowledge and expression more accessible, inspiring, and beautifully organized.
+                      </p>
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                        I've explored the world of cloud infrastructure and virtualization (yep, I'm certified in VMware, Azure, and AWS), but my journey doesn't stop at servers and scripts.
                       </p>
                     </div>
                     
-                    <blockquote className="text-lg italic text-muted-foreground mb-8 border-l-4 border-primary pl-6">
-                      "My aim is to build bridges between tech and people — one tab, one tool, one song at a time."
+                    <div className="bg-gradient-to-r from-accent/10 via-primary/10 to-accent/10 rounded-lg p-6 mb-6 border border-accent/20">
+                      <h4 className="text-lg font-semibold mb-4 text-accent">🎼 Beyond the Code</h4>
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                        I'm also a music composer, a lyricist, and someone who's always felt deeply connected to storytelling.
+                        I've collaborated with music director Arya Sharma, created original compositions, and used AI to craft custom wedding songs, birthday anthems, and emotive logos that speak louder than words.
+                      </p>
+                      <p className="text-lg text-muted-foreground leading-relaxed">
+                        It's not about tech or art — it's about combining both to create something meaningful.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-success/10 via-warning/10 to-success/10 rounded-lg p-6 mb-6 border border-success/20">
+                      <h4 className="text-lg font-semibold mb-4 text-success">🚀 The dKloud Vision</h4>
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                        dKloud.in isn't just a website. It's a growing universe —
+                      </p>
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                        A space where learning meets creativity,<br/>
+                        Where you can discover a new movie, learn a new skill, read poetry, or explore tech news — all in one place.
+                      </p>
+                      <p className="text-lg text-muted-foreground leading-relaxed">
+                        It's built with tools, love, and a vision to empower curious minds like yours and mine.
+                      </p>
+                    </div>
+                    
+                    <blockquote className="text-xl italic text-primary mb-8 border-l-4 border-primary pl-6 text-center">
+                      "So whether you're a learner, a dreamer, or a doer —<br/>
+                      Welcome to dKloud. Let's decode knowledge together."
                     </blockquote>
-                    
-                    <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                      Welcome to dKloud, a space where creativity meets technology. I am the founder, a passionate music composer already working with Established Music Director Arya Sharma and released multiple original compositions with famous singers in Hindi and other regional languages, lyricist, and AI-driven design expert. My journey has been a fusion of traditional artistry as guitarist, pianist, musician and writer with cutting-edge innovation, allowing me to offer a unique range of services that blend the human touch with AI capabilities.
-                    </p>
-                    
-                    <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                      With years of experience in crafting original songs, compositions, and poetry, I've ventured into the world of digital artistry, where I create personalized, AI-generated logos, design concepts, and custom songs for any occasion. My expertise lies in fusing creativity with technology to deliver something extraordinary, whether it's a heartfelt birthday song, a memorable wedding anthem, or a brand logo that speaks to your audience.
-                    </p>
                   </div>
 
                   {/* Expertise & Values */}

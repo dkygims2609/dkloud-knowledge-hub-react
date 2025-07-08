@@ -106,22 +106,22 @@ export function ModernTabSystem({ activeTab, onTabChange, tabs, className }: Mod
                   key={tab.id}
                   onClick={() => onTabChange(tab.id)}
                   className={cn(
-                    "group relative flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 flex-1",
+                    "group relative flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 flex-1 overflow-hidden",
                     isActive
-                      ? "bg-background/80 backdrop-blur-sm shadow-lg shadow-primary/20 border border-border/50"
-                      : "hover:bg-background/40 hover:scale-105"
+                      ? "bg-background/80 backdrop-blur-sm shadow-lg shadow-primary/20 border border-border/50 animate-neon-pulse"
+                      : "hover:bg-background/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/10"
                   )}
                 >
                   <div className={cn(
                     "relative p-2 rounded-lg transition-all duration-300",
                     isActive 
-                      ? `bg-gradient-to-r ${tab.gradient} text-white shadow-lg` 
-                      : "bg-muted/50 text-muted-foreground group-hover:bg-muted"
+                      ? `bg-gradient-to-r ${tab.gradient} text-white shadow-lg animate-neon-pulse` 
+                      : "bg-muted/50 text-muted-foreground group-hover:bg-muted group-hover:scale-110"
                   )}>
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5 transition-transform duration-300" />
                     {isActive && (
                       <div className={cn(
-                        "absolute inset-0 bg-gradient-to-r rounded-lg opacity-30 animate-pulse",
+                        "absolute inset-0 bg-gradient-to-r rounded-lg opacity-20 animate-pulse",
                         tab.gradient
                       )} />
                     )}
@@ -141,7 +141,7 @@ export function ModernTabSystem({ activeTab, onTabChange, tabs, className }: Mod
                   
                   {isActive && (
                     <div className={cn(
-                      "absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r rounded-full",
+                      "absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r rounded-full animate-neon-pulse",
                       tab.gradient
                     )} />
                   )}
