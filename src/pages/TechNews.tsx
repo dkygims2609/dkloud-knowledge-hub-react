@@ -3,14 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Clock, Tag, Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEnhancedNewsData } from "@/hooks/useEnhancedNewsData";
+import { useRealTechNews } from "@/hooks/useRealTechNews";
 import { useState } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
 import { RefreshButton } from "@/components/ui/refresh-button";
 
 const TechNews = () => {
-  const { news, loading, error, categories, sources, fetchNews } = useEnhancedNewsData();
+  const { news, loading, error, categories, sources, fetchNews } = useRealTechNews();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSource, setSelectedSource] = useState<string>('');
 

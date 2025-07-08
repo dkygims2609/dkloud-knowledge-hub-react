@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Star, ShoppingCart, Heart, Filter, Loader2, MapPin } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEnhancedGadgets } from "@/hooks/useEnhancedGadgets";
+import { useLatestGadgets } from "@/hooks/useLatestGadgets";
 import { useState } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
@@ -11,7 +11,7 @@ import { RefreshButton } from "@/components/ui/refresh-button";
 import { useToast } from "@/hooks/useToast";
 
 const SmartTech = () => {
-  const { gadgets, loading, error, categories, brands, fetchGadgets, refresh, lastUpdated } = useEnhancedGadgets();
+  const { gadgets, loading, error, categories, brands, fetchGadgets, refresh, lastUpdated } = useLatestGadgets();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [indianOnly, setIndianOnly] = useState<boolean>(false);

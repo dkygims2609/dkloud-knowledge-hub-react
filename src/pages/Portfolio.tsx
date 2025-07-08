@@ -72,7 +72,7 @@ const Portfolio = () => {
                 <CardContent className="p-12 text-center">
                   <div className="w-40 h-40 mx-auto mb-8 relative">
                     <img 
-                      src="/src/assets/founder-photo-professional.jpg" 
+                      src="/lovable-uploads/ee1833ab-bad9-4cb7-9fba-b36f2c77858b.png" 
                       alt="Dileep Yadav - Founder & Creative Director"
                       className="w-full h-full rounded-full object-cover border-4 border-primary glow float"
                       onError={(e) => {

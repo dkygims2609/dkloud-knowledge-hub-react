@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Film, Code, Lightbulb, Newspaper, User, Music, PenTool, Briefcase } from "lucide-react";
+import { LucideIcon, Brain, Clapperboard, Cpu, Zap, Rss, User, Music, PenTool, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TabData {
@@ -48,7 +48,7 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
     {
       id: 'movies',
       label: 'Movies & TV',
-      icon: Film,
+      icon: Clapperboard,
       gradient: 'from-purple-500 to-pink-500',
       description: 'Entertainment content'
     },
@@ -62,21 +62,21 @@ export const createTabData = (type: 'portfolio' | 'main'): TabData[] => {
     {
       id: 'tech-corner',
       label: 'Tech Corner',
-      icon: Code,
+      icon: Cpu,
       gradient: 'from-orange-500 to-red-500',
       description: 'Tech tutorials and guides'
     },
     {
       id: 'smarttech',
       label: 'SmartTech',
-      icon: Lightbulb,
+      icon: Zap,
       gradient: 'from-yellow-500 to-orange-500',
       description: 'Latest gadgets and reviews'
     },
     {
       id: 'tech-news',
       label: 'Tech News',
-      icon: Newspaper,
+      icon: Rss,
       gradient: 'from-green-500 to-teal-500',
       description: 'Latest tech updates'
     },
