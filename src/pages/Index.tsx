@@ -89,44 +89,31 @@ const Index = () => {
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
             {/* Modern dKloud Logo Design */}
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
-              <span className="text-white drop-shadow-lg">d</span>
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">K</span>
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">loud</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-20 blur-xl -z-10 animate-pulse" />
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+              <span className="text-foreground/90">d</span>
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">K</span>
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">loud</span>
             </h1>
             
-            {/* Animated Tagline with Enhanced Design */}
-            <div className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 slide-up" style={{animationDelay: "0.2s"}}>
+            {/* Animated Tagline */}
+            <div className="text-xl md:text-2xl lg:text-3xl font-medium mb-6 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 dark:from-purple-400 dark:via-violet-400 dark:to-blue-400 bg-clip-text text-transparent"
                 delay={1000}
               />
             </div>
             
-            {/* Enhanced Subtitle with NeonRain-style gradient */}
-            <p className="text-xl md:text-2xl font-bold mb-8 bounce-in neon-gradient-text" style={{animationDelay: "0.3s"}}>
-              <span className="bg-gradient-to-r from-purple-400 via-violet-500 to-blue-500 dark:from-purple-300 dark:via-violet-400 dark:to-blue-400 bg-clip-text text-transparent animate-shimmer">
-                Library Of Unique Discoveries
-              </span>
-            </p>
-            
-            {/* Company Attribution */}
-            <p className="text-lg text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed fade-in" style={{animationDelay: "0.4s"}}>
-              <span className="font-medium text-primary">Powered by:</span> dKloud Tech
-            </p>
-            
-            {/* Updated Mission Statement */}
-            <div className="text-center mb-8 fade-in" style={{animationDelay: "0.5s"}}>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-purple-400 via-violet-500 to-blue-500 dark:from-purple-300 dark:via-violet-400 dark:to-blue-400 bg-clip-text text-transparent">
+            {/* Minimalistic Mission Statement */}
+            <div className="text-center mb-6 fade-in max-w-3xl mx-auto" style={{animationDelay: "0.3s"}}>
+              <h2 className="text-lg md:text-xl font-medium mb-3 leading-relaxed">
+                <span className="text-foreground/80">
                   At dKloud, we're crafting a universe where creativity meets the cloud, AI fuels curiosity, and learning becomes a shared adventure.
                 </span>
               </h2>
               
-              <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
-                <span className="bg-gradient-to-r from-blue-400 via-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                <span className="text-foreground/60">
                   Whether you're a tech explorer, a digital creator, or a seeker of knowledge — this is your space to discover, build, and belong.
                 </span>
               </p>
