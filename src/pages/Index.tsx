@@ -89,7 +89,7 @@ const Index = () => {
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
             {/* Modern dKloud Logo Design - Enhanced Size */}
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+            <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
               <span className="text-foreground/90">d</span>
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">K</span>
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 bg-clip-text text-transparent">loud</span>

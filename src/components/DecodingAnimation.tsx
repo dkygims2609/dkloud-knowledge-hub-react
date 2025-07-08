@@ -6,7 +6,7 @@ interface DecodingAnimationProps {
   delay?: number;
 }
 
-const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*![]{}()<>?/\\|~`+=_-.:;,αβγδεζηθικλμνξοπρστυφχψω⌐¬½¼¡™£¢∞§¶•ªº–≠";
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*![]{}()<>?/\\|~`+=_-.:;,";
 
 export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingAnimationProps) {
   const [displayText, setDisplayText] = useState(text);
@@ -88,11 +88,17 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
       className={`${className} font-mono tracking-wider transition-all duration-200`}
       style={{
         textShadow: isDecoding ? 
-          `0 0 ${5 + glitchIntensity * 10}px hsl(var(--primary)), 
-           ${glitchIntensity * 2}px 0 0 hsl(var(--accent)), 
-           -${glitchIntensity * 2}px 0 0 hsl(var(--destructive))` : 
+          `0 0 ${5 + glitchIntensity * 8}px hsl(var(--primary)), 
+           ${glitchIntensity * 1.5}px 0 0 hsl(224 71% 50%), 
+           -${glitchIntensity * 1.5}px 0 0 hsl(262 83% 58%)` : 
           'none',
-        filter: isDecoding ? `hue-rotate(${glitchIntensity * 180}deg)` : 'none'
+        filter: 'none',
+        color: isDecoding ? (
+          Math.random() < 0.3 ? 'hsl(var(--primary))' :
+          Math.random() < 0.6 ? 'hsl(224 71% 50%)' :
+          Math.random() < 0.8 ? 'hsl(262 83% 58%)' :
+          'hsl(var(--foreground))'
+        ) : undefined
       }}
     >
       {displayText}
