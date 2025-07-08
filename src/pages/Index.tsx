@@ -8,6 +8,7 @@ import { ContentGrid } from "@/components/ContentGrid";
 import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
 import { FloatingIcons } from "@/components/FloatingIcons";
+import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
@@ -68,6 +69,7 @@ const Index = () => {
   return (
     <div className="min-h-screen relative">
       <FloatingIcons />
+      <IoTFloatingIcons />
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
         {/* Enhanced Background Effects */}
