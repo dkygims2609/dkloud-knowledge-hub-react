@@ -41,6 +41,26 @@ export function useRealTechNews(): UseRealTechNewsResult {
       setLoading(true);
       setError(null);
 
+      // Try to fetch fresh news from edge function first
+      try {
+        const response = await fetch('/api/fetch-tech-news', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            sources: ['TechCrunch', 'The Verge', 'Wired', 'Ars Technica'],
+            limit: filters.limit || 20 
+          }),
+        });
+
+        if (response.ok) {
+          console.log('Tech news fetch triggered');
+        }
+      } catch (fetchError) {
+        console.log('Edge function not available, using fallback');
+      }
+
       // Check if we're getting data from Supabase
       let query = supabase
         .from('tech_news')
@@ -59,15 +79,10 @@ export function useRealTechNews(): UseRealTechNewsResult {
 
       const { data: supabaseNews, error: supabaseError } = await query;
 
-      if (supabaseError) {
-        console.error('Supabase error:', supabaseError);
-        throw new Error('Failed to fetch from database');
-      }
-
-      if (supabaseNews && supabaseNews.length > 0) {
+      if (!supabaseError && supabaseNews && supabaseNews.length > 0) {
         setNews(supabaseNews);
       } else {
-        // Fallback to mock data if no real data available
+        // Fallback to enhanced mock data if no real data available
         const mockNews = generateMockNews(filters);
         setNews(mockNews);
       }

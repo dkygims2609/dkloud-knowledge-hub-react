@@ -95,28 +95,28 @@ const AITools = () => {
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-         <div className="text-center mb-8">
-           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-             🤖 AI Tools Hub
-           </h1>
-           <p className="text-xl text-muted-foreground">
-             Discover the <span className="text-primary font-medium">latest AI tools</span> to boost your <span className="text-emerald-500 font-medium">productivity</span> and <span className="text-purple-500 font-medium">creativity</span>
-           </p>
-         </div>
+         {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              🤖 AI Tools Hub
+            </h1>
+            <p className="text-xl text-foreground/80">
+              Discover the <span className="text-primary font-medium">latest AI tools</span> to boost your <span className="text-emerald-500 font-medium">productivity</span> and <span className="text-purple-500 font-medium">creativity</span>
+            </p>
+          </div>
 
-         {/* Filters */}
-         <div className="bg-card/80 backdrop-blur-sm rounded-xl p-6 mb-8 space-y-4 border border-border/50 shadow-lg">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search AI tools..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+          {/* Filters */}
+          <div className="bg-card/90 backdrop-blur-sm rounded-xl p-6 mb-8 space-y-4 border border-primary/20 shadow-lg">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+             <div className="relative">
+               <Search className="absolute left-3 top-3 h-4 w-4 text-primary/60" />
+               <Input
+                 placeholder="Search AI tools..."
+                 value={searchTerm}
+                 onChange={(e) => setSearchTerm(e.target.value)}
+                 className="pl-10 border-primary/30 focus:border-primary"
+               />
+             </div>
             
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger>
@@ -149,21 +149,22 @@ const AITools = () => {
           </div>
           
            <div className="flex justify-between items-center">
-             <p className="text-sm text-muted-foreground">
-               Showing <span className="text-primary font-semibold">{filteredTools.length}</span> of <span className="text-accent font-semibold">{tools.length}</span> AI tools
-             </p>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setSearchTerm("");
-                setCategoryFilter("all");
-                setPricingFilter("all");
-              }}
-            >
-              Clear Filters
-            </Button>
-          </div>
+              <p className="text-sm text-foreground/70">
+                Showing <span className="text-primary font-semibold">{filteredTools.length}</span> of <span className="text-accent font-semibold">{tools.length}</span> AI tools
+              </p>
+             <Button
+               variant="outline"
+               size="sm"
+               onClick={() => {
+                 setSearchTerm("");
+                 setCategoryFilter("all");
+                 setPricingFilter("all");
+               }}
+               className="border-primary/30 hover:bg-primary/10"
+             >
+               Clear Filters
+             </Button>
+           </div>
         </div>
 
         {/* Tools Grid */}
@@ -203,70 +204,72 @@ const AITools = () => {
               }}
             >
                {filteredTools.map((tool, index) => (
-                 <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 backdrop-blur-sm bg-card/80 border border-border/50" onClick={() => handleToolClick(tool["Tools Link"])}>
-               <CardHeader className="pb-3">
-                 <div className="flex justify-between items-start">
-                   <div className="flex items-center space-x-2">
-                     <div className="p-2 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 group-hover:from-cyan-500/30 group-hover:to-purple-500/30 transition-colors">
-                       <Zap className="h-5 w-5 text-primary" />
-                     </div>
-                     <CardTitle className="text-base font-bold group-hover:text-primary transition-colors leading-tight">
-                       {tool.Toolname || "Unnamed Tool"}
-                     </CardTitle>
-                   </div>
-                 </div>
-                 <div className="flex flex-wrap gap-2 mt-3">
-                   <Badge 
-                     variant="secondary" 
-                     className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-primary border-primary/30"
-                   >
-                     {tool.Category || "General"}
-                   </Badge>
-                   <Badge 
-                     variant="outline"
-                     className={tool.Pricingmodel === "Free" 
-                       ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border-green-500/30" 
-                       : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30"
-                     }
-                   >
-                     {tool.Pricingmodel || "Unknown"}
-                   </Badge>
-                   {tool["EstimatedCost (per month)"] && (
-                     <Badge variant="outline" className="bg-muted/50 border-accent/30 text-accent">
-                       {tool["EstimatedCost (per month)"]}
-                     </Badge>
-                   )}
-                 </div>
+                  <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 backdrop-blur-sm bg-card/90 border border-primary/20" onClick={() => handleToolClick(tool["Tools Link"])}>
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
+                        <Zap className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors leading-tight text-foreground">
+                          {tool.Toolname || "Unnamed Tool"}
+                        </CardTitle>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-gradient-to-r from-primary/20 to-accent/20 text-primary border-primary/40 font-medium"
+                    >
+                      {tool.Category || "General"}
+                    </Badge>
+                    <Badge 
+                      variant="outline"
+                      className={tool.Pricingmodel === "Free" 
+                        ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border-green-500/40 font-medium" 
+                        : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-400 border-amber-500/40 font-medium"
+                      }
+                    >
+                      {tool.Pricingmodel || "Unknown"}
+                    </Badge>
+                    {tool["EstimatedCost (per month)"] && tool["EstimatedCost (per month)"] !== "" && (
+                      <Badge variant="outline" className="bg-accent/20 border-accent/40 text-accent font-medium">
+                        {tool["EstimatedCost (per month)"]}
+                      </Badge>
+                    )}
+                  </div>
               </CardHeader>
               
-               <CardContent className="space-y-4 pt-2">
-                 <div>
-                   <h4 className="font-semibold text-sm mb-2 text-primary">Purpose:</h4>
-                   <p className="text-sm text-muted-foreground leading-relaxed">
-                     {tool.Purpose || "No description available"}
-                   </p>
-                 </div>
-                 
-                 <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                     <div className="p-1 rounded bg-primary/20">
-                       <Zap className="h-3 w-3 text-primary" />
-                     </div>
-                     <span className="font-medium">AI Tool</span>
-                   </div>
-                   <Button
-                     variant="ghost"
-                     size="sm"
-                     className="group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all duration-300 hover:scale-105"
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       handleToolClick(tool["Tools Link"]);
-                     }}
-                   >
-                     <ExternalLink className="h-4 w-4" />
-                   </Button>
-                 </div>
-               </CardContent>
+                <CardContent className="space-y-4 pt-2">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2 text-primary">Purpose:</h4>
+                    <p className="text-sm text-foreground/80 leading-relaxed">
+                      {tool.Purpose || "No description available"}
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-primary/20">
+                    <div className="flex items-center space-x-2 text-sm text-foreground/70">
+                      <div className="p-1 rounded bg-primary/20">
+                        <Zap className="h-3 w-3 text-primary" />
+                      </div>
+                      <span className="font-medium">AI Tool</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all duration-300 hover:scale-105 border border-primary/30"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToolClick(tool["Tools Link"]);
+                      }}
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
                 </Card>
               ))}
             </div>

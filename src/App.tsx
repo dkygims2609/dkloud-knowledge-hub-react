@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Disclaimer from "./pages/Disclaimer";
+import AdminPanel from "./pages/AdminPanel";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/admin" element={<AdminPanel />} />
             {/* Legacy routes for backwards compatibility */}
             <Route path="/movies" element={<MoviesTV />} />
             <Route path="/tvseries" element={<MoviesTV />} />

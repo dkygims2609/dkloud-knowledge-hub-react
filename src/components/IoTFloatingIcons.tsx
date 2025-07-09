@@ -56,10 +56,13 @@ interface FloatingIcon {
   scale: number;
 }
 
-export function IoTFloatingIcons() {
+export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: boolean }) {
   const [floatingIcons, setFloatingIcons] = useState<FloatingIcon[]>([]);
 
   useEffect(() => {
+    // Only show on home page when showOnHomePage is true
+    if (!showOnHomePage) return;
+
     const createIcon = () => {
       const randomIcon = iotIcons[Math.floor(Math.random() * iotIcons.length)];
       const newIcon: FloatingIcon = {
@@ -86,7 +89,7 @@ export function IoTFloatingIcons() {
 
     // Cleanup
     return () => clearInterval(initialInterval);
-  }, []);
+  }, [showOnHomePage]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
