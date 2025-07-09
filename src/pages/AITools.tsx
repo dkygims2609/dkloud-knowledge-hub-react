@@ -96,17 +96,17 @@ const AITools = () => {
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            🤖 AI Tools Hub
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            Discover the latest AI tools to boost your productivity and creativity
-          </p>
-        </div>
+         <div className="text-center mb-8">
+           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+             🤖 AI Tools Hub
+           </h1>
+           <p className="text-xl text-muted-foreground">
+             Discover the <span className="text-primary font-medium">latest AI tools</span> to boost your <span className="text-emerald-500 font-medium">productivity</span> and <span className="text-purple-500 font-medium">creativity</span>
+           </p>
+         </div>
 
-        {/* Filters */}
-        <div className="bg-card rounded-xl p-6 mb-8 space-y-4">
+         {/* Filters */}
+         <div className="bg-card/80 backdrop-blur-sm rounded-xl p-6 mb-8 space-y-4 border border-border/50 shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -148,10 +148,10 @@ const AITools = () => {
             </Select>
           </div>
           
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              Showing {filteredTools.length} of {tools.length} AI tools
-            </p>
+           <div className="flex justify-between items-center">
+             <p className="text-sm text-muted-foreground">
+               Showing <span className="text-primary font-semibold">{filteredTools.length}</span> of <span className="text-accent font-semibold">{tools.length}</span> AI tools
+             </p>
             <Button
               variant="outline"
               size="sm"
@@ -169,8 +169,8 @@ const AITools = () => {
         {/* Tools Grid */}
         <div className="relative">
           {/* Navigation Controls */}
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold">AI Tools ({filteredTools.length})</h3>
+           <div className="flex justify-between items-center mb-4">
+             <h3 className="text-xl font-semibold">AI Tools (<span className="text-primary">{filteredTools.length}</span>)</h3>
             <div className="flex space-x-2">
               <Button
                 variant="outline"
@@ -202,59 +202,71 @@ const AITools = () => {
                 transform: `translateX(-${currentIndex * (6 * 320)}px)`
               }}
             >
-              {filteredTools.map((tool, index) => (
-                <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0" onClick={() => handleToolClick(tool["Tools Link"])}>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center space-x-2">
-                    <Zap className="h-6 w-6 text-primary" />
-                    <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                      {tool.Toolname}
-                    </CardTitle>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="secondary">{tool.Category}</Badge>
-                  <Badge 
-                    variant="outline"
-                    className={tool.Pricingmodel === "Free" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
-                  >
-                    {tool.Pricingmodel}
-                  </Badge>
-                  {tool["EstimatedCost (per month)"] && (
-                    <Badge variant="outline">
-                      {tool["EstimatedCost (per month)"]}
-                    </Badge>
-                  )}
-                </div>
+               {filteredTools.map((tool, index) => (
+                 <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 backdrop-blur-sm bg-card/80 border border-border/50" onClick={() => handleToolClick(tool["Tools Link"])}>
+               <CardHeader className="pb-3">
+                 <div className="flex justify-between items-start">
+                   <div className="flex items-center space-x-2">
+                     <div className="p-2 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 group-hover:from-cyan-500/30 group-hover:to-purple-500/30 transition-colors">
+                       <Zap className="h-5 w-5 text-primary" />
+                     </div>
+                     <CardTitle className="text-base font-bold group-hover:text-primary transition-colors leading-tight">
+                       {tool.Toolname || "Unnamed Tool"}
+                     </CardTitle>
+                   </div>
+                 </div>
+                 <div className="flex flex-wrap gap-2 mt-3">
+                   <Badge 
+                     variant="secondary" 
+                     className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-primary border-primary/30"
+                   >
+                     {tool.Category || "General"}
+                   </Badge>
+                   <Badge 
+                     variant="outline"
+                     className={tool.Pricingmodel === "Free" 
+                       ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border-green-500/30" 
+                       : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                     }
+                   >
+                     {tool.Pricingmodel || "Unknown"}
+                   </Badge>
+                   {tool["EstimatedCost (per month)"] && (
+                     <Badge variant="outline" className="bg-muted/50 border-accent/30 text-accent">
+                       {tool["EstimatedCost (per month)"]}
+                     </Badge>
+                   )}
+                 </div>
               </CardHeader>
               
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-sm mb-2">Purpose:</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {tool.Purpose}
-                  </p>
-                </div>
-                
-                <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                    <Zap className="h-4 w-4" />
-                    <span>AI Tool</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="group-hover:bg-primary group-hover:text-primary-foreground"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleToolClick(tool["Tools Link"]);
-                    }}
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
+               <CardContent className="space-y-4 pt-2">
+                 <div>
+                   <h4 className="font-semibold text-sm mb-2 text-primary">Purpose:</h4>
+                   <p className="text-sm text-muted-foreground leading-relaxed">
+                     {tool.Purpose || "No description available"}
+                   </p>
+                 </div>
+                 
+                 <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                     <div className="p-1 rounded bg-primary/20">
+                       <Zap className="h-3 w-3 text-primary" />
+                     </div>
+                     <span className="font-medium">AI Tool</span>
+                   </div>
+                   <Button
+                     variant="ghost"
+                     size="sm"
+                     className="group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all duration-300 hover:scale-105"
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       handleToolClick(tool["Tools Link"]);
+                     }}
+                   >
+                     <ExternalLink className="h-4 w-4" />
+                   </Button>
+                 </div>
+               </CardContent>
                 </Card>
               ))}
             </div>
