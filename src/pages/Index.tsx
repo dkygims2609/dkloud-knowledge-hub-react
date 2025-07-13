@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain } from "lucide-react";
+import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -37,7 +36,7 @@ const Index = () => {
         const youtubeData = await youtubeResponse.json();
         
         // AI Tools
-        const aitoolsResponse = await fetch("https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec");
+        const aitoolsResponse = await fetch("https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec");
         const aitoolsData = await aitoolsResponse.json();
         
         // Tech Corner
@@ -161,13 +160,13 @@ const Index = () => {
             <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
                 {[
-                  { name: "Movies & TV", href: "/movies-tv", icon: "🎬", desc: "Films & Series", color: "from-violet-500 to-purple-600" },
-                  { name: "YouTube Picks", href: "/ytchannels", icon: "📺", desc: "Top Channels", color: "from-red-500 to-rose-600" },
-                  { name: "AI Tools", href: "/aitools", icon: "🤖", desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
-                  { name: "Tech Corner", href: "/techcorner", icon: "📖", desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
-                  { name: "SmartTech", href: "/smarttech", icon: "⚡", desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
-                  { name: "Tech News", href: "/technews", icon: "📰", desc: "Latest Updates", color: "from-blue-500 to-indigo-600" },
-                  { name: "Portfolio", href: "/portfolio", icon: "💼", desc: "My Work", color: "from-pink-500 to-purple-600" },
+                  { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
+                  { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
+                  { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
+                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
+                  { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
+                  { name: "Tech News", href: "/technews", Icon: Newspaper, desc: "Latest Updates", color: "from-blue-500 to-indigo-600" },
+                  { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
                     key={tab.name} 
@@ -186,7 +185,9 @@ const Index = () => {
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative p-4 text-center">
-                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg">{tab.icon}</div>
+                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center">
+                          <tab.Icon className="h-6 w-6" />
+                        </div>
                         <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative">
                           {tab.name}
                           {/* Underline effect */}

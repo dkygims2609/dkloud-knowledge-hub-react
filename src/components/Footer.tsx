@@ -1,3 +1,4 @@
+
 import { Github, Mail, Heart, Shield, FileText, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -110,15 +111,7 @@ export function Footer() {
             <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <Heart className="h-4 w-4 text-red-500" />
-                <span>Built with</span>
-                <a 
-                  href="https://lovable.dev" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary hover:text-accent transition-colors font-medium"
-                >
-                  Lovable AI
-                </a>
+                <span>Powered by React + TypeScript</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span>🚀 Developed by</span>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Search, Filter, ExternalLink, Zap, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,12 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface AITool {
-  Toolname: string;
+  "Tool Name": string;
   Category: string;
   Purpose: string;
-  Pricingmodel: string;
-  "EstimatedCost (per month)": string;
-  "Tools Link": string;
+  "Pricing Model": string;
+  "Estimated Cost (per month)": string;
+  "Tool Link": string;
 }
 
 const AITools = () => {
@@ -36,7 +37,7 @@ const AITools = () => {
   const fetchTools = async () => {
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec"
+        "https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec"
       );
       const data = await response.json();
       console.log("AI Tools API Response:", data);
@@ -52,7 +53,7 @@ const AITools = () => {
 
   const filterTools = () => {
     let filtered = tools.filter((tool) =>
-      String(tool.Toolname || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(tool["Tool Name"] || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       String(tool.Purpose || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       String(tool.Category || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -62,7 +63,7 @@ const AITools = () => {
     }
 
     if (pricingFilter !== "all") {
-      filtered = filtered.filter((tool) => String(tool.Pricingmodel) === pricingFilter);
+      filtered = filtered.filter((tool) => String(tool["Pricing Model"]) === pricingFilter);
     }
 
     setFilteredTools(filtered);
@@ -142,7 +143,7 @@ const AITools = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Pricing</SelectItem>
-                {getUniqueValues("Pricingmodel").map((pricing) => (
+                {getUniqueValues("Pricing Model").map((pricing) => (
                   <SelectItem key={String(pricing)} value={String(pricing)}>
                     {String(pricing)}
                   </SelectItem>
@@ -207,16 +208,16 @@ const AITools = () => {
               }}
             >
                {filteredTools.map((tool, index) => (
-                  <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 backdrop-blur-sm bg-card/90 border border-primary/20" onClick={() => handleToolClick(tool["Tools Link"])}>
+                  <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 backdrop-blur-sm bg-slate-900/90 border border-purple-500/30" onClick={() => handleToolClick(tool["Tool Link"])}>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
-                        <Zap className="h-5 w-5 text-primary" />
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 group-hover:from-purple-500/30 group-hover:to-blue-500/30 transition-colors">
+                        <Zap className="h-5 w-5 text-purple-400" />
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors leading-tight text-foreground">
-                          {tool.Toolname || "Unnamed Tool"}
+                        <CardTitle className="text-lg font-bold group-hover:text-purple-400 transition-colors leading-tight text-white">
+                          {tool["Tool Name"] || "Unnamed Tool"}
                         </CardTitle>
                       </div>
                     </div>
@@ -224,22 +225,22 @@ const AITools = () => {
                   <div className="flex flex-wrap gap-2 mt-3">
                     <Badge 
                       variant="secondary" 
-                      className="bg-gradient-to-r from-primary/20 to-accent/20 text-primary border-primary/40 font-medium"
+                      className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 border-purple-400/40 font-medium"
                     >
                       {tool.Category || "General"}
                     </Badge>
                     <Badge 
                       variant="outline"
-                      className={tool.Pricingmodel === "Free" 
-                        ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border-green-500/40 font-medium" 
-                        : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-400 border-amber-500/40 font-medium"
+                      className={tool["Pricing Model"] === "Free" 
+                        ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/40 font-medium" 
+                        : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/40 font-medium"
                       }
                     >
-                      {tool.Pricingmodel || "Unknown"}
+                      {tool["Pricing Model"] || "Unknown"}
                     </Badge>
-                    {tool["EstimatedCost (per month)"] && tool["EstimatedCost (per month)"] !== "" && (
-                      <Badge variant="outline" className="bg-accent/20 border-accent/40 text-accent font-medium">
-                        {tool["EstimatedCost (per month)"]}
+                    {tool["Estimated Cost (per month)"] && tool["Estimated Cost (per month)"] !== "" && (
+                      <Badge variant="outline" className="bg-blue-500/20 border-blue-400/40 text-blue-300 font-medium">
+                        {tool["Estimated Cost (per month)"]}
                       </Badge>
                     )}
                   </div>
@@ -247,26 +248,26 @@ const AITools = () => {
               
                 <CardContent className="space-y-4 pt-2">
                   <div>
-                    <h4 className="font-semibold text-sm mb-2 text-primary">Purpose:</h4>
-                    <p className="text-sm text-foreground/80 leading-relaxed">
+                    <h4 className="font-semibold text-sm mb-2 text-purple-400">Purpose:</h4>
+                    <p className="text-sm text-gray-300 leading-relaxed">
                       {tool.Purpose || "No description available"}
                     </p>
                   </div>
                   
-                  <div className="flex items-center justify-between pt-4 border-t border-primary/20">
-                    <div className="flex items-center space-x-2 text-sm text-foreground/70">
-                      <div className="p-1 rounded bg-primary/20">
-                        <Zap className="h-3 w-3 text-primary" />
+                  <div className="flex items-center justify-between pt-4 border-t border-purple-500/20">
+                    <div className="flex items-center space-x-2 text-sm text-gray-400">
+                      <div className="p-1 rounded bg-purple-500/20">
+                        <Zap className="h-3 w-3 text-purple-400" />
                       </div>
                       <span className="font-medium">AI Tool</span>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all duration-300 hover:scale-105 border border-primary/30"
+                      className="group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:text-white transition-all duration-300 hover:scale-105 border border-purple-500/30 text-purple-300"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleToolClick(tool["Tools Link"]);
+                        handleToolClick(tool["Tool Link"]);
                       }}
                     >
                       <ExternalLink className="h-4 w-4" />
