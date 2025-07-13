@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Newspaper, Briefcase } from "lucide-react";
+import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Newspaper, Briefcase, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ const navigation = [
   { name: "Tech Corner", href: "/techcorner", icon: BookOpen, color: "from-green-500 to-emerald-500" },
   { name: "SmartTech", href: "/smarttech", icon: Zap, color: "from-yellow-500 to-amber-500" },
   { name: "Tech News", href: "/technews", icon: Newspaper, color: "from-indigo-500 to-purple-500" },
+  { name: "Services", href: "/services", icon: Settings, color: "from-pink-500 to-rose-500" },
   { name: "Portfolio", href: "/portfolio", icon: Briefcase, color: "from-teal-500 to-green-500" },
 ];
 
