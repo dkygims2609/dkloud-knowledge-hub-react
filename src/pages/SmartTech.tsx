@@ -1,9 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Star, ShoppingCart, Heart, Filter, Loader2, MapPin, Smartphone, Laptop, Tablet, Watch } from "lucide-react";
+import { ExternalLink, Star, ShoppingCart, Heart, Filter, Loader2, MapPin } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLatestGadgets } from "@/hooks/useLatestGadgets";
 import { useState, useEffect } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
@@ -23,18 +22,7 @@ interface UniqueGadget {
   rating?: string;
   specifications?: string;
   availability?: string;
-  [key: string]: any; // Allow for dynamic columns from the new API
-}
-
-interface TechSpecsProduct {
-  id: string;
-  brand: string;
-  name: string;
-  image?: string;
-  specifications?: any;
-  launch_date?: string;
-  price?: number;
-  category?: string;
+  [key: string]: any; // Allow for dynamic columns from the API
 }
 
 const SmartTech = () => {
@@ -42,41 +30,45 @@ const SmartTech = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [indianOnly, setIndianOnly] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<string>('trending');
   const [uniqueGadgets, setUniqueGadgets] = useState<UniqueGadget[]>([]);
-  const [techSpecsProducts, setTechSpecsProducts] = useState<TechSpecsProduct[]>([]);
   const [uniqueLoading, setUniqueLoading] = useState(false);
-  const [techSpecsLoading, setTechSpecsLoading] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<string>('All');
+  const [uniqueError, setUniqueError] = useState<string | null>(null);
   const { success: showSuccess } = useToast();
 
-  // Fetch Unique Gadgets from new Google Sheets API
+  // Fetch Unique Gadgets from Google Sheets API
   const fetchUniqueGadgets = async () => {
     setUniqueLoading(true);
+    setUniqueError(null);
     try {
       const response = await fetch('https://script.google.com/macros/s/AKfycbwZfjKJimT8xk8QOXuAoWs5zBN6XloA2KdwmftPGJaDE0MlKwhCF0rGWbKNLl6_xCVE/exec');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       
-      // Handle dynamic columns from the new API
+      // Handle dynamic columns from the API
       const formattedData = data.map((item: any, index: number) => {
-        // Create a base object with common fields
+        // Create a base object with common fields, handling various possible column names
         const gadget: UniqueGadget = {
           id: `unique-${index}`,
-          name: item['Product Name'] || item['Name'] || item.name || 'Unknown Product',
-          description: item['Description'] || item.description || 'No description available',
-          image_url: item['Image URL'] || item['Image'] || item.image_url || item.image || '/placeholder.svg',
-          buy_link: item['Buy Link'] || item['Purchase Link'] || item.buy_link || item.link || '#',
-          category: item['Category'] || item.category || 'General',
-          brand: item['Brand'] || item.brand || 'Unknown',
-          price: item['Price'] || item.price || 'N/A',
-          rating: item['Rating'] || item.rating || '',
-          specifications: item['Specifications'] || item['Specs'] || item.specifications || '',
-          availability: item['Availability'] || item.availability || ''
+          name: item['Product Name'] || item['Name'] || item.name || item.title || 'Unknown Product',
+          description: item['Description'] || item.description || item.summary || item.details || 'No description available',
+          image_url: item['Image URL'] || item['Image'] || item['Photo'] || item.image_url || item.image || item.photo || '/placeholder.svg',
+          buy_link: item['Buy Link'] || item['Purchase Link'] || item['Product Link'] || item.buy_link || item.link || item.url || '#',
+          category: item['Category'] || item.category || item.type || 'General',
+          brand: item['Brand'] || item.brand || item.manufacturer || 'Unknown',
+          price: item['Price'] || item.price || item.cost || 'N/A',
+          rating: item['Rating'] || item.rating || item.score || '',
+          specifications: item['Specifications'] || item['Specs'] || item.specifications || item.features || '',
+          availability: item['Availability'] || item.availability || item.stock || item.status || ''
         };
         
-        // Add any additional dynamic columns
+        // Add any additional dynamic columns that weren't mapped above
         Object.keys(item).forEach(key => {
-          if (!gadget[key.toLowerCase()]) {
+          const lowerKey = key.toLowerCase();
+          if (!gadget.hasOwnProperty(lowerKey) && !['product name', 'name', 'description', 'image url', 'image', 'buy link', 'purchase link', 'category', 'brand', 'price', 'rating', 'specifications', 'specs', 'availability'].includes(lowerKey)) {
             gadget[key] = item[key];
           }
         });
@@ -85,77 +77,18 @@ const SmartTech = () => {
       }) as UniqueGadget[];
       
       setUniqueGadgets(formattedData);
+      showSuccess("Data loaded", "Unique gadgets loaded successfully");
     } catch (error) {
       console.error('Error fetching unique gadgets:', error);
-      // Set empty array as fallback
+      setUniqueError(error instanceof Error ? error.message : 'Failed to fetch unique gadgets');
       setUniqueGadgets([]);
     } finally {
       setUniqueLoading(false);
     }
   };
 
-  // Fetch TechSpecs API data
-  const fetchTechSpecsData = async () => {
-    setTechSpecsLoading(true);
-    try {
-      const response = await fetch('https://api.techspecs.io/v4/product/latest', {
-        headers: {
-          'X-API-Key': 'bcb845df-57b9-4954-9df5-156756de9d8f'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      const formattedData = (data.products || data || []).slice(0, 20).map((item: any, index: number) => ({
-        id: `techspecs-${index}`,
-        brand: item.brand || 'Unknown Brand',
-        name: item.name || item.title || 'Unknown Product',
-        image: item.image || item.image_url || '/placeholder.svg',
-        specifications: item.specifications || item.specs || {},
-        launch_date: item.launch_date || item.releaseDate || 'TBA',
-        price: item.price || item.launch_price || 0,
-        category: item.category || 'General'
-      })) as TechSpecsProduct[];
-      
-      setTechSpecsProducts(formattedData);
-    } catch (error) {
-      console.error('Error fetching TechSpecs data:', error);
-      // Fallback with mock data for demonstration
-      const mockData: TechSpecsProduct[] = [
-        {
-          id: 'mock-1',
-          brand: 'Apple',
-          name: 'iPhone 15 Pro Max',
-          image: '/placeholder.svg',
-          specifications: { display: '6.7 inch', storage: '128GB', ram: '8GB' },
-          launch_date: '2024-01-15',
-          price: 1199,
-          category: 'Phones'
-        },
-        {
-          id: 'mock-2',
-          brand: 'Samsung',
-          name: 'Galaxy S24 Ultra',
-          image: '/placeholder.svg',
-          specifications: { display: '6.8 inch', storage: '256GB', ram: '12GB' },
-          launch_date: '2024-02-01',
-          price: 1299,
-          category: 'Phones'
-        }
-      ];
-      setTechSpecsProducts(mockData);
-    } finally {
-      setTechSpecsLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchUniqueGadgets();
-    fetchTechSpecsData();
   }, []);
 
   const handleFilterChange = async () => {
@@ -170,11 +103,6 @@ const SmartTech = () => {
 
   const handleRefresh = async () => {
     await refresh();
-    if (activeTab === 'unique-gadgets') {
-      await fetchUniqueGadgets();
-    } else if (activeTab === 'trending') {
-      await fetchTechSpecsData();
-    }
     showSuccess("Data refreshed", "Latest gadgets loaded successfully");
   };
 
@@ -184,14 +112,11 @@ const SmartTech = () => {
     return 'Price not available';
   };
 
-  const getFilteredTechSpecsProducts = () => {
-    if (selectedFilter === 'All') return techSpecsProducts;
-    return techSpecsProducts.filter(product => 
-      product.category?.toLowerCase().includes(selectedFilter.toLowerCase())
-    );
+  const handleBuyClick = (buyLink: string) => {
+    if (buyLink && buyLink !== '#') {
+      window.open(buyLink, '_blank', 'noopener,noreferrer');
+    }
   };
-
-  const filterCategories = ['All', 'Phones', 'Laptops', 'Tablets', 'Smartwatches'];
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -209,268 +134,133 @@ const SmartTech = () => {
           </p>
         </div>
 
-        {/* Enhanced Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
-          <TabsList className="grid w-full grid-cols-2 bg-background/20 backdrop-blur-md border border-border/30 rounded-2xl p-2 mb-8">
-            <TabsTrigger 
-              value="unique-gadgets" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
-            >
-              💎 Unique Gadgets
-            </TabsTrigger>
-            <TabsTrigger 
-              value="trending" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
-            >
-              🚀 Trending & New Launches
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Unique Gadgets Tab */}
-          <TabsContent value="unique-gadgets" className="space-y-6">
-            <div className="bg-card rounded-xl p-6 mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Filter className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Unique Gadgets Collection:</span>
-                </div>
-                <RefreshButton onRefresh={() => fetchUniqueGadgets()} disabled={uniqueLoading} />
+        {/* Unique Gadgets Section */}
+        <div className="mb-16">
+          <div className="bg-card rounded-xl p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">💎 Unique Gadgets Collection:</span>
               </div>
+              <RefreshButton onRefresh={fetchUniqueGadgets} disabled={uniqueLoading} />
             </div>
+          </div>
 
-            {uniqueLoading ? (
-              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <SkeletonLoader key={i} variant="card" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-                {uniqueGadgets.length === 0 ? (
-                  <EmptyState 
-                    title="No unique gadgets found"
-                    description="No unique gadgets available from the collection."
-                    className="col-span-full"
-                  />
-                ) : (
-                  uniqueGadgets.map((gadget) => (
-                    <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-purple-50/10 dark:to-purple-950/20 border-2 hover:border-purple-500/50">
-                      <div className="relative">
-                        <img 
-                          src={gadget.image_url || '/placeholder.svg'} 
-                          alt={gadget.name}
-                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
-                          loading="lazy"
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg';
-                          }}
-                        />
-                        <Button
-                          size="icon"
-                          variant="outline"
-                          className="absolute top-4 right-4 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
-                        >
-                          <Heart className="h-4 w-4" />
-                        </Button>
+          {uniqueError && (
+            <ErrorState 
+              error={uniqueError}
+              onRetry={fetchUniqueGadgets}
+              title="Failed to load unique gadgets"
+              description="We couldn't fetch the unique gadgets data. Please try again."
+            />
+          )}
+
+          {uniqueLoading ? (
+            <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <SkeletonLoader key={i} variant="card" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+              {uniqueGadgets.length === 0 ? (
+                <EmptyState 
+                  title="No unique gadgets found"
+                  description="No unique gadgets available from the collection."
+                  className="col-span-full"
+                />
+              ) : (
+                uniqueGadgets.map((gadget) => (
+                  <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-purple-50/10 dark:to-purple-950/20 border-2 hover:border-purple-500/50">
+                    <div className="relative">
+                      <img 
+                        src={gadget.image_url || '/placeholder.svg'} 
+                        alt={gadget.name}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder.svg';
+                        }}
+                      />
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="absolute top-4 right-4 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
+                      >
+                        <Heart className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-purple-500 to-blue-600 text-white">
+                          {gadget.category}
+                        </Badge>
+                        {gadget.rating && (
+                          <div className="flex items-center gap-1">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="text-xs font-medium">{gadget.rating}</span>
+                          </div>
+                        )}
                       </div>
+                      
+                      <CardTitle className="text-lg leading-tight group-hover:text-purple-600 transition-colors">
+                        {gadget.name}
+                      </CardTitle>
+                      
+                      {gadget.brand && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="font-medium">{gadget.brand}</span>
+                        </div>
+                      )}
+                      
+                      <CardDescription className="text-sm line-clamp-2">
+                        {gadget.description}
+                      </CardDescription>
+                    </CardHeader>
 
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-purple-500 to-blue-600 text-white">
-                            {gadget.category}
-                          </Badge>
-                          {gadget.rating && (
-                            <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              <span className="text-xs font-medium">{gadget.rating}</span>
-                            </div>
-                          )}
+                    <CardContent className="pt-0">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg font-bold text-purple-600">
+                              {gadget.price}
+                            </span>
+                          </div>
                         </div>
                         
-                        <CardTitle className="text-lg leading-tight group-hover:text-purple-600 transition-colors">
-                          {gadget.name}
-                        </CardTitle>
-                        
-                        {gadget.brand && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <span className="font-medium">{gadget.brand}</span>
+                        {gadget.specifications && (
+                          <div className="text-xs text-muted-foreground">
+                            <p className="font-medium mb-1">Specifications:</p>
+                            <p className="line-clamp-2">{gadget.specifications}</p>
                           </div>
                         )}
                         
-                        <CardDescription className="text-sm line-clamp-2">
-                          {gadget.description}
-                        </CardDescription>
-                      </CardHeader>
-
-                      <CardContent className="pt-0">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-lg font-bold text-purple-600">
-                                {gadget.price}
-                              </span>
-                            </div>
+                        {gadget.availability && (
+                          <div className="text-xs font-medium text-green-600">
+                            ✓ {gadget.availability}
                           </div>
-                          
-                          {gadget.specifications && (
-                            <div className="text-xs text-muted-foreground">
-                              <p className="font-medium mb-1">Specifications:</p>
-                              <p className="line-clamp-2">{gadget.specifications}</p>
-                            </div>
-                          )}
-                          
-                          {gadget.availability && (
-                            <div className="text-xs font-medium text-green-600">
-                              ✓ {gadget.availability}
-                            </div>
-                          )}
-                          
-                          <div className="flex gap-2">
-                            <Button 
-                              size="sm" 
-                              className="flex-1 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
-                              onClick={() => gadget.buy_link && window.open(gadget.buy_link, '_blank', 'noopener,noreferrer')}
-                              disabled={!gadget.buy_link || gadget.buy_link === '#'}
-                            >
-                              <ShoppingCart className="h-3 w-3 mr-2" />
-                              Buy Now
-                            </Button>
-                          </div>
+                        )}
+                        
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            className="flex-1 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
+                            onClick={() => handleBuyClick(gadget.buy_link || '')}
+                            disabled={!gadget.buy_link || gadget.buy_link === '#'}
+                          >
+                            <ShoppingCart className="h-3 w-3 mr-2" />
+                            Buy Now
+                          </Button>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
-              </div>
-            )}
-          </TabsContent>
-
-          {/* Trending & New Launches Tab */}
-          <TabsContent value="trending" className="space-y-6">
-            <div className="bg-card rounded-xl p-6 mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Filter className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Filter by Category:</span>
-                </div>
-                <RefreshButton onRefresh={() => fetchTechSpecsData()} disabled={techSpecsLoading} />
-              </div>
-              
-              <div className="flex flex-wrap gap-2">
-                {filterCategories.map((category) => (
-                  <Badge
-                    key={category}
-                    variant={selectedFilter === category ? "default" : "outline"}
-                    className={`cursor-pointer transition-all duration-200 ${
-                      selectedFilter === category 
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
-                        : 'hover:bg-muted'
-                    }`}
-                    onClick={() => setSelectedFilter(category)}
-                  >
-                    {category === 'Phones' && <Smartphone className="h-3 w-3 mr-1" />}
-                    {category === 'Laptops' && <Laptop className="h-3 w-3 mr-1" />}
-                    {category === 'Tablets' && <Tablet className="h-3 w-3 mr-1" />}
-                    {category === 'Smartwatches' && <Watch className="h-3 w-3 mr-1" />}
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-
-            {techSpecsLoading ? (
-              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <SkeletonLoader key={i} variant="card" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-                {getFilteredTechSpecsProducts().length === 0 ? (
-                  <EmptyState 
-                    title="No products found"
-                    description="No trending products available for the selected category."
-                    className="col-span-full"
-                  />
-                ) : (
-                  getFilteredTechSpecsProducts().map((product) => (
-                    <Card key={product.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-blue-50/20 dark:to-blue-950/20 border-2 hover:border-blue-500/50">
-                      <div className="relative">
-                        <img 
-                          src={product.image || '/placeholder.svg'} 
-                          alt={product.name}
-                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
-                          loading="lazy"
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg';
-                          }}
-                        />
-                        <Badge className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
-                          🚀 New Launch
-                        </Badge>
                       </div>
-
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <Badge variant="secondary" className="shrink-0">
-                            {product.category}
-                          </Badge>
-                        </div>
-                        
-                        <CardTitle className="text-lg leading-tight group-hover:text-blue-600 transition-colors">
-                          {product.name}
-                        </CardTitle>
-                        
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <span className="font-medium">{product.brand}</span>
-                        </div>
-                        
-                        <CardDescription className="text-sm">
-                          Launch Date: {new Date(product.launch_date || '').toLocaleDateString() || 'TBA'}
-                        </CardDescription>
-                      </CardHeader>
-
-                      <CardContent className="pt-0">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-lg font-bold text-blue-600">
-                                {product.price ? `$${product.price.toLocaleString()}` : 'Price TBA'}
-                              </span>
-                            </div>
-                          </div>
-                          
-                          {product.specifications && Object.keys(product.specifications).length > 0 && (
-                            <div className="space-y-1">
-                              <p className="text-xs font-medium text-muted-foreground">Key Specs:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {Object.entries(product.specifications).slice(0, 3).map(([key, value]) => (
-                                  <Badge key={key} variant="outline" className="text-xs">
-                                    {key}: {String(value).slice(0, 10)}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                          
-                          <div className="flex gap-2">
-                            <Button 
-                              size="sm" 
-                              className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
-                            >
-                              <ExternalLink className="h-3 w-3 mr-2" />
-                              Compare
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Existing Database Gadgets Section - Keep as fallback */}
         <div className="mt-16">
