@@ -11,14 +11,15 @@ import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
 import { RefreshButton } from "@/components/ui/refresh-button";
 import { useToast } from "@/hooks/useToast";
 
-interface SmartTechTool {
+interface SheetGadget {
   id: string;
-  toolname: string;
-  category: string;
-  purpose: string;
-  pricingmodel: string;
-  estimatedcost: string;
-  toolslink: string;
+  name: string;
+  description: string;
+  image_url?: string;
+  buy_link?: string;
+  category?: string;
+  brand?: string;
+  price?: string;
 }
 
 interface TechSpecsProduct {
@@ -37,88 +38,55 @@ const SmartTech = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [indianOnly, setIndianOnly] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<string>('real-smarttech');
-  const [smartTechTools, setSmartTechTools] = useState<SmartTechTool[]>([]);
+  const [activeTab, setActiveTab] = useState<string>('trending');
+  const [sheetGadgets, setSheetGadgets] = useState<SheetGadget[]>([]);
   const [techSpecsProducts, setTechSpecsProducts] = useState<TechSpecsProduct[]>([]);
-  const [toolsLoading, setToolsLoading] = useState(false);
+  const [sheetLoading, setSheetLoading] = useState(false);
   const [techSpecsLoading, setTechSpecsLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
-  const { success: showSuccess, error: showError } = useToast();
+  const { success: showSuccess } = useToast();
 
-  // Fetch Smart Tech Tools from corrected Google Sheets API
-  const fetchSmartTechTools = async () => {
-    setToolsLoading(true);
+  // Fetch Google Sheets data
+  const fetchSheetData = async () => {
+    setSheetLoading(true);
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwZfjKJimT8xk8QOXuAoWs5zBN6XloA2KdwmftPGJaDE0MlKwhCF0rGWbKNLl6_xCVE/exec');
+      const response = await fetch('https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec');
+      const data = await response.json();
+      
+      const formattedData = data.map((item: any, index: number) => ({
+        id: `sheet-${index}`,
+        name: item['Product Name'] || item.name || 'Unknown Product',
+        description: item.Description || item.description || 'No description available',
+        image_url: item['Image URL'] || item.image_url || '/placeholder.svg',
+        buy_link: item['Buy Link'] || item.buy_link || '#',
+        category: item.Category || item.category || 'General',
+        brand: item.Brand || item.brand || 'Unknown',
+        price: item.Price || item.price || 'N/A'
+      })) as SheetGadget[];
+      
+      setSheetGadgets(formattedData);
+    } catch (error) {
+      console.error('Error fetching sheet data:', error);
+    } finally {
+      setSheetLoading(false);
+    }
+  };
+
+  // Fetch TechSpecs API data
+  const fetchTechSpecsData = async () => {
+    setTechSpecsLoading(true);
+    try {
+      const response = await fetch('https://api.techspecs.io/v4/product/latest', {
+        headers: {
+          'X-API-Key': 'bcb845df-57b9-4954-9df5-156756de9d8f'
+        }
+      });
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log('Smart Tech Tools API Response:', data);
-      
-      const formattedData = (Array.isArray(data) ? data : data.data || []).map((item: any, index: number) => ({
-        id: `tool-${index}`,
-        toolname: item.Toolname || item.toolname || 'Unknown Tool',
-        category: item.Category || item.category || 'General',
-        purpose: item.Purpose || item.purpose || 'No description available',
-        pricingmodel: item.Pricingmodel || item.pricingmodel || 'Contact for pricing',
-        estimatedcost: item['EstimatedCost (per month)'] || item.estimatedcost || 'N/A',
-        toolslink: item['Tools Link'] || item.toolslink || '#'
-      })) as SmartTechTool[];
-      
-      setSmartTechTools(formattedData);
-      showSuccess("Smart Tech Tools loaded", "Successfully fetched latest tools");
-    } catch (error) {
-      console.error('Error fetching Smart Tech Tools:', error);
-      showError("Failed to load Smart Tech Tools", "Using fallback data");
-      
-      // Fallback with sample data
-      const fallbackData: SmartTechTool[] = [
-        {
-          id: 'tool-1',
-          toolname: 'ChatGPT Plus',
-          category: 'AI Assistant',
-          purpose: 'Advanced AI-powered conversational assistant for productivity',
-          pricingmodel: 'Subscription',
-          estimatedcost: '$20/month',
-          toolslink: 'https://openai.com/chatgpt'
-        },
-        {
-          id: 'tool-2',
-          toolname: 'Notion AI',
-          category: 'Productivity',
-          purpose: 'AI-enhanced note-taking and project management platform',
-          pricingmodel: 'Freemium',
-          estimatedcost: '$10/month',
-          toolslink: 'https://notion.so'
-        }
-      ];
-      setSmartTechTools(fallbackData);
-    } finally {
-      setToolsLoading(false);
-    }
-  };
-
-  // Fetch TechSpecs API data with proper authentication
-  const fetchTechSpecsData = async () => {
-    setTechSpecsLoading(true);
-    try {
-      const response = await fetch('https://api.techspecs.io/v4/product/latest', {
-        headers: {
-          'X-API-Key': 'bcb845df-57b9-4954-9df5-156756de9d8f',
-          'Authorization': 'Bearer bcb845df-57b9-4954-9df5-156756de9d8f',
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`TechSpecs API error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log('TechSpecs API Response:', data);
       
       const formattedData = (data.products || data || []).slice(0, 20).map((item: any, index: number) => ({
         id: `techspecs-${index}`,
@@ -126,58 +94,35 @@ const SmartTech = () => {
         name: item.name || item.title || 'Unknown Product',
         image: item.image || item.image_url || '/placeholder.svg',
         specifications: item.specifications || item.specs || {},
-        launch_date: item.launch_date || item.releaseDate || new Date().toISOString(),
+        launch_date: item.launch_date || item.releaseDate || 'TBA',
         price: item.price || item.launch_price || 0,
         category: item.category || 'General'
       })) as TechSpecsProduct[];
       
       setTechSpecsProducts(formattedData);
-      showSuccess("Latest products loaded", "Successfully fetched trending gadgets");
     } catch (error) {
       console.error('Error fetching TechSpecs data:', error);
-      showError("TechSpecs API unavailable", "Using enhanced mock data");
-      
-      // Enhanced mock data with current products
+      // Fallback with mock data for demonstration
       const mockData: TechSpecsProduct[] = [
         {
           id: 'mock-1',
           brand: 'Apple',
-          name: 'iPhone 16 Pro Max',
-          image: 'https://images.unsplash.com/photo-1592286130895-6e4b19efb85c?w=400&h=300&fit=crop',
-          specifications: { display: '6.7" Super Retina', storage: '256GB', chip: 'A18 Pro' },
-          launch_date: new Date().toISOString(),
+          name: 'iPhone 15 Pro Max',
+          image: '/placeholder.svg',
+          specifications: { display: '6.7 inch', storage: '128GB', ram: '8GB' },
+          launch_date: '2024-01-15',
           price: 1199,
           category: 'Phones'
         },
         {
           id: 'mock-2',
           brand: 'Samsung',
-          name: 'Galaxy S25 Ultra',
-          image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=300&fit=crop',
-          specifications: { display: '6.8" Dynamic AMOLED', storage: '512GB', ram: '12GB' },
-          launch_date: new Date().toISOString(),
+          name: 'Galaxy S24 Ultra',
+          image: '/placeholder.svg',
+          specifications: { display: '6.8 inch', storage: '256GB', ram: '12GB' },
+          launch_date: '2024-02-01',
           price: 1299,
           category: 'Phones'
-        },
-        {
-          id: 'mock-3',
-          brand: 'MacBook',
-          name: 'MacBook Air M4',
-          image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=300&fit=crop',
-          specifications: { chip: 'M4', ram: '16GB', storage: '512GB SSD' },
-          launch_date: new Date().toISOString(),
-          price: 1499,
-          category: 'Laptops'
-        },
-        {
-          id: 'mock-4',
-          brand: 'Apple',
-          name: 'Apple Watch Series 10',
-          image: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=400&h=300&fit=crop',
-          specifications: { display: '45mm', battery: '36 hours', health: 'Advanced sensors' },
-          launch_date: new Date().toISOString(),
-          price: 429,
-          category: 'Smartwatches'
         }
       ];
       setTechSpecsProducts(mockData);
@@ -187,12 +132,9 @@ const SmartTech = () => {
   };
 
   useEffect(() => {
-    if (activeTab === 'real-smarttech') {
-      fetchSmartTechTools();
-    } else if (activeTab === 'trending') {
-      fetchTechSpecsData();
-    }
-  }, [activeTab]);
+    fetchSheetData();
+    fetchTechSpecsData();
+  }, []);
 
   const handleFilterChange = async () => {
     await fetchGadgets({
@@ -207,11 +149,17 @@ const SmartTech = () => {
   const handleRefresh = async () => {
     await refresh();
     if (activeTab === 'real-smarttech') {
-      await fetchSmartTechTools();
+      await fetchSheetData();
     } else if (activeTab === 'trending') {
       await fetchTechSpecsData();
     }
-    showSuccess("Data refreshed", "Latest content loaded successfully");
+    showSuccess("Data refreshed", "Latest gadgets loaded successfully");
+  };
+
+  const formatPrice = (priceUSD?: number, priceINR?: number) => {
+    if (priceINR) return `₹${priceINR.toLocaleString()}`;
+    if (priceUSD) return `$${priceUSD.toLocaleString()}`;
+    return 'Price not available';
   };
 
   const getFilteredTechSpecsProducts = () => {
@@ -230,12 +178,12 @@ const SmartTech = () => {
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <span style={{ color: "#f59e0b" }}>⚡</span> 
-            <span style={{ color: "#6894f1" }}>Smart</span>
-            <span style={{ color: "#7b72f2" }}>Tech</span> 
-            <span style={{ color: "#8d61f3" }}>Tools</span>
+            <span style={{ color: "#7b72f2" }}>Smart</span>
+            <span style={{ color: "#6894f1" }}>Tech</span> 
+            <span style={{ color: "#8d61f3" }}>Gadgets</span>
           </h1>
           <p className="text-xl text-muted-foreground">
-            Latest smart tools with <span style={{ color: "#10b981" }} className="font-medium">real-time data</span> and <span style={{ color: "#6894f1" }} className="font-medium">trending launches</span>
+            Latest gadgets with <span style={{ color: "#10b981" }} className="font-medium">Indian market</span> availability and <span style={{ color: "#6894f1" }} className="font-medium">real-time pricing</span>
           </p>
         </div>
 
@@ -262,13 +210,13 @@ const SmartTech = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Smart Tech Tools Collection</span>
+                  <span className="text-sm font-medium">Real SmartTech Collection:</span>
                 </div>
-                <RefreshButton onRefresh={fetchSmartTechTools} disabled={toolsLoading} />
+                <RefreshButton onRefresh={() => fetchSheetData()} disabled={sheetLoading} />
               </div>
             </div>
 
-            {toolsLoading ? (
+            {sheetLoading ? (
               <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <SkeletonLoader key={i} variant="card" />
@@ -276,41 +224,63 @@ const SmartTech = () => {
               </div>
             ) : (
               <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-                {smartTechTools.length === 0 ? (
+                {sheetGadgets.length === 0 ? (
                   <EmptyState 
-                    title="No tools found"
-                    description="No smart tech tools available from the data source."
+                    title="No gadgets found"
+                    description="No smart gadgets available from the sheet data."
                     className="col-span-full"
                   />
                 ) : (
-                  smartTechTools.map((tool) => (
-                    <Card key={tool.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-muted/20 border-2 hover:border-amber-500/50">
+                  sheetGadgets.map((gadget) => (
+                    <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-muted/20 border-2 hover:border-amber-500/50">
+                      <div className="relative">
+                        <img 
+                          src={gadget.image_url || '/placeholder.svg'} 
+                          alt={gadget.name}
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
+                        />
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          className="absolute top-4 right-4 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
+                        >
+                          <Heart className="h-4 w-4" />
+                        </Button>
+                      </div>
+
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-amber-500 to-orange-600 text-white">
-                            {tool.category}
+                            {gadget.category}
                           </Badge>
                         </div>
                         
                         <CardTitle className="text-lg leading-tight group-hover:text-amber-600 transition-colors">
-                          {tool.toolname}
+                          {gadget.name}
                         </CardTitle>
                         
-                        <CardDescription className="text-sm line-clamp-3">
-                          {tool.purpose}
+                        {gadget.brand && (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <span className="font-medium">{gadget.brand}</span>
+                          </div>
+                        )}
+                        
+                        <CardDescription className="text-sm line-clamp-2">
+                          {gadget.description}
                         </CardDescription>
                       </CardHeader>
 
                       <CardContent className="pt-0">
                         <div className="space-y-4">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-muted-foreground">Pricing:</span>
-                              <span className="text-sm font-medium">{tool.pricingmodel}</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-muted-foreground">Est. Cost:</span>
-                              <span className="text-lg font-bold text-amber-600">{tool.estimatedcost}</span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg font-bold text-amber-600">
+                                {gadget.price}
+                              </span>
                             </div>
                           </div>
                           
@@ -318,11 +288,11 @@ const SmartTech = () => {
                             <Button 
                               size="sm" 
                               className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
-                              onClick={() => tool.toolslink && tool.toolslink !== '#' && window.open(tool.toolslink, '_blank', 'noopener,noreferrer')}
-                              disabled={!tool.toolslink || tool.toolslink === '#'}
+                              onClick={() => gadget.buy_link && window.open(gadget.buy_link, '_blank', 'noopener,noreferrer')}
+                              disabled={!gadget.buy_link || gadget.buy_link === '#'}
                             >
-                              <ExternalLink className="h-3 w-3 mr-2" />
-                              Try Tool
+                              <ShoppingCart className="h-3 w-3 mr-2" />
+                              Buy Now
                             </Button>
                           </div>
                         </div>
@@ -342,7 +312,7 @@ const SmartTech = () => {
                   <Filter className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Filter by Category:</span>
                 </div>
-                <RefreshButton onRefresh={fetchTechSpecsData} disabled={techSpecsLoading} />
+                <RefreshButton onRefresh={() => fetchTechSpecsData()} disabled={techSpecsLoading} />
               </div>
               
               <div className="flex flex-wrap gap-2">
@@ -461,7 +431,7 @@ const SmartTech = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Database Gadgets Section - Keep as fallback */}
+        {/* Existing Database Gadgets Section - Keep as fallback */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-6 text-center">
             <span style={{ color: "#6894f1" }}>Database</span> Collection
@@ -637,7 +607,7 @@ const SmartTech = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="text-lg font-bold text-primary">
-                              {gadget.price_inr ? `₹${gadget.price_inr.toLocaleString()}` : gadget.price_usd ? `$${gadget.price_usd.toLocaleString()}` : 'Price not available'}
+                              {formatPrice(gadget.price_usd, gadget.price_inr)}
                             </span>
                             {gadget.price_inr && gadget.price_usd && (
                               <span className="text-xs text-muted-foreground">
