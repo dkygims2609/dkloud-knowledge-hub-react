@@ -39,6 +39,9 @@ const AITools = () => {
         "https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec"
       );
       const data = await response.json();
+      console.log("AI Tools API Response:", data);
+      console.log("First tool sample:", data[0]);
+      console.log("Column names in first tool:", Object.keys(data[0] || {}));
       setTools(data);
       setLoading(false);
     } catch (error) {
