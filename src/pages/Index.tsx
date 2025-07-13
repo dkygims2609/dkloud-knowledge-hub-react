@@ -88,11 +88,11 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            {/* Modern dKloud Logo Design - Adjusted Size */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
-              <span className="text-blue-600 dark:text-blue-400">d</span>
-              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 dark:from-purple-400 dark:via-blue-400 dark:to-indigo-500 bg-clip-text text-transparent">K</span>
-              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 dark:from-purple-400 dark:via-blue-400 dark:to-indigo-500 bg-clip-text text-transparent">loud</span>
+            {/* Updated dKloud Logo Design with Specified Colors */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+              <span style={{ color: "#7b72f2" }}>d</span>
+              <span style={{ color: "#6d86f1" }}>K</span>
+              <span style={{ color: "#6894f1" }}>loud</span>
             </h1>
             
             {/* Animated Tagline */}
@@ -115,13 +115,13 @@ const Index = () => {
             <div className="text-center mb-6 fade-in max-w-3xl mx-auto" style={{animationDelay: "0.4s"}}>
               <h2 className="text-lg md:text-xl font-medium mb-3 leading-relaxed">
                 <span className="text-foreground/80">
-                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="text-blue-500 font-medium">AI fuels curiosity</span>, and <span className="text-purple-500 font-medium">learning becomes a shared adventure</span>.
+                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span style={{ color: "#6894f1" }} className="font-medium">AI fuels curiosity</span>, and <span style={{ color: "#8d61f3" }} className="font-medium">learning becomes a shared adventure</span>.
                 </span>
               </h2>
               
               <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                 <span className="text-foreground/60">
-                  Whether you're a <span className="text-emerald-500">tech explorer</span>, a <span className="text-pink-500">digital creator</span>, or a <span className="text-indigo-500">seeker of knowledge</span> — this is your space to <span className="text-primary/80">discover, build, and belong</span>.
+                  Whether you're a <span style={{ color: "#10b981" }} className="font-medium">tech explorer</span>, a <span style={{ color: "#ec4899" }} className="font-medium">digital creator</span>, or a <span style={{ color: "#6366f1" }} className="font-medium">seeker of knowledge</span> — this is your space to <span className="text-primary/80">discover, build, and belong</span>.
                 </span>
               </p>
             </div>
@@ -207,9 +207,9 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span className="text-primary">dKloud</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span style={{ color: "#7b72f2" }}>dKloud</span></h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="text-purple-500 font-medium">entertainment</span>, <span className="text-blue-500 font-medium">education</span>, and <span className="text-emerald-500 font-medium">technology</span>. 
+              A comprehensive platform combining <span style={{ color: "#8d61f3" }} className="font-medium">entertainment</span>, <span style={{ color: "#6894f1" }} className="font-medium">education</span>, and <span style={{ color: "#10b981" }} className="font-medium">technology</span>. 
               All data is dynamically powered by <span className="text-accent font-medium">Google Sheets APIs</span> for <span className="text-primary font-medium">real-time updates</span>.
             </p>
           </div>
@@ -306,9 +306,9 @@ const Index = () => {
               <h4 className="text-2xl font-semibold mb-2">Dileep Yadav</h4>
               <p className="text-lg text-accent font-medium mb-6">Founder & Creative Director</p>
               <p className="text-lg text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-                A passionate, <span className="text-primary font-medium">self-taught professional</span> combining <span className="text-emerald-500 font-medium">technology</span>, <span className="text-purple-500 font-medium">creativity</span>, and <span className="text-blue-500 font-medium">community upliftment</span>. 
-                <span className="text-pink-500 font-medium">Music composer</span> working with Established Music Director <span className="text-accent font-medium">Arya Sharma</span>, guitarist, pianist, musician, writer, and <span className="text-cyan-500 font-medium">AI-driven design expert</span>.
-                I believe in creating platforms that make <span className="text-indigo-500 font-medium">knowledge more accessible</span>, <span className="text-emerald-500 font-medium">learning more engaging</span>, and <span className="text-purple-500 font-medium">creativity more visible</span>.
+                A passionate, <span className="text-primary font-medium">self-taught professional</span> combining <span style={{ color: "#10b981" }} className="font-medium">technology</span>, <span style={{ color: "#8d61f3" }} className="font-medium">creativity</span>, and <span style={{ color: "#6894f1" }} className="font-medium">community upliftment</span>. 
+                <span style={{ color: "#ec4899" }} className="font-medium">Music composer</span> working with Established Music Director <span className="text-accent font-medium">Arya Sharma</span>, guitarist, pianist, musician, writer, and <span style={{ color: "#06b6d4" }} className="font-medium">AI-driven design expert</span>.
+                I believe in creating platforms that make <span style={{ color: "#6366f1" }} className="font-medium">knowledge more accessible</span>, <span style={{ color: "#10b981" }} className="font-medium">learning more engaging</span>, and <span style={{ color: "#8d61f3" }} className="font-medium">creativity more visible</span>.
                 My aim is to build bridges between <span className="text-primary font-medium">tech and people</span> — one tab, one tool, one song at a time.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">

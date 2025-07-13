@@ -1,21 +1,140 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Star, ShoppingCart, Heart, Filter, Loader2, MapPin } from "lucide-react";
+import { ExternalLink, Star, ShoppingCart, Heart, Filter, Loader2, MapPin, Smartphone, Laptop, Tablet, Watch } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLatestGadgets } from "@/hooks/useLatestGadgets";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
 import { RefreshButton } from "@/components/ui/refresh-button";
 import { useToast } from "@/hooks/useToast";
+
+interface SheetGadget {
+  id: string;
+  name: string;
+  description: string;
+  image_url?: string;
+  buy_link?: string;
+  category?: string;
+  brand?: string;
+  price?: string;
+}
+
+interface TechSpecsProduct {
+  id: string;
+  brand: string;
+  name: string;
+  image?: string;
+  specifications?: any;
+  launch_date?: string;
+  price?: number;
+  category?: string;
+}
 
 const SmartTech = () => {
   const { gadgets, loading, error, categories, brands, fetchGadgets, refresh, lastUpdated } = useLatestGadgets();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [indianOnly, setIndianOnly] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>('trending');
+  const [sheetGadgets, setSheetGadgets] = useState<SheetGadget[]>([]);
+  const [techSpecsProducts, setTechSpecsProducts] = useState<TechSpecsProduct[]>([]);
+  const [sheetLoading, setSheetLoading] = useState(false);
+  const [techSpecsLoading, setTechSpecsLoading] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const { success: showSuccess } = useToast();
+
+  // Fetch Google Sheets data
+  const fetchSheetData = async () => {
+    setSheetLoading(true);
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec');
+      const data = await response.json();
+      
+      const formattedData = data.map((item: any, index: number) => ({
+        id: `sheet-${index}`,
+        name: item['Product Name'] || item.name || 'Unknown Product',
+        description: item.Description || item.description || 'No description available',
+        image_url: item['Image URL'] || item.image_url || '/placeholder.svg',
+        buy_link: item['Buy Link'] || item.buy_link || '#',
+        category: item.Category || item.category || 'General',
+        brand: item.Brand || item.brand || 'Unknown',
+        price: item.Price || item.price || 'N/A'
+      })) as SheetGadget[];
+      
+      setSheetGadgets(formattedData);
+    } catch (error) {
+      console.error('Error fetching sheet data:', error);
+    } finally {
+      setSheetLoading(false);
+    }
+  };
+
+  // Fetch TechSpecs API data
+  const fetchTechSpecsData = async () => {
+    setTechSpecsLoading(true);
+    try {
+      const response = await fetch('https://api.techspecs.io/v4/product/latest', {
+        headers: {
+          'X-API-Key': 'bcb845df-57b9-4954-9df5-156756de9d8f'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      const formattedData = (data.products || data || []).slice(0, 20).map((item: any, index: number) => ({
+        id: `techspecs-${index}`,
+        brand: item.brand || 'Unknown Brand',
+        name: item.name || item.title || 'Unknown Product',
+        image: item.image || item.image_url || '/placeholder.svg',
+        specifications: item.specifications || item.specs || {},
+        launch_date: item.launch_date || item.releaseDate || 'TBA',
+        price: item.price || item.launch_price || 0,
+        category: item.category || 'General'
+      })) as TechSpecsProduct[];
+      
+      setTechSpecsProducts(formattedData);
+    } catch (error) {
+      console.error('Error fetching TechSpecs data:', error);
+      // Fallback with mock data for demonstration
+      const mockData: TechSpecsProduct[] = [
+        {
+          id: 'mock-1',
+          brand: 'Apple',
+          name: 'iPhone 15 Pro Max',
+          image: '/placeholder.svg',
+          specifications: { display: '6.7 inch', storage: '128GB', ram: '8GB' },
+          launch_date: '2024-01-15',
+          price: 1199,
+          category: 'Phones'
+        },
+        {
+          id: 'mock-2',
+          brand: 'Samsung',
+          name: 'Galaxy S24 Ultra',
+          image: '/placeholder.svg',
+          specifications: { display: '6.8 inch', storage: '256GB', ram: '12GB' },
+          launch_date: '2024-02-01',
+          price: 1299,
+          category: 'Phones'
+        }
+      ];
+      setTechSpecsProducts(mockData);
+    } finally {
+      setTechSpecsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSheetData();
+    fetchTechSpecsData();
+  }, []);
 
   const handleFilterChange = async () => {
     await fetchGadgets({
@@ -29,6 +148,11 @@ const SmartTech = () => {
 
   const handleRefresh = async () => {
     await refresh();
+    if (activeTab === 'real-smarttech') {
+      await fetchSheetData();
+    } else if (activeTab === 'trending') {
+      await fetchTechSpecsData();
+    }
     showSuccess("Data refreshed", "Latest gadgets loaded successfully");
   };
 
@@ -38,240 +162,503 @@ const SmartTech = () => {
     return 'Price not available';
   };
 
+  const getFilteredTechSpecsProducts = () => {
+    if (selectedFilter === 'All') return techSpecsProducts;
+    return techSpecsProducts.filter(product => 
+      product.category?.toLowerCase().includes(selectedFilter.toLowerCase())
+    );
+  };
+
+  const filterCategories = ['All', 'Phones', 'Laptops', 'Tablets', 'Smartwatches'];
+
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            💡 SmartTech Gadgets
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span style={{ color: "#f59e0b" }}>⚡</span> 
+            <span style={{ color: "#7b72f2" }}>Smart</span>
+            <span style={{ color: "#6894f1" }}>Tech</span> 
+            <span style={{ color: "#8d61f3" }}>Gadgets</span>
           </h1>
           <p className="text-xl text-muted-foreground">
-            Latest gadgets with Indian market availability and pricing
+            Latest gadgets with <span style={{ color: "#10b981" }} className="font-medium">Indian market</span> availability and <span style={{ color: "#6894f1" }} className="font-medium">real-time pricing</span>
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="bg-card rounded-xl p-6 mb-8">
-          <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Filters:</span>
-            </div>
-            <div className="flex items-center gap-4">
-              {lastUpdated && (
-                <span className="text-xs text-muted-foreground">
-                  Last updated: {lastUpdated.toLocaleTimeString()}
-                </span>
-              )}
-              <RefreshButton onRefresh={handleRefresh} disabled={loading} />
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-4 items-center">
-            
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="All Categories" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {categories.length > 0 && categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="All Brands" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Brands</SelectItem>
-                {brands.length > 0 && brands.map((brand) => (
-                  <SelectItem key={brand} value={brand}>
-                    {brand}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="indian-only"
-                checked={indianOnly}
-                onChange={(e) => setIndianOnly(e.target.checked)}
-                className="rounded"
-              />
-              <label htmlFor="indian-only" className="text-sm cursor-pointer flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                Available in India
-              </label>
-            </div>
-
-            <Button 
-              onClick={handleFilterChange}
-              variant="outline"
-              size="sm"
-              disabled={loading}
+        {/* Enhanced Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
+          <TabsList className="grid w-full grid-cols-2 bg-background/20 backdrop-blur-md border border-border/30 rounded-2xl p-2 mb-8">
+            <TabsTrigger 
+              value="real-smarttech" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
             >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Apply Filters
-            </Button>
-          </div>
-        </div>
+              🛍️ Real SmartTech
+            </TabsTrigger>
+            <TabsTrigger 
+              value="trending" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
+            >
+              🚀 Trending & New Launches
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Gadgets Grid */}
-        {error && (
-          <ErrorState 
-            error={error}
-            onRetry={() => fetchGadgets()}
-            title="Failed to load gadgets"
-            description="We couldn't fetch the latest gadget data. Please try again."
-          />
-        )}
+          {/* Real SmartTech Tab */}
+          <TabsContent value="real-smarttech" className="space-y-6">
+            <div className="bg-card rounded-xl p-6 mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Real SmartTech Collection:</span>
+                </div>
+                <RefreshButton onRefresh={() => fetchSheetData()} disabled={sheetLoading} />
+              </div>
+            </div>
 
-        {loading ? (
-          <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <SkeletonLoader key={i} variant="card" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-            {gadgets.length === 0 ? (
-              <EmptyState 
-                title="No gadgets found"
-                description="Try adjusting your filters or check back later for new products."
-                action={
-                  <Button onClick={() => fetchGadgets()} variant="outline">
-                    Reset Filters
-                  </Button>
-                }
-                className="col-span-full"
-              />
+            {sheetLoading ? (
+              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <SkeletonLoader key={i} variant="card" />
+                ))}
+              </div>
             ) : (
-              gadgets.map((gadget) => (
-                <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                  {gadget.tags?.includes('India') && (
-                    <div className="absolute top-4 left-4 z-10">
-                      <Badge className="bg-gradient-to-r from-orange-500 to-green-500 text-white border-0">
-                        🇮🇳 India Special
-                      </Badge>
-                    </div>
-                  )}
-                  
-                  <div className="relative">
-                    {gadget.image_url ? (
-                      <img 
-                        src={gadget.image_url} 
-                        alt={`${gadget.name} - ${gadget.category} by ${gadget.brand || 'Unknown brand'}`}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.src = '/placeholder.svg';
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-48 bg-muted flex items-center justify-center">
-                        <span className="text-muted-foreground">No Image</span>
+              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+                {sheetGadgets.length === 0 ? (
+                  <EmptyState 
+                    title="No gadgets found"
+                    description="No smart gadgets available from the sheet data."
+                    className="col-span-full"
+                  />
+                ) : (
+                  sheetGadgets.map((gadget) => (
+                    <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-muted/20 border-2 hover:border-amber-500/50">
+                      <div className="relative">
+                        <img 
+                          src={gadget.image_url || '/placeholder.svg'} 
+                          alt={gadget.name}
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
+                        />
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          className="absolute top-4 right-4 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
+                        >
+                          <Heart className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-amber-500 to-orange-600 text-white">
+                            {gadget.category}
+                          </Badge>
+                        </div>
+                        
+                        <CardTitle className="text-lg leading-tight group-hover:text-amber-600 transition-colors">
+                          {gadget.name}
+                        </CardTitle>
+                        
+                        {gadget.brand && (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <span className="font-medium">{gadget.brand}</span>
+                          </div>
+                        )}
+                        
+                        <CardDescription className="text-sm line-clamp-2">
+                          {gadget.description}
+                        </CardDescription>
+                      </CardHeader>
+
+                      <CardContent className="pt-0">
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg font-bold text-amber-600">
+                                {gadget.price}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                              onClick={() => gadget.buy_link && window.open(gadget.buy_link, '_blank', 'noopener,noreferrer')}
+                              disabled={!gadget.buy_link || gadget.buy_link === '#'}
+                            >
+                              <ShoppingCart className="h-3 w-3 mr-2" />
+                              Buy Now
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* Trending & New Launches Tab */}
+          <TabsContent value="trending" className="space-y-6">
+            <div className="bg-card rounded-xl p-6 mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Filter by Category:</span>
+                </div>
+                <RefreshButton onRefresh={() => fetchTechSpecsData()} disabled={techSpecsLoading} />
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {filterCategories.map((category) => (
+                  <Badge
+                    key={category}
+                    variant={selectedFilter === category ? "default" : "outline"}
+                    className={`cursor-pointer transition-all duration-200 ${
+                      selectedFilter === category 
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
+                        : 'hover:bg-muted'
+                    }`}
+                    onClick={() => setSelectedFilter(category)}
+                  >
+                    {category === 'Phones' && <Smartphone className="h-3 w-3 mr-1" />}
+                    {category === 'Laptops' && <Laptop className="h-3 w-3 mr-1" />}
+                    {category === 'Tablets' && <Tablet className="h-3 w-3 mr-1" />}
+                    {category === 'Smartwatches' && <Watch className="h-3 w-3 mr-1" />}
+                    {category}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {techSpecsLoading ? (
+              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <SkeletonLoader key={i} variant="card" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+                {getFilteredTechSpecsProducts().length === 0 ? (
+                  <EmptyState 
+                    title="No products found"
+                    description="No trending products available for the selected category."
+                    className="col-span-full"
+                  />
+                ) : (
+                  getFilteredTechSpecsProducts().map((product) => (
+                    <Card key={product.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-blue-50/20 dark:to-blue-950/20 border-2 hover:border-blue-500/50">
+                      <div className="relative">
+                        <img 
+                          src={product.image || '/placeholder.svg'} 
+                          alt={product.name}
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
+                        />
+                        <Badge className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
+                          🚀 New Launch
+                        </Badge>
+                      </div>
+
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <Badge variant="secondary" className="shrink-0">
+                            {product.category}
+                          </Badge>
+                        </div>
+                        
+                        <CardTitle className="text-lg leading-tight group-hover:text-blue-600 transition-colors">
+                          {product.name}
+                        </CardTitle>
+                        
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="font-medium">{product.brand}</span>
+                        </div>
+                        
+                        <CardDescription className="text-sm">
+                          Launch Date: {new Date(product.launch_date || '').toLocaleDateString() || 'TBA'}
+                        </CardDescription>
+                      </CardHeader>
+
+                      <CardContent className="pt-0">
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg font-bold text-blue-600">
+                                {product.price ? `$${product.price.toLocaleString()}` : 'Price TBA'}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          {product.specifications && Object.keys(product.specifications).length > 0 && (
+                            <div className="space-y-1">
+                              <p className="text-xs font-medium text-muted-foreground">Key Specs:</p>
+                              <div className="flex flex-wrap gap-1">
+                                {Object.entries(product.specifications).slice(0, 3).map(([key, value]) => (
+                                  <Badge key={key} variant="outline" className="text-xs">
+                                    {key}: {String(value).slice(0, 10)}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                            >
+                              <ExternalLink className="h-3 w-3 mr-2" />
+                              Compare
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+
+        {/* Existing Database Gadgets Section - Keep as fallback */}
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold mb-6 text-center">
+            <span style={{ color: "#6894f1" }}>Database</span> Collection
+          </h2>
+          
+          {/* Filters */}
+          <div className="bg-card rounded-xl p-6 mb-8">
+            <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Filters:</span>
+              </div>
+              <div className="flex items-center gap-4">
+                {lastUpdated && (
+                  <span className="text-xs text-muted-foreground">
+                    Last updated: {lastUpdated.toLocaleTimeString()}
+                  </span>
+                )}
+                <RefreshButton onRefresh={handleRefresh} disabled={loading} />
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-4 items-center">
+              
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="All Categories" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.length > 0 && categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="All Brands" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Brands</SelectItem>
+                  {brands.length > 0 && brands.map((brand) => (
+                    <SelectItem key={brand} value={brand}>
+                      {brand}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="indian-only"
+                  checked={indianOnly}
+                  onChange={(e) => setIndianOnly(e.target.checked)}
+                  className="rounded"
+                />
+                <label htmlFor="indian-only" className="text-sm cursor-pointer flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  Available in India
+                </label>
+              </div>
+
+              <Button 
+                onClick={handleFilterChange}
+                variant="outline"
+                size="sm"
+                disabled={loading}
+              >
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Apply Filters
+              </Button>
+            </div>
+          </div>
+
+          {/* Gadgets Grid */}
+          {error && (
+            <ErrorState 
+              error={error}
+              onRetry={() => fetchGadgets()}
+              title="Failed to load gadgets"
+              description="We couldn't fetch the latest gadget data. Please try again."
+            />
+          )}
+
+          {loading ? (
+            <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <SkeletonLoader key={i} variant="card" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
+              {gadgets.length === 0 ? (
+                <EmptyState 
+                  title="No gadgets found"
+                  description="Try adjusting your filters or check back later for new products."
+                  action={
+                    <Button onClick={() => fetchGadgets()} variant="outline">
+                      Reset Filters
+                    </Button>
+                  }
+                  className="col-span-full"
+                />
+              ) : (
+                gadgets.map((gadget) => (
+                  <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                    {gadget.tags?.includes('India') && (
+                      <div className="absolute top-4 left-4 z-10">
+                        <Badge className="bg-gradient-to-r from-orange-500 to-green-500 text-white border-0">
+                          🇮🇳 India Special
+                        </Badge>
                       </div>
                     )}
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="absolute top-4 right-4 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
-                    >
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                  </div>
-
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <Badge variant="secondary" className="shrink-0">
-                        {gadget.category}
-                      </Badge>
-                      {gadget.rating && (
-                        <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-xs font-medium">{gadget.rating}</span>
+                    
+                    <div className="relative">
+                      {gadget.image_url ? (
+                        <img 
+                          src={gadget.image_url} 
+                          alt={`${gadget.name} - ${gadget.category} by ${gadget.brand || 'Unknown brand'}`}
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-48 bg-muted flex items-center justify-center">
+                          <span className="text-muted-foreground">No Image</span>
                         </div>
                       )}
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="absolute top-4 right-4 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
+                      >
+                        <Heart className="h-4 w-4" />
+                      </Button>
                     </div>
-                    
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
-                      {gadget.name}
-                    </CardTitle>
-                    
-                    {gadget.brand && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="font-medium">{gadget.brand}</span>
-                      </div>
-                    )}
-                    
-                    <CardDescription className="text-sm line-clamp-2">
-                      {gadget.description}
-                    </CardDescription>
-                  </CardHeader>
 
-                  <CardContent className="pt-0">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold text-primary">
-                            {formatPrice(gadget.price_usd, gadget.price_inr)}
-                          </span>
-                          {gadget.price_inr && gadget.price_usd && (
-                            <span className="text-xs text-muted-foreground">
-                              (${gadget.price_usd})
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <Badge variant="secondary" className="shrink-0">
+                          {gadget.category}
+                        </Badge>
+                        {gadget.rating && (
+                          <div className="flex items-center gap-1">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="text-xs font-medium">{gadget.rating}</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
+                        {gadget.name}
+                      </CardTitle>
+                      
+                      {gadget.brand && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="font-medium">{gadget.brand}</span>
+                        </div>
+                      )}
+                      
+                      <CardDescription className="text-sm line-clamp-2">
+                        {gadget.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="pt-0">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg font-bold text-primary">
+                              {formatPrice(gadget.price_usd, gadget.price_inr)}
                             </span>
+                            {gadget.price_inr && gadget.price_usd && (
+                              <span className="text-xs text-muted-foreground">
+                                (${gadget.price_usd})
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {gadget.tags && gadget.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1">
+                            {gadget.tags.slice(0, 3).map((tag, tagIndex) => (
+                              <Badge key={tagIndex} variant="outline" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                        
+                        <div className={`text-xs font-medium ${gadget.availability_india ? 'text-green-600' : 'text-orange-600'}`}>
+                          {gadget.availability_india ? '✓ Available in India' : '⚠ Limited Availability'}
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            className="flex-1"
+                            onClick={() => gadget.product_url && window.open(gadget.product_url, '_blank', 'noopener,noreferrer')}
+                            disabled={!gadget.product_url}
+                          >
+                            <ShoppingCart className="h-3 w-3 mr-2" />
+                            {gadget.availability_india ? 'Buy Now' : 'View Details'}
+                          </Button>
+                          {gadget.affiliate_url && (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => window.open(gadget.affiliate_url, '_blank', 'noopener,noreferrer')}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                            </Button>
                           )}
                         </div>
                       </div>
-                      
-                      {gadget.tags && gadget.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {gadget.tags.slice(0, 3).map((tag, tagIndex) => (
-                            <Badge key={tagIndex} variant="outline" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                      
-                      <div className={`text-xs font-medium ${gadget.availability_india ? 'text-green-600' : 'text-orange-600'}`}>
-                        {gadget.availability_india ? '✓ Available in India' : '⚠ Limited Availability'}
-                      </div>
-                      
-                      <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
-                          className="flex-1"
-                          onClick={() => gadget.product_url && window.open(gadget.product_url, '_blank', 'noopener,noreferrer')}
-                          disabled={!gadget.product_url}
-                        >
-                          <ShoppingCart className="h-3 w-3 mr-2" />
-                          {gadget.availability_india ? 'Buy Now' : 'View Details'}
-                        </Button>
-                        {gadget.affiliate_url && (
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => window.open(gadget.affiliate_url, '_blank', 'noopener,noreferrer')}
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
-            )}
-          </div>
-        )}
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
