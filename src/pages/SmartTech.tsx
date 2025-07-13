@@ -11,7 +11,7 @@ import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
 import { RefreshButton } from "@/components/ui/refresh-button";
 import { useToast } from "@/hooks/useToast";
 
-interface SheetGadget {
+interface UniqueGadget {
   id: string;
   name: string;
   description: string;
@@ -20,6 +20,10 @@ interface SheetGadget {
   category?: string;
   brand?: string;
   price?: string;
+  rating?: string;
+  specifications?: string;
+  availability?: string;
+  [key: string]: any; // Allow for dynamic columns from the new API
 }
 
 interface TechSpecsProduct {
@@ -39,36 +43,54 @@ const SmartTech = () => {
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [indianOnly, setIndianOnly] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('trending');
-  const [sheetGadgets, setSheetGadgets] = useState<SheetGadget[]>([]);
+  const [uniqueGadgets, setUniqueGadgets] = useState<UniqueGadget[]>([]);
   const [techSpecsProducts, setTechSpecsProducts] = useState<TechSpecsProduct[]>([]);
-  const [sheetLoading, setSheetLoading] = useState(false);
+  const [uniqueLoading, setUniqueLoading] = useState(false);
   const [techSpecsLoading, setTechSpecsLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const { success: showSuccess } = useToast();
 
-  // Fetch Google Sheets data
-  const fetchSheetData = async () => {
-    setSheetLoading(true);
+  // Fetch Unique Gadgets from new Google Sheets API
+  const fetchUniqueGadgets = async () => {
+    setUniqueLoading(true);
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec');
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwZfjKJimT8xk8QOXuAoWs5zBN6XloA2KdwmftPGJaDE0MlKwhCF0rGWbKNLl6_xCVE/exec');
       const data = await response.json();
       
-      const formattedData = data.map((item: any, index: number) => ({
-        id: `sheet-${index}`,
-        name: item['Product Name'] || item.name || 'Unknown Product',
-        description: item.Description || item.description || 'No description available',
-        image_url: item['Image URL'] || item.image_url || '/placeholder.svg',
-        buy_link: item['Buy Link'] || item.buy_link || '#',
-        category: item.Category || item.category || 'General',
-        brand: item.Brand || item.brand || 'Unknown',
-        price: item.Price || item.price || 'N/A'
-      })) as SheetGadget[];
+      // Handle dynamic columns from the new API
+      const formattedData = data.map((item: any, index: number) => {
+        // Create a base object with common fields
+        const gadget: UniqueGadget = {
+          id: `unique-${index}`,
+          name: item['Product Name'] || item['Name'] || item.name || 'Unknown Product',
+          description: item['Description'] || item.description || 'No description available',
+          image_url: item['Image URL'] || item['Image'] || item.image_url || item.image || '/placeholder.svg',
+          buy_link: item['Buy Link'] || item['Purchase Link'] || item.buy_link || item.link || '#',
+          category: item['Category'] || item.category || 'General',
+          brand: item['Brand'] || item.brand || 'Unknown',
+          price: item['Price'] || item.price || 'N/A',
+          rating: item['Rating'] || item.rating || '',
+          specifications: item['Specifications'] || item['Specs'] || item.specifications || '',
+          availability: item['Availability'] || item.availability || ''
+        };
+        
+        // Add any additional dynamic columns
+        Object.keys(item).forEach(key => {
+          if (!gadget[key.toLowerCase()]) {
+            gadget[key] = item[key];
+          }
+        });
+        
+        return gadget;
+      }) as UniqueGadget[];
       
-      setSheetGadgets(formattedData);
+      setUniqueGadgets(formattedData);
     } catch (error) {
-      console.error('Error fetching sheet data:', error);
+      console.error('Error fetching unique gadgets:', error);
+      // Set empty array as fallback
+      setUniqueGadgets([]);
     } finally {
-      setSheetLoading(false);
+      setUniqueLoading(false);
     }
   };
 
@@ -132,7 +154,7 @@ const SmartTech = () => {
   };
 
   useEffect(() => {
-    fetchSheetData();
+    fetchUniqueGadgets();
     fetchTechSpecsData();
   }, []);
 
@@ -148,8 +170,8 @@ const SmartTech = () => {
 
   const handleRefresh = async () => {
     await refresh();
-    if (activeTab === 'real-smarttech') {
-      await fetchSheetData();
+    if (activeTab === 'unique-gadgets') {
+      await fetchUniqueGadgets();
     } else if (activeTab === 'trending') {
       await fetchTechSpecsData();
     }
@@ -178,12 +200,12 @@ const SmartTech = () => {
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <span style={{ color: "#f59e0b" }}>⚡</span> 
-            <span style={{ color: "#7b72f2" }}>Smart</span>
-            <span style={{ color: "#6894f1" }}>Tech</span> 
+            <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">Smart</span>
+            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Tech</span> 
             <span style={{ color: "#8d61f3" }}>Gadgets</span>
           </h1>
           <p className="text-xl text-muted-foreground">
-            Latest gadgets with <span style={{ color: "#10b981" }} className="font-medium">Indian market</span> availability and <span style={{ color: "#6894f1" }} className="font-medium">real-time pricing</span>
+            Latest gadgets with <span style={{ color: "#10b981" }} className="font-medium">Indian market</span> availability and <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">real-time pricing</span>
           </p>
         </div>
 
@@ -191,10 +213,10 @@ const SmartTech = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
           <TabsList className="grid w-full grid-cols-2 bg-background/20 backdrop-blur-md border border-border/30 rounded-2xl p-2 mb-8">
             <TabsTrigger 
-              value="real-smarttech" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
+              value="unique-gadgets" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
             >
-              🛍️ Real SmartTech
+              💎 Unique Gadgets
             </TabsTrigger>
             <TabsTrigger 
               value="trending" 
@@ -204,19 +226,19 @@ const SmartTech = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Real SmartTech Tab */}
-          <TabsContent value="real-smarttech" className="space-y-6">
+          {/* Unique Gadgets Tab */}
+          <TabsContent value="unique-gadgets" className="space-y-6">
             <div className="bg-card rounded-xl p-6 mb-8">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Real SmartTech Collection:</span>
+                  <span className="text-sm font-medium">Unique Gadgets Collection:</span>
                 </div>
-                <RefreshButton onRefresh={() => fetchSheetData()} disabled={sheetLoading} />
+                <RefreshButton onRefresh={() => fetchUniqueGadgets()} disabled={uniqueLoading} />
               </div>
             </div>
 
-            {sheetLoading ? (
+            {uniqueLoading ? (
               <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <SkeletonLoader key={i} variant="card" />
@@ -224,15 +246,15 @@ const SmartTech = () => {
               </div>
             ) : (
               <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-                {sheetGadgets.length === 0 ? (
+                {uniqueGadgets.length === 0 ? (
                   <EmptyState 
-                    title="No gadgets found"
-                    description="No smart gadgets available from the sheet data."
+                    title="No unique gadgets found"
+                    description="No unique gadgets available from the collection."
                     className="col-span-full"
                   />
                 ) : (
-                  sheetGadgets.map((gadget) => (
-                    <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-muted/20 border-2 hover:border-amber-500/50">
+                  uniqueGadgets.map((gadget) => (
+                    <Card key={gadget.id} className="dkloud-card h-full group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-background to-purple-50/10 dark:to-purple-950/20 border-2 hover:border-purple-500/50">
                       <div className="relative">
                         <img 
                           src={gadget.image_url || '/placeholder.svg'} 
@@ -254,12 +276,18 @@ const SmartTech = () => {
 
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between gap-2 mb-2">
-                          <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-amber-500 to-orange-600 text-white">
+                          <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-purple-500 to-blue-600 text-white">
                             {gadget.category}
                           </Badge>
+                          {gadget.rating && (
+                            <div className="flex items-center gap-1">
+                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                              <span className="text-xs font-medium">{gadget.rating}</span>
+                            </div>
+                          )}
                         </div>
                         
-                        <CardTitle className="text-lg leading-tight group-hover:text-amber-600 transition-colors">
+                        <CardTitle className="text-lg leading-tight group-hover:text-purple-600 transition-colors">
                           {gadget.name}
                         </CardTitle>
                         
@@ -278,16 +306,29 @@ const SmartTech = () => {
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <span className="text-lg font-bold text-amber-600">
+                              <span className="text-lg font-bold text-purple-600">
                                 {gadget.price}
                               </span>
                             </div>
                           </div>
                           
+                          {gadget.specifications && (
+                            <div className="text-xs text-muted-foreground">
+                              <p className="font-medium mb-1">Specifications:</p>
+                              <p className="line-clamp-2">{gadget.specifications}</p>
+                            </div>
+                          )}
+                          
+                          {gadget.availability && (
+                            <div className="text-xs font-medium text-green-600">
+                              ✓ {gadget.availability}
+                            </div>
+                          )}
+                          
                           <div className="flex gap-2">
                             <Button 
                               size="sm" 
-                              className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                              className="flex-1 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
                               onClick={() => gadget.buy_link && window.open(gadget.buy_link, '_blank', 'noopener,noreferrer')}
                               disabled={!gadget.buy_link || gadget.buy_link === '#'}
                             >
