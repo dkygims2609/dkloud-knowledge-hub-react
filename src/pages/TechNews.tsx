@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Clock, Tag, Filter, Loader2 } from "lucide-react";
@@ -11,13 +12,13 @@ import { RefreshButton } from "@/components/ui/refresh-button";
 
 const TechNews = () => {
   const { news, loading, error, categories, sources, fetchNews } = useRealTechNews();
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSource, setSelectedSource] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedSource, setSelectedSource] = useState<string>('all');
 
   const handleFilterChange = async () => {
     await fetchNews({
-      category: selectedCategory || undefined,
-      source: selectedSource || undefined,
+      category: selectedCategory === 'all' ? undefined : selectedCategory,
+      source: selectedSource === 'all' ? undefined : selectedSource,
       limit: 20
     });
   };
@@ -62,7 +63,7 @@ const TechNews = () => {
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               {categories.length > 0 && categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
@@ -76,7 +77,7 @@ const TechNews = () => {
               <SelectValue placeholder="All Sources" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Sources</SelectItem>
+              <SelectItem value="all">All Sources</SelectItem>
               {sources.length > 0 && sources.map((source) => (
                 <SelectItem key={source} value={source}>
                   {source}
