@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Search, Filter, ExternalLink, Zap, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,11 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface AITool {
-  Toolname: string;
+  "Tool Name": string;
   Category: string;
   Purpose: string;
-  Pricingmodel: string;
-  "EstimatedCost (per month)": string;
+  "Pricing Model": string;
+  "Monthly Cost": string;
   "Tools Link": string;
 }
 
@@ -36,12 +37,13 @@ const AITools = () => {
   const fetchTools = async () => {
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec"
+        "https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec"
       );
       const data = await response.json();
       console.log("AI Tools API Response:", data);
       console.log("First tool sample:", data[0]);
       console.log("Column names in first tool:", Object.keys(data[0] || {}));
+      console.log("Tool Name value:", data[0]?.["Tool Name"]);
       setTools(data);
       setLoading(false);
     } catch (error) {
@@ -52,7 +54,7 @@ const AITools = () => {
 
   const filterTools = () => {
     let filtered = tools.filter((tool) =>
-      String(tool.Toolname || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(tool["Tool Name"] || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       String(tool.Purpose || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       String(tool.Category || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -62,7 +64,7 @@ const AITools = () => {
     }
 
     if (pricingFilter !== "all") {
-      filtered = filtered.filter((tool) => String(tool.Pricingmodel) === pricingFilter);
+      filtered = filtered.filter((tool) => String(tool["Pricing Model"]) === pricingFilter);
     }
 
     setFilteredTools(filtered);
@@ -77,7 +79,7 @@ const AITools = () => {
   };
 
   const scrollTools = (direction: 'left' | 'right') => {
-    const itemsPerView = 12; // 2 rows of 6 items each
+    const itemsPerView = 12;
     const maxIndex = Math.ceil(filteredTools.length / itemsPerView) - 1;
     
     if (direction === 'right' && currentIndex < maxIndex) {
@@ -96,7 +98,7 @@ const AITools = () => {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
          {/* Header */}
           <div className="text-center mb-8">
@@ -142,7 +144,7 @@ const AITools = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Pricing</SelectItem>
-                {getUniqueValues("Pricingmodel").map((pricing) => (
+                {getUniqueValues("Pricing Model").map((pricing) => (
                   <SelectItem key={String(pricing)} value={String(pricing)}>
                     {String(pricing)}
                   </SelectItem>
@@ -207,16 +209,20 @@ const AITools = () => {
               }}
             >
                {filteredTools.map((tool, index) => (
-                  <Card key={index} className="dkloud-card h-full cursor-pointer group w-72 flex-shrink-0 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 backdrop-blur-sm bg-card/90 border border-primary/20" onClick={() => handleToolClick(tool["Tools Link"])}>
+                  <Card 
+                    key={index} 
+                    className="h-full cursor-pointer group w-72 flex-shrink-0 transition-all duration-300 bg-gradient-to-br from-slate-900/90 to-slate-800/90 border border-slate-700/50 hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-900/25 backdrop-blur-sm"
+                    onClick={() => handleToolClick(tool["Tools Link"])}
+                  >
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
-                        <Zap className="h-5 w-5 text-primary" />
+                    <div className="flex items-center space-x-3 w-full">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-violet-600/20 to-blue-600/20 group-hover:from-violet-600/30 group-hover:to-blue-600/30 transition-colors">
+                        <Zap className="h-5 w-5 text-violet-400" />
                       </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors leading-tight text-foreground">
-                          {tool.Toolname || "Unnamed Tool"}
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-lg font-bold group-hover:text-violet-400 transition-colors leading-tight text-white line-clamp-2">
+                          {tool["Tool Name"] || "AI Tool"}
                         </CardTitle>
                       </div>
                     </div>
@@ -224,52 +230,57 @@ const AITools = () => {
                   <div className="flex flex-wrap gap-2 mt-3">
                     <Badge 
                       variant="secondary" 
-                      className="bg-gradient-to-r from-primary/20 to-accent/20 text-primary border-primary/40 font-medium"
+                      className="bg-violet-600/20 text-violet-300 border-violet-500/40 font-medium"
                     >
-                      {tool.Category || "General"}
+                      {tool.Category || "AI Tool"}
                     </Badge>
                     <Badge 
                       variant="outline"
-                      className={tool.Pricingmodel === "Free" 
-                        ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border-green-500/40 font-medium" 
-                        : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-400 border-amber-500/40 font-medium"
+                      className={tool["Pricing Model"]?.toLowerCase().includes("free") || tool["Pricing Model"]?.toLowerCase() === "freemium"
+                        ? "bg-green-600/20 text-green-300 border-green-500/40 font-medium" 
+                        : "bg-amber-600/20 text-amber-300 border-amber-500/40 font-medium"
                       }
                     >
-                      {tool.Pricingmodel || "Unknown"}
+                      {tool["Pricing Model"] || "Unknown"}
                     </Badge>
-                    {tool["EstimatedCost (per month)"] && tool["EstimatedCost (per month)"] !== "" && (
-                      <Badge variant="outline" className="bg-accent/20 border-accent/40 text-accent font-medium">
-                        {tool["EstimatedCost (per month)"]}
-                      </Badge>
-                    )}
                   </div>
               </CardHeader>
               
                 <CardContent className="space-y-4 pt-2">
                   <div>
-                    <h4 className="font-semibold text-sm mb-2 text-primary">Purpose:</h4>
-                    <p className="text-sm text-foreground/80 leading-relaxed">
-                      {tool.Purpose || "No description available"}
+                    <h4 className="font-semibold text-sm mb-2 text-violet-300">Purpose:</h4>
+                    <p className="text-sm text-slate-300 leading-relaxed line-clamp-3">
+                      {tool.Purpose || "AI-powered tool for enhanced productivity"}
                     </p>
                   </div>
                   
-                  <div className="flex items-center justify-between pt-4 border-t border-primary/20">
-                    <div className="flex items-center space-x-2 text-sm text-foreground/70">
-                      <div className="p-1 rounded bg-primary/20">
-                        <Zap className="h-3 w-3 text-primary" />
+                  {tool["Monthly Cost"] && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-1 text-violet-300">Monthly Cost:</h4>
+                      <p className="text-sm font-medium text-white">
+                        {tool["Monthly Cost"]}
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-700/50">
+                    <div className="flex items-center space-x-2 text-sm text-slate-400">
+                      <div className="p-1 rounded bg-violet-600/20">
+                        <Zap className="h-3 w-3 text-violet-400" />
                       </div>
                       <span className="font-medium">AI Tool</span>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all duration-300 hover:scale-105 border border-primary/30"
+                      className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white transition-all duration-300 hover:scale-105 border-0 font-medium px-4"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleToolClick(tool["Tools Link"]);
                       }}
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      Try Tool
                     </Button>
                   </div>
                 </CardContent>

@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Newspaper, Briefcase, Settings } from "lucide-react";
+import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Newspaper, Settings, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Movies & TV", href: "/movies-tv", icon: Clapperboard, color: "from-purple-500 to-pink-500" },
-  { name: "YouTube Picks", href: "/ytchannels", icon: Youtube, color: "from-red-500 to-orange-500" },
-  { name: "AI Tools", href: "/aitools", icon: Brain, color: "from-blue-500 to-cyan-500" },
+  { name: "Home", href: "/", icon: Home, color: "from-blue-500 to-cyan-500" },
+  { name: "Movies", href: "/movies", icon: Clapperboard, color: "from-red-500 to-pink-500" },
+  { name: "YouTube", href: "/youtube", icon: Youtube, color: "from-red-600 to-red-500" },
+  { name: "AI Tools", href: "/aitools", icon: Brain, color: "from-purple-500 to-indigo-500" },
   { name: "Tech Corner", href: "/techcorner", icon: BookOpen, color: "from-green-500 to-emerald-500" },
   { name: "SmartTech", href: "/smarttech", icon: Zap, color: "from-yellow-500 to-amber-500" },
   { name: "Tech News", href: "/technews", icon: Newspaper, color: "from-indigo-500 to-purple-500" },
@@ -22,97 +22,98 @@ export function Navbar() {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 w-full z-50 navbar-backdrop">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              {/* Dark theme logo */}
-              <img 
-                src="/lovable-uploads/4381e2bd-8639-4d6d-a9ed-f7edd39f22d9.png" 
-                alt="dKloud Logo" 
-                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110 dark:block hidden"
-              />
-              {/* Light theme logo */}
-              <img 
-                src="/lovable-uploads/108e6b6e-0af2-40ea-830a-23c86caa44d5.png" 
-                alt="dKloud Logo" 
-                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110 dark:hidden block"
-              />
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-xl opacity-20 blur-md group-hover:opacity-40 transition-opacity duration-700 animate-pulse" style={{animationDuration: "4s"}}></div>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-foreground leading-tight group-hover:text-primary transition-colors duration-300">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 dKloud
-              </span>
-              <span className="text-xs text-muted-foreground leading-tight">
-                .in
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
-                  location.pathname === item.href
-                    ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
-                )}
-              >
-                 <item.icon className="h-3 w-3" />
-                <span className="hidden xl:inline text-xs">{item.name}</span>
-                <span className="xl:hidden text-[10px] font-semibold">
-                  {item.name.split(' ')[0]}
-                </span>
               </Link>
-            ))}
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                {navigation.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "group relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center space-x-2",
+                        isActive
+                          ? `bg-gradient-to-r ${item.color} text-white shadow-lg scale-105`
+                          : "text-foreground/80 hover:text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span>{item.name}</span>
+                      {!isActive && (
+                        <div className={cn(
+                          "absolute inset-0 rounded-xl bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-300",
+                          item.color
+                        )} />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-
-          {/* Theme Toggle & Mobile Menu Button */}
-          <div className="flex items-center space-x-2">
+          
+          <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="lg:hidden h-9 w-9 p-0"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsOpen(!isOpen)}
+                className="inline-flex items-center justify-center p-2"
+              >
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="lg:hidden border-t border-border">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
+      {isOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background/95 backdrop-blur border-t border-border/50">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.href;
+              return (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    location.pathname === item.href
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    "group relative px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center space-x-3 w-full",
+                    isActive
+                      ? `bg-gradient-to-r ${item.color} text-white shadow-lg`
+                      : "text-foreground/80 hover:text-foreground hover:bg-muted/50"
                   )}
                 >
-                   <item.icon className="h-4 w-4" />
+                  <Icon className="h-5 w-5" />
                   <span>{item.name}</span>
+                  {!isActive && (
+                    <div className={cn(
+                      "absolute inset-0 rounded-xl bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-300",
+                      item.color
+                    )} />
+                  )}
                 </Link>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 }
