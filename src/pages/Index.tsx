@@ -11,6 +11,7 @@ import { FloatingIcons } from "@/components/FloatingIcons";
 import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { FeatureButtons } from "@/components/FeatureButtons";
+import { AudioPlayer } from "@/components/AudioPlayer";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
@@ -24,7 +25,6 @@ const Index = () => {
   });
 
   useEffect(() => {
-    // Fetch preview data for all sections
     const fetchPreviewData = async () => {
       try {
         // Movies & TV
@@ -48,12 +48,11 @@ const Index = () => {
           youtube: youtubeData || [],
           aitools: aitoolsData || [],
           techcorner: techcornerData || [],
-          smarttech: [], // Will be populated with real API later
-          technews: [] // Will be populated with real API later
+          smarttech: [],
+          technews: []
         });
       } catch (error) {
         console.error("Error fetching preview data:", error);
-        // Set empty arrays as fallback to prevent UI issues
         setPreviewData({
           movies: [],
           youtube: [],
@@ -74,13 +73,11 @@ const Index = () => {
       <IoTFloatingIcons showOnHomePage={true} />
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
-        {/* Enhanced Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.1_0%,_transparent_50%)]" />
         </div>
         
-        {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse" />
           <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
@@ -88,14 +85,12 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            {/* Updated dKloud Logo Design with Neonrain-inspired Colors */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
               <span className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 bg-clip-text text-transparent">
                 dKloud
               </span>
             </h1>
             
-            {/* Animated Tagline */}
             <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
@@ -104,40 +99,37 @@ const Index = () => {
               />
             </div>
             
-            {/* Simplified Tagline - Library Of Unique Discoveries */}
             <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
               <span className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent">
                 Library Of Unique Discoveries
               </span>
             </div>
+
+            <div className="mb-8 fade-in" style={{animationDelay: "0.4s"}}>
+              <AudioPlayer 
+                audioSrc="/dKloudaudio.wav"
+                title="Listen: What is dKloud?"
+                description="Hear directly from the founder about dKloud's vision"
+              />
+            </div>
             
-            {/* Minimalistic Mission Statement */}
-            <div className="text-center mb-6 fade-in max-w-3xl mx-auto" style={{animationDelay: "0.4s"}}>
-              <h2 className="text-lg md:text-xl font-medium mb-3 leading-relaxed">
-                <span className="text-foreground/80">
-                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
-                </span>
-              </h2>
-              
+            <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
               <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                 <span className="text-foreground/60">
-                  Whether you're a <span style={{ color: "#10b981" }} className="font-medium">tech explorer</span>, a <span className="bg-gradient-to-r from-purple-500 to-violet-500 bg-clip-text text-transparent font-medium">digital creator</span>, or a <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-medium">seeker of knowledge</span> — this is your space to <span className="text-primary/80">discover, build, and belong</span>.
+                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
 
-            {/* Color Band Section - Individual Cards */}
-            <div className="fade-in" style={{animationDelay: "0.5s"}}>
+            <div className="fade-in" style={{animationDelay: "0.6s"}}>
               <ColorBandSection />
             </div>
             
-            {/* Feature Buttons */}
-            <div className="fade-in" style={{animationDelay: "0.6s"}}>
+            <div className="fade-in" style={{animationDelay: "0.7s"}}>
               <FeatureButtons />
             </div>
             
-            {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.7s"}}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.8s"}}>
               <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
@@ -156,7 +148,6 @@ const Index = () => {
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            {/* Enhanced Glassmorphism Tabs */}
             <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
                 {[
@@ -178,10 +169,7 @@ const Index = () => {
                     })}
                   >
                     <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                      {/* Gradient background on hover */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                      
-                      {/* Glowing border effect */}
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative p-4 text-center">
@@ -190,7 +178,6 @@ const Index = () => {
                         </div>
                         <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative">
                           {tab.name}
-                          {/* Underline effect */}
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
                         </h4>
                         <p className="text-xs text-muted-foreground group-hover:text-foreground transition-colors duration-300">{tab.desc}</p>
@@ -201,7 +188,6 @@ const Index = () => {
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -216,7 +202,6 @@ const Index = () => {
             </p>
           </div>
 
-          {/* How It Works */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
             <Card className="dkloud-card dkloud-card-interactive bounce-in text-center">
               <CardHeader className="pb-8">
@@ -243,7 +228,6 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* How dKloud Works - Animated Infographic */}
           <div className="text-center mb-20">
             <div className="flex items-center justify-center gap-4 mb-8">
               <h3 className="text-3xl md:text-4xl font-bold slide-up">How dKloud Works</h3>
@@ -268,12 +252,10 @@ const Index = () => {
                 Experience the seamless flow of data from your interaction to real-time content delivery
               </p>
               
-              {/* Interactive Infographic */}
               <div className="mb-12">
                 <InfographicAnimation />
               </div>
               
-              {/* Tech Stack */}
               <div className="flex flex-wrap justify-center gap-4 mb-12">
                 {[
                   { name: "React + TypeScript", color: "from-blue-500 to-cyan-500" },
@@ -322,7 +304,6 @@ const Index = () => {
                 </Button>
               </div>
               
-              {/* Quick Services Highlight */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
                 {[
                   { icon: <Music className="h-6 w-6" />, text: "Music Composition" },
