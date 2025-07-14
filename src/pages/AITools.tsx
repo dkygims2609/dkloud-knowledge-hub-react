@@ -10,30 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface AITool {
   "Tool Name"?: string;
   "Toolname"?: string;
-  "toolname"?: string;
-  "tool_name"?: string;
-  "name"?: string;
-  "Name"?: string;
   Category?: string;
-  category?: string;
   Purpose?: string;
-  purpose?: string;
-  description?: string;
-  Description?: string;
   "Pricing Model"?: string;
   "Pricingmodel"?: string;
-  "pricing_model"?: string;
-  "pricing"?: string;
   "Estimated Cost (per month)"?: string;
   "EstimatedCost (per month)"?: string;
-  "estimated_cost"?: string;
-  "cost"?: string;
   "Tool Link"?: string;
   "Tools Link"?: string;
-  "tool_link"?: string;
-  "link"?: string;
-  "url"?: string;
-  "website"?: string;
 }
 
 const AITools = () => {
@@ -72,51 +56,27 @@ const AITools = () => {
   };
 
   const getToolName = (tool: AITool) => {
-    return tool["Tool Name"] || 
-           tool["Toolname"] || 
-           tool["toolname"] || 
-           tool["tool_name"] || 
-           tool["name"] || 
-           tool["Name"] || 
-           "AI Tool";
+    return tool["Tool Name"] || tool["Toolname"] || "Unnamed Tool";
   };
 
   const getCategory = (tool: AITool) => {
-    return tool.Category || tool.category || "AI & Automation";
+    return tool.Category || "General";
   };
 
   const getPurpose = (tool: AITool) => {
-    return tool.Purpose || 
-           tool.purpose || 
-           tool.description || 
-           tool.Description || 
-           "Advanced AI tool for productivity and automation";
+    return tool.Purpose || "No description available";
   };
 
   const getPricingModel = (tool: AITool) => {
-    return tool["Pricing Model"] || 
-           tool["Pricingmodel"] || 
-           tool["pricing_model"] || 
-           tool["pricing"] || 
-           "Freemium";
+    return tool["Pricing Model"] || tool["Pricingmodel"] || "Unknown";
   };
 
   const getEstimatedCost = (tool: AITool) => {
-    return tool["Estimated Cost (per month)"] || 
-           tool["EstimatedCost (per month)"] || 
-           tool["estimated_cost"] || 
-           tool["cost"] || 
-           "";
+    return tool["Estimated Cost (per month)"] || tool["EstimatedCost (per month)"] || "";
   };
 
   const getToolLink = (tool: AITool) => {
-    return tool["Tool Link"] || 
-           tool["Tools Link"] || 
-           tool["tool_link"] || 
-           tool["link"] || 
-           tool["url"] || 
-           tool["website"] || 
-           "#";
+    return tool["Tool Link"] || tool["Tools Link"] || "#";
   };
 
   const filterTools = () => {
@@ -280,17 +240,17 @@ const AITools = () => {
               {filteredTools.map((tool, index) => (
                 <Card 
                   key={index} 
-                  className="w-72 h-full cursor-pointer group flex-shrink-0 transition-all duration-300 backdrop-blur-sm border border-purple-500/30 bg-gradient-to-br from-slate-900/95 via-purple-900/20 to-blue-900/30 hover:shadow-2xl hover:shadow-purple-500/40 hover:border-purple-400/60 hover:scale-[1.02]" 
+                  className="w-72 h-full cursor-pointer group flex-shrink-0 transition-all duration-300 backdrop-blur-sm border border-slate-700/50 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90 hover:shadow-2xl hover:shadow-purple-500/30 hover:border-purple-500/50 hover:scale-[1.02]" 
                   onClick={() => handleToolClick(getToolLink(tool))}
                 >
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center space-x-3">
-                        <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/30 to-blue-500/30 group-hover:from-purple-500/40 group-hover:to-blue-500/40 transition-colors">
-                          <Zap className="h-5 w-5 text-purple-300" />
+                        <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 group-hover:from-purple-500/30 group-hover:to-blue-500/30 transition-colors">
+                          <Zap className="h-5 w-5 text-purple-400" />
                         </div>
                         <div className="flex-1">
-                          <CardTitle className="text-lg font-bold group-hover:text-purple-300 transition-colors leading-tight text-white">
+                          <CardTitle className="text-lg font-bold group-hover:text-purple-400 transition-colors leading-tight text-white">
                             {getToolName(tool)}
                           </CardTitle>
                         </div>
@@ -299,21 +259,21 @@ const AITools = () => {
                     <div className="flex flex-wrap gap-2 mt-3">
                       <Badge 
                         variant="secondary" 
-                        className="bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-purple-200 border-purple-400/50 font-medium"
+                        className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 border-purple-400/40 font-medium"
                       >
                         {getCategory(tool)}
                       </Badge>
                       <Badge 
                         variant="outline"
                         className={getPricingModel(tool).toLowerCase() === "free" || getPricingModel(tool).toLowerCase() === "freemium"
-                          ? "bg-gradient-to-r from-green-500/30 to-emerald-500/30 text-green-300 border-green-500/50 font-medium" 
-                          : "bg-gradient-to-r from-amber-500/30 to-orange-500/30 text-amber-300 border-amber-500/50 font-medium"
+                          ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/40 font-medium" 
+                          : "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/40 font-medium"
                         }
                       >
                         {getPricingModel(tool)}
                       </Badge>
                       {getEstimatedCost(tool) && (
-                        <Badge variant="outline" className="bg-blue-500/30 border-blue-400/50 text-blue-200 font-medium">
+                        <Badge variant="outline" className="bg-blue-500/20 border-blue-400/40 text-blue-300 font-medium">
                           {getEstimatedCost(tool)}
                         </Badge>
                       )}
@@ -322,23 +282,23 @@ const AITools = () => {
                   
                   <CardContent className="space-y-4 pt-2">
                     <div>
-                      <h4 className="font-semibold text-sm mb-2 text-purple-300">Purpose:</h4>
-                      <p className="text-sm text-gray-200 leading-relaxed line-clamp-3">
+                      <h4 className="font-semibold text-sm mb-2 text-purple-400">Purpose:</h4>
+                      <p className="text-sm text-gray-300 leading-relaxed line-clamp-3">
                         {getPurpose(tool)}
                       </p>
                     </div>
                     
-                    <div className="flex items-center justify-between pt-4 border-t border-purple-500/30">
-                      <div className="flex items-center space-x-2 text-sm text-gray-300">
-                        <div className="p-1 rounded bg-purple-500/30">
-                          <Zap className="h-3 w-3 text-purple-300" />
+                    <div className="flex items-center justify-between pt-4 border-t border-purple-500/20">
+                      <div className="flex items-center space-x-2 text-sm text-gray-400">
+                        <div className="p-1 rounded bg-purple-500/20">
+                          <Zap className="h-3 w-3 text-purple-400" />
                         </div>
                         <span className="font-medium">AI Tool</span>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:text-white transition-all duration-300 hover:scale-105 border border-purple-500/40 text-purple-200 hover:border-purple-400/60"
+                        className="group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:text-white transition-all duration-300 hover:scale-105 border border-purple-500/30 text-purple-300"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleToolClick(getToolLink(tool));

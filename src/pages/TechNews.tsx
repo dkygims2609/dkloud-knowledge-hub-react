@@ -17,16 +17,6 @@ const TechNews = () => {
   const [selectedSource, setSelectedSource] = useState<string>('all');
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
 
-  // Auto-refresh every 30 minutes for real-time updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchNews();
-      setLastRefresh(new Date());
-    }, 30 * 60 * 1000); // 30 minutes
-
-    return () => clearInterval(interval);
-  }, [fetchNews]);
-
   const handleFilterChange = async () => {
     await fetchNews({
       category: selectedCategory === 'all' ? undefined : selectedCategory,
@@ -269,11 +259,7 @@ const TechNews = () => {
                           variant="outline" 
                           size="sm" 
                           className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                          onClick={() => {
-                            if (item.url && item.url !== "#") {
-                              window.open(item.url, '_blank', 'noopener,noreferrer');
-                            }
-                          }}
+                          onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
                         >
                           <ExternalLink className="h-3 w-3 mr-2" />
                           Read Full Article
@@ -306,7 +292,7 @@ const TechNews = () => {
         {/* Enhanced Footer */}
         <div className="text-center mt-12 space-y-2">
           <p className="text-sm text-muted-foreground">
-            🔄 Auto-refreshed every 30 minutes • 📅 Fresh news from last 7 days • 🗃️ Archive up to 3 months
+            🔄 Auto-refreshed every 6 hours • 📅 Fresh news from last 7 days • 🗃️ Archive up to 3 months
           </p>
           <p className="text-xs text-muted-foreground">
             Sources: TechCrunch, The Verge, Economic Times, LiveMint, ISRO, OpenAI, Google, Microsoft & more

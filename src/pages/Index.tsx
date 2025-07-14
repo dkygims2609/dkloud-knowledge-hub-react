@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,6 @@ import { FloatingIcons } from "@/components/FloatingIcons";
 import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { FeatureButtons } from "@/components/FeatureButtons";
-import { RunningBanner } from "@/components/RunningBanner";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
@@ -72,7 +70,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      <RunningBanner />
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       {/* Hero Section */}
@@ -91,24 +88,26 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            {/* Updated Main Heading - Removed dKloud, Enhanced Decoding Knowledge */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+            {/* Updated dKloud Logo Design with Neonrain-inspired Colors */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
               <span className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 bg-clip-text text-transparent">
-                Decoding Knowledge
+                dKloud
               </span>
             </h1>
             
-            {/* Library Of Unique Discoveries - Changed to Red Color */}
+            {/* Animated Tagline */}
             <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
-              <span className="text-red-500 font-bold">
-                Library Of Unique Discoveries
-              </span>
+              <DecodingAnimation 
+                text="Decoding Knowledge" 
+                className="bg-gradient-to-r from-purple-400 via-violet-400 to-blue-400 bg-clip-text text-transparent"
+                delay={1000}
+              />
             </div>
             
-            {/* Powered by dKloud Tech */}
+            {/* Simplified Tagline - Library Of Unique Discoveries */}
             <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              <span className="text-muted-foreground">
-                Powered by <span className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 bg-clip-text text-transparent font-bold">dKloud Tech</span>
+              <span className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent">
+                Library Of Unique Discoveries
               </span>
             </div>
             
@@ -157,7 +156,7 @@ const Index = () => {
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            {/* Enhanced Glassmorphism Tabs with Lucide Icons */}
+            {/* Enhanced Glassmorphism Tabs */}
             <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
                 {[
