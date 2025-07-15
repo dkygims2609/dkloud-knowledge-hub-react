@@ -1,111 +1,261 @@
 import { useState } from "react";
-import { Music, Palette, Code, PenTool, Users, Zap, Mail, Phone, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Monitor, BookOpen, MessageCircle, Music, Package, Zap, Mail, Phone, Users, Code, Database, Palette, Award, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Services = () => {
   const services = [
     {
-      icon: <Palette className="h-8 w-8" />,
-      title: "Custom AI-Generated Logos & Designs",
-      description: "Creative AI-powered logo design service tailored to your brand's identity. Personalized to fit your vision with cutting-edge AI technology.",
-      features: ["Brand Identity Design", "Logo Variations", "Color Schemes", "Vector Files"]
+      icon: <Monitor className="h-8 w-8" />,
+      title: "💻 Website Building & Branding",
+      description: "From personal portfolios to artist websites and small business pages — we build clean, fast, and modern web experiences.",
+      features: [
+        "🔒 Hosted as secure, static sites — no recurring hosting fees",
+        "🎨 Logo creation, theme setup, domain guidance", 
+        "🚀 Ideal for freelancers, students, creators, and microbusinesses",
+        "⚡ Built with speed, clean code, and smart aesthetics"
+      ],
+      highlight: "What if I told you... you could launch your own personal site — without ever paying for hosting? You'd think it's too good to be true. But it's not. All you need is a domain. We'll handle the rest — securely, smartly, and affordably.",
+      cta: "✅ You bring the vision — we make it real."
+    },
+    {
+      icon: <BookOpen className="h-8 w-8" />,
+      title: "📚 Curated Digital Micro-Courses",
+      description: "Most people waste time learning what doesn't matter. We teach you what does. No fluff. No outdated tutorials. Just the exact skills companies look for.",
+      features: [
+        "☁️ Cloud Platforms: AWS, Azure, GCP",
+        "🖥️ Windows Server & VMware Fundamentals", 
+        "🔧 IT Infrastructure Basics",
+        "📄 Resume Building & 🎯 Interview Prep"
+      ],
+      highlight: "🎯 Designed for beginners & mid-level pros | 🛠️ Built from real-world experience — not theory | 📈 Created by engineers from Wipro, Capgemini, Capita and more",
+      cta: "Learn the RIGHT way with us."
+    },
+    {
+      icon: <MessageCircle className="h-8 w-8" />,
+      title: "🎤 1-on-1 Mentorship & Career Coaching",
+      description: "Whether you're starting from a Tier-3 city or switching careers — this is for you.",
+      features: [
+        "💬 Personal career guidance",
+        "🧠 Interview simulation & real-case Q&A",
+        "🧭 Break into tech without the confusion",
+        "✅ Led by working professionals"
+      ],
+      highlight: "✅ Practical insights from people who've done it | ✅ Especially valuable for underrepresented tech aspirants",
+      cta: "Ready to grow smart, not just fast?"
     },
     {
       icon: <Music className="h-8 w-8" />,
-      title: "Custom AI-Generated Songs for Occasions",
-      description: "Unique songs for birthdays, weddings, anniversaries, and more. Provide your preferences and receive a personalized composition.",
-      features: ["Birthday Songs", "Wedding Anthems", "Anniversary Tracks", "Custom Lyrics"]
+      title: "🎼 Creative Services with an AI-Powered Edge",
+      description: "Where emotion meets innovation. From celebrations to storytelling — we create magic that connects.",
+      features: [
+        "🎵 Original Music for birthdays, weddings, or brands",
+        "✍️ Lyrics & storytelling powered by your emotions + our creativity",
+        "🧠 AI-assisted visuals & logo design",
+        "💡 Content ideation that speaks your message"
+      ],
+      highlight: "🎙️ Whether it's a surprise song, a logo with meaning, or a mood you want to create — we've got you.",
+      cta: "Let's create something magical together."
     },
     {
-      icon: <Music className="h-8 w-8" />,
-      title: "Music Composition & Songwriting",
-      description: "Original music and lyrics for special events or projects. Multiple genres available with professional quality.",
-      features: ["Original Compositions", "Lyric Writing", "Multiple Genres", "Professional Recording"]
-    },
-    {
-      icon: <PenTool className="h-8 w-8" />,
-      title: "Poetry & Shayari Writing",
-      description: "Personalized poetry, shayari, and diary writing for gifts, events, or personal use. Deeply personalized based on emotions or occasions.",
-      features: ["Custom Poetry", "Shayari Creation", "Personal Diaries", "Gift Writing"]
-    },
-    {
-      icon: <Music className="h-8 w-8" />,
-      title: "Guitar Music Classes",
-      description: "One-on-one guitar lessons from beginner to advanced levels. Learn from an experienced musician and composer.",
-      features: ["Beginner to Advanced", "One-on-One Sessions", "Music Theory", "Practical Skills"]
-    },
-    {
-      icon: <Code className="h-8 w-8" />,
-      title: "Website Development Services",
-      description: "Small projects like personal blogs, portfolios, or business websites. Sleek design with user-friendly functionality.",
-      features: ["Personal Blogs", "Portfolio Sites", "Business Websites", "Responsive Design"]
-    },
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "One-on-One Classes & Workshops",
-      description: "Personalized instruction in music composition, AI design, songwriting, and creative areas. Gain valuable skills with expert guidance.",
-      features: ["Music Composition", "AI Design", "Songwriting", "Creative Workshops"]
-    },
-    {
-      icon: <Zap className="h-8 w-8" />,
-      title: "Custom Digital Solutions",
-      description: "Branding, graphic design, video editing, and more. Versatile digital solutions for all your creative needs.",
-      features: ["Brand Design", "Graphic Design", "Video Editing", "Digital Marketing"]
+      icon: <Package className="h-8 w-8" />,
+      title: "📦 Coming Soon: Digital Knowledge Store",
+      description: "A one-stop downloadable hub of practical resources.",
+      features: [
+        "📝 SOPs, Cheat Sheets, & PDF Guides",
+        "🔍 Searchable templates for tech & tools",
+        "👥 Community-contributed resources",
+        "🎯 Curated for real-world application"
+      ],
+      highlight: "Everything you need, nothing you don't. Practical resources that actually work.",
+      cta: "Stay tuned for the launch!",
+      isComingSoon: true
     }
   ];
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            🎵 What I Offer
+        
+        {/* Welcome Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            🚀 Welcome to dKloud.in
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Comprehensive creative and technical services blending artistry with cutting-edge technology.
-            Let's create something extraordinary together.
-          </p>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-2xl font-semibold text-foreground">
+              Where creativity meets capability. Where ideas get built. Where you start small… but grow smart.
+            </p>
+            <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-8 border border-primary/20">
+              <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                dKloud.in is a digital-first platform with a clear purpose:
+              </p>
+              <p className="text-xl font-medium text-primary">
+                To empower learners, creators, and innovators by simplifying the journey from vision to reality — with clarity, creativity, and confidence.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {services.map((service, index) => (
-            <Card key={index} className="dkloud-card dkloud-card-interactive h-full fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-              <CardHeader>
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="text-primary">{service.icon}</div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
-                </div>
-                <CardDescription className="text-base leading-relaxed">
-                  {service.description}
-                </CardDescription>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-2">
-                  {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center space-x-2 p-2 bg-muted/30 rounded-lg">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-sm font-medium">{feature}</span>
+        {/* Services Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            🛠️ Services Offered at <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">dKloud.in</span>
+          </h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {services.map((service, index) => (
+              <Card key={index} className={`dkloud-card dkloud-card-interactive h-full fade-in ${service.isComingSoon ? 'border-warning/40 bg-warning/5' : ''}`} style={{animationDelay: `${index * 0.1}s`}}>
+                <CardHeader>
+                  <div className="flex items-start space-x-4 mb-4">
+                    <div className={`text-primary ${service.isComingSoon ? 'text-warning' : ''}`}>{service.icon}</div>
+                    <div className="flex-1">
+                      <CardTitle className="text-xl mb-3">{service.title}</CardTitle>
+                      <CardDescription className="text-base leading-relaxed mb-4">
+                        {service.description}
+                      </CardDescription>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </div>
+                </CardHeader>
+                
+                <CardContent className="space-y-6">
+                  {/* Features */}
+                  <div className="space-y-3">
+                    {service.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-sm font-medium leading-relaxed">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Highlight */}
+                  <div className="bg-gradient-to-r from-accent/10 via-primary/10 to-accent/10 rounded-lg p-4 border border-accent/20">
+                    <p className="text-sm italic text-foreground leading-relaxed">
+                      {service.highlight}
+                    </p>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="text-center">
+                    <p className="text-lg font-semibold text-primary mb-4">{service.cta}</p>
+                    {!service.isComingSoon && (
+                      <Button asChild className="btn-gradient">
+                        <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer">
+                          Get Started
+                        </a>
+                      </Button>
+                    )}
+                    {service.isComingSoon && (
+                      <Button disabled variant="outline" className="opacity-60">
+                        Coming Soon
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Why dKloud.in Section */}
+        <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 rounded-3xl p-12 mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">🌐 Why dKloud.in?</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Values Column */}
+            <div>
+              <h3 className="text-xl font-semibold mb-6 text-primary flex items-center gap-2">
+                <Target className="h-6 w-6" />
+                💡 Our Values
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { value: "Accessibility", desc: "Built from real experience" },
+                  { value: "Authenticity", desc: "Modern tools, not legacy junk" },
+                  { value: "Simplicity", desc: "No-code/low-code friendly" },
+                  { value: "Upliftment", desc: "Designed for dreamers & doers" }
+                ].map((item, index) => (
+                  <div key={index} className="flex justify-between items-center p-3 bg-background/50 rounded-lg">
+                    <span className="font-medium">{item.value}</span>
+                    <span className="text-sm text-muted-foreground">{item.desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Advantage Column */}
+            <div>
+              <h3 className="text-xl font-semibold mb-6 text-accent flex items-center gap-2">
+                <Award className="h-6 w-6" />
+                🧠 Our Advantage
+              </h3>
+              <div className="space-y-4">
+                {[
+                  "We don't upsell. We don't gatekeep.",
+                  "We cut through the noise, curate what works, and deliver results — faster.",
+                  "From building your identity to shaping your skills —",
+                  "We do it with the soul of a creator and the mindset of an engineer."
+                ].map((advantage, index) => (
+                  <div key={index} className="p-3 bg-background/50 rounded-lg">
+                    <span className="text-sm leading-relaxed">{advantage}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA Section */}
+        <div className="text-center mb-16">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-6">✨ This is dKloud.in</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-2">Where ideas ignite</h3>
+                <p className="text-sm text-muted-foreground">Creative solutions meet technical excellence</p>
+              </div>
+              <div className="bg-gradient-to-br from-accent/20 to-success/20 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-2">Where knowledge flows</h3>
+                <p className="text-sm text-muted-foreground">Learning that actually matters and works</p>
+              </div>
+              <div className="bg-gradient-to-br from-success/20 to-primary/20 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-2">Where your journey begins</h3>
+                <p className="text-sm text-muted-foreground">From vision to reality, step by step</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex flex-wrap justify-center gap-4 text-lg">
+                <span>Want to launch your digital brand? <span className="text-primary font-medium">Let's talk.</span></span>
+                <span>Want to learn the RIGHT way? <span className="text-accent font-medium">Start with us.</span></span>
+                <span>Want to become a smarter creator, techie, or learner? <span className="text-success font-medium">You're in the right place.</span></span>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4">
+                  <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer">
+                    Launch Your Digital Brand
+                  </a>
+                </Button>
+                <Button asChild size="lg" className="btn-glass text-lg px-10 py-4">
+                  <Link to="/portfolio">View My Work</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Contact Section */}
-        <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 rounded-3xl p-12 text-center">
+        <div className="bg-gradient-to-br from-muted/50 to-background rounded-3xl p-12 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Start Your Project?</h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Get in touch to discuss your requirements and let's bring your vision to life with personalized, impactful solutions.
           </p>
           
           {/* Contact Options */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Button asChild className="btn-gradient h-16">
               <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
                 <MessageCircle className="h-6 w-6 mb-1" />
@@ -134,32 +284,6 @@ const Services = () => {
               </a>
             </Button>
           </div>
-
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto">
-            <h3 className="text-xl font-semibold mb-4">Project Inquiry Form</h3>
-            <p className="text-muted-foreground mb-4">
-              For detailed project discussions, please reach out via WhatsApp or email with your requirements.
-              Include your project type, timeline, and specific needs for a personalized quote.
-            </p>
-            <Button asChild size="lg" className="btn-gradient">
-              <a href="https://wa.me/918175996960?text=Hi! I'm interested in your services. Let's discuss my project requirements." target="_blank" rel="noopener noreferrer">
-                Start Project Discussion
-              </a>
-            </Button>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <h2 className="text-2xl font-bold mb-4">Let's Create Something Extraordinary Together</h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            With my experience, knowledge, and commitment, I can turn your ideas into something truly special.
-          </p>
-          <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4">
-            <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer">
-              Get Started Today
-            </a>
-          </Button>
         </div>
       </div>
     </div>
