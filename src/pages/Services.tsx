@@ -1,12 +1,54 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Monitor, BookOpen, MessageCircle, Music, Package, Zap, Mail, Phone, Users, Code, Database, Palette, Award, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ModernIconTabs } from "@/components/ui/modern-icon-tabs";
 
 const Services = () => {
-  const services = [
+  const [activeService, setActiveService] = useState("website");
+
+  const serviceCategories = [
     {
+      id: "website",
+      label: "Website Building",
+      icon: Monitor,
+      gradient: "from-blue-500 to-indigo-600",
+      description: "Digital presence solutions"
+    },
+    {
+      id: "courses",
+      label: "Micro-Courses", 
+      icon: BookOpen,
+      gradient: "from-emerald-500 to-teal-600",
+      description: "Curated learning paths"
+    },
+    {
+      id: "mentorship",
+      label: "Mentorship",
+      icon: MessageCircle, 
+      gradient: "from-purple-500 to-violet-600",
+      description: "1-on-1 career guidance"
+    },
+    {
+      id: "creative",
+      label: "Creative Services",
+      icon: Music,
+      gradient: "from-pink-500 to-rose-600", 
+      description: "AI-powered creativity"
+    },
+    {
+      id: "knowledge",
+      label: "Knowledge Store",
+      icon: Package,
+      gradient: "from-amber-500 to-orange-600",
+      description: "Digital resources hub"
+    }
+  ];
+
+  const services = {
+    website: {
       icon: <Monitor className="h-8 w-8" />,
       title: "💻 Website Building & Branding",
       description: "From personal portfolios to artist websites and small business pages — we build clean, fast, and modern web experiences.",
@@ -19,7 +61,7 @@ const Services = () => {
       highlight: "What if I told you... you could launch your own personal site — without ever paying for hosting? You'd think it's too good to be true. But it's not. All you need is a domain. We'll handle the rest — securely, smartly, and affordably.",
       cta: "✅ You bring the vision — we make it real."
     },
-    {
+    courses: {
       icon: <BookOpen className="h-8 w-8" />,
       title: "📚 Curated Digital Micro-Courses",
       description: "Most people waste time learning what doesn't matter. We teach you what does. No fluff. No outdated tutorials. Just the exact skills companies look for.",
@@ -32,7 +74,7 @@ const Services = () => {
       highlight: "🎯 Designed for beginners & mid-level pros | 🛠️ Built from real-world experience — not theory | 📈 Created by engineers from Wipro, Capgemini, Capita and more",
       cta: "Learn the RIGHT way with us."
     },
-    {
+    mentorship: {
       icon: <MessageCircle className="h-8 w-8" />,
       title: "🎤 1-on-1 Mentorship & Career Coaching",
       description: "Whether you're starting from a Tier-3 city or switching careers — this is for you.",
@@ -45,7 +87,7 @@ const Services = () => {
       highlight: "✅ Practical insights from people who've done it | ✅ Especially valuable for underrepresented tech aspirants",
       cta: "Ready to grow smart, not just fast?"
     },
-    {
+    creative: {
       icon: <Music className="h-8 w-8" />,
       title: "🎼 Creative Services with an AI-Powered Edge",
       description: "Where emotion meets innovation. From celebrations to storytelling — we create magic that connects.",
@@ -58,7 +100,7 @@ const Services = () => {
       highlight: "🎙️ Whether it's a surprise song, a logo with meaning, or a mood you want to create — we've got you.",
       cta: "Let's create something magical together."
     },
-    {
+    knowledge: {
       icon: <Package className="h-8 w-8" />,
       title: "📦 Coming Soon: Digital Knowledge Store",
       description: "A one-stop downloadable hub of practical resources.",
@@ -72,7 +114,9 @@ const Services = () => {
       cta: "Stay tuned for the launch!",
       isComingSoon: true
     }
-  ];
+  };
+
+  const currentService = services[activeService as keyof typeof services];
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -98,65 +142,69 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Services Section */}
+        {/* Services Toggle Section */}
         <div className="mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
             🛠️ Services Offered at <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">dKloud.in</span>
           </h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className={`dkloud-card dkloud-card-interactive h-full fade-in ${service.isComingSoon ? 'border-warning/40 bg-warning/5' : ''}`} style={{animationDelay: `${index * 0.1}s`}}>
-                <CardHeader>
-                  <div className="flex items-start space-x-4 mb-4">
-                    <div className={`text-primary ${service.isComingSoon ? 'text-warning' : ''}`}>{service.icon}</div>
-                    <div className="flex-1">
-                      <CardTitle className="text-xl mb-3">{service.title}</CardTitle>
-                      <CardDescription className="text-base leading-relaxed mb-4">
-                        {service.description}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="space-y-6">
-                  {/* Features */}
-                  <div className="space-y-3">
-                    {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-                        <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-sm font-medium leading-relaxed">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
+          <ModernIconTabs
+            activeTab={activeService}
+            onTabChange={setActiveService}
+            tabs={serviceCategories}
+            className="mb-8"
+          />
 
-                  {/* Highlight */}
-                  <div className="bg-gradient-to-r from-accent/10 via-primary/10 to-accent/10 rounded-lg p-4 border border-accent/20">
-                    <p className="text-sm italic text-foreground leading-relaxed">
-                      {service.highlight}
-                    </p>
+          {/* Current Service Display */}
+          <Card className={`dkloud-card dkloud-card-interactive h-full fade-in ${currentService.isComingSoon ? 'border-warning/40 bg-warning/5' : ''}`}>
+            <CardHeader>
+              <div className="flex items-start space-x-4 mb-4">
+                <div className={`text-primary ${currentService.isComingSoon ? 'text-warning' : ''}`}>{currentService.icon}</div>
+                <div className="flex-1">
+                  <CardTitle className="text-xl mb-3">{currentService.title}</CardTitle>
+                  <CardDescription className="text-base leading-relaxed mb-4">
+                    {currentService.description}
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            
+            <CardContent className="space-y-6">
+              {/* Features */}
+              <div className="space-y-3">
+                {currentService.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm font-medium leading-relaxed">{feature}</span>
                   </div>
+                ))}
+              </div>
 
-                  {/* CTA */}
-                  <div className="text-center">
-                    <p className="text-lg font-semibold text-primary mb-4">{service.cta}</p>
-                    {!service.isComingSoon && (
-                      <Button asChild className="btn-gradient">
-                        <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer">
-                          Get Started
-                        </a>
-                      </Button>
-                    )}
-                    {service.isComingSoon && (
-                      <Button disabled variant="outline" className="opacity-60">
-                        Coming Soon
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+              {/* Highlight */}
+              <div className="bg-gradient-to-r from-accent/10 via-primary/10 to-accent/10 rounded-lg p-4 border border-accent/20">
+                <p className="text-sm italic text-foreground leading-relaxed">
+                  {currentService.highlight}
+                </p>
+              </div>
+
+              {/* CTA */}
+              <div className="text-center">
+                <p className="text-lg font-semibold text-primary mb-4">{currentService.cta}</p>
+                {!currentService.isComingSoon && (
+                  <Button asChild className="btn-gradient">
+                    <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer">
+                      Get Started
+                    </a>
+                  </Button>
+                )}
+                {currentService.isComingSoon && (
+                  <Button disabled variant="outline" className="opacity-60">
+                    Coming Soon
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Why dKloud.in Section */}

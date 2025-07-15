@@ -12,6 +12,7 @@ import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { FeatureButtons } from "@/components/FeatureButtons";
 import { AudioPlayer } from "@/components/AudioPlayer";
+import TeamSection from "@/components/TeamSection";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
@@ -71,6 +72,7 @@ const Index = () => {
     <div className="min-h-screen relative">
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
+      
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="absolute inset-0">
@@ -274,53 +276,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/20">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="slide-up">
-            <h3 className="text-3xl md:text-4xl font-bold mb-12">Meet the Founder</h3>
-            <div className="dkloud-card dkloud-card-interactive p-12">
-              <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-xl border-4 border-primary/20 glow float">
-                <img 
-                  src={founderPhoto} 
-                  alt="Dileep Yadav - Founder & Creative Director" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h4 className="text-2xl font-semibold mb-2">Dileep Yadav</h4>
-              <p className="text-lg text-accent font-medium mb-6">Founder & Creative Director</p>
-              <p className="text-lg text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-                A passionate, <span className="text-primary font-medium">self-taught professional</span> combining <span style={{ color: "#10b981" }} className="font-medium">technology</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">creativity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">community upliftment</span>. 
-                <span style={{ color: "#ec4899" }} className="font-medium">Music composer</span> working with Established Music Director <span className="text-accent font-medium">Arya Sharma</span>, guitarist, pianist, musician, writer, and <span style={{ color: "#06b6d4" }} className="font-medium">AI-driven design expert</span>.
-                I believe in creating platforms that make <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-medium">knowledge more accessible</span>, <span style={{ color: "#10b981" }} className="font-medium">learning more engaging</span>, and <span className="bg-gradient-to-r from-purple-500 to-violet-500 bg-clip-text text-transparent font-medium">creativity more visible</span>.
-                My aim is to build bridges between <span className="text-primary font-medium">tech and people</span> — one tab, one tool, one song at a time.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-                <Button asChild size="lg" className="btn-gradient text-lg px-8 py-3">
-                  <Link to="/portfolio">View Full Portfolio</Link>
-                </Button>
-                <Button asChild size="lg" className="btn-glass text-lg px-8 py-3">
-                  <Link to="/services">Explore Services</Link>
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-                {[
-                  { icon: <Music className="h-6 w-6" />, text: "Music Composition" },
-                  { icon: <Brain className="h-6 w-6" />, text: "AI Design" },
-                  { icon: <Code className="h-6 w-6" />, text: "Web Development" },
-                  { icon: <BookOpen className="h-6 w-6" />, text: "Poetry & Writing" }
-                ].map((service, index) => (
-                  <div key={index} className="flex flex-col items-center p-4 bg-background/50 rounded-lg">
-                    <div className="text-primary mb-2">{service.icon}</div>
-                    <span className="text-sm font-medium text-center">{service.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Team Section */}
+      <TeamSection />
     </div>
   );
 };
