@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,7 +17,7 @@ export function RunningBanner() {
 
   if (!isVisible) return null;
 
-  const bannerText = "This website is built with lots of effort, time, and passion — almost no cost! 💻 Open Source • 🌟 Community Driven • 🎨 Creative Tech Space • 🤖 AI Powered • ☁️ Cloud Native • 📚 Knowledge Hub • 🎵 Music & Tech • 🔧 Developer Tools • Join our community of tech enthusiasm";
+  const bannerText = "This website is built with lots of effort, time, and passion — almost no cost! 💻 Open Source • 🌟 Community Driven • 🎨 Creative Tech Space • 🤖 AI Powered • ☁️ Cloud Native • 📚 Knowledge Hub • 🎵 Music & Tech • 🔧 Developer Tools • Join our community of tech enthusiast";
 
   return (
     <div className="running-banner relative">
