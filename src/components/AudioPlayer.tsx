@@ -80,12 +80,12 @@ export const AudioPlayer = ({ audioSrc, title, description }: AudioPlayerProps) 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="dkloud-card dkloud-card-interactive p-6 max-w-md mx-auto fade-in" style={{animationDelay: "0.5s"}}>
+    <div className="dkloud-card dkloud-card-interactive neon-border-animation p-6 max-w-md mx-auto fade-in" style={{animationDelay: "0.5s"}}>
       <audio ref={audioRef} src={audioSrc} preload="metadata" />
       
       {/* Header */}
       <div className="text-center mb-4">
-        <h3 className="text-lg font-semibold mb-1 bg-gradient-to-r from-purple-400 via-violet-400 to-blue-400 bg-clip-text text-transparent">
+        <h3 className="text-lg font-semibold mb-1 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
           🎧 {title}
         </h3>
         {description && (
@@ -121,7 +121,7 @@ export const AudioPlayer = ({ audioSrc, title, description }: AudioPlayerProps) 
             onClick={handleProgressClick}
           >
             <div 
-              className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/30"
+              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all duration-200 group-hover:shadow-lg group-hover:shadow-blue-500/30"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -136,9 +136,9 @@ export const AudioPlayer = ({ audioSrc, title, description }: AudioPlayerProps) 
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className={`w-1 bg-gradient-to-t from-purple-500/30 to-blue-500/30 rounded-full transition-all duration-200 ${
+              className={`w-1 bg-gradient-to-t from-blue-500/30 to-cyan-500/30 rounded-full transition-all duration-200 ${
                 isPlaying && i < (progressPercentage / 5) 
-                  ? 'h-4 bg-gradient-to-t from-purple-500 to-blue-500' 
+                  ? 'h-4 bg-gradient-to-t from-blue-500 to-cyan-500' 
                   : 'h-2'
               }`}
             />
