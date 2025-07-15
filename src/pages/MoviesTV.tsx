@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Search, Filter, Star, Award, Calendar, Users, ChevronLeft, ChevronRight, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -337,7 +338,7 @@ const MoviesTV = () => {
                 <SelectItem value="all">All Ratings</SelectItem>
                 <SelectItem value="high">High (8+)</SelectItem>
                 <SelectItem value="medium">Medium (6-8)</SelectItem>
-                <SelectItem value="low">Low (<6)</SelectItem>
+                <SelectItem value="low">Low (&lt;6)</SelectItem>
               </SelectContent>
             </Select>
 
@@ -427,47 +428,47 @@ const MoviesTV = () => {
                 >
                   {filteredMovies.map((movie, index) => (
                     <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg">{movie.Name}</CardTitle>
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{movie.DKcloudRating}</span>
-                      </div>
-                    </div>
-                    {movie.Director && (
-                      <CardDescription className="font-medium text-primary">
-                        {movie.Director}
-                      </CardDescription>
-                    )}
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">{movie.Genre}</Badge>
-                      <Badge variant="outline">{movie.Platform}</Badge>
-                      <Badge variant="outline">{movie.Language}</Badge>
-                      {movie.Year && (
-                        <Badge variant="outline">{movie.Year}</Badge>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {movie["Why to Watch"]}
-                      </p>
-                    </div>
-                    
-                    {movie.Awards && (
-                      <div className="pt-2 border-t border-border">
-                        <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
-                          <Award className="h-3 w-3 mr-1" />
-                          {movie.Awards}
-                        </Badge>
-                      </div>
-                    )}
-                  </CardContent>
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-lg">{movie.Name}</CardTitle>
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm font-medium">{movie.DKcloudRating}</span>
+                          </div>
+                        </div>
+                        {movie.Director && (
+                          <CardDescription className="font-medium text-primary">
+                            {movie.Director}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      
+                      <CardContent className="space-y-4">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary">{movie.Genre}</Badge>
+                          <Badge variant="outline">{movie.Platform}</Badge>
+                          <Badge variant="outline">{movie.Language}</Badge>
+                          {movie.Year && (
+                            <Badge variant="outline">{movie.Year}</Badge>
+                          )}
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {movie["Why to Watch"]}
+                          </p>
+                        </div>
+                        
+                        {movie.Awards && (
+                          <div className="pt-2 border-t border-border">
+                            <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
+                              <Award className="h-3 w-3 mr-1" />
+                              {movie.Awards}
+                            </Badge>
+                          </div>
+                        )}
+                      </CardContent>
                     </Card>
                   ))}
                 </div>
@@ -513,72 +514,72 @@ const MoviesTV = () => {
                   }}
                 >
                   {filteredTvSeries.map((show, index) => (
-                <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg">{show.Name}</CardTitle>
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{show.DKcloudRating}</span>
-                      </div>
-                    </div>
-                    {show.Creator && (
-                      <CardDescription className="font-medium text-primary">
-                        {show.Creator}
-                      </CardDescription>
-                    )}
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">{show.Genre}</Badge>
-                      <Badge variant="outline">{show.Platform}</Badge>
-                      <Badge variant="outline">{show.Language}</Badge>
-                    </div>
-                    
-                    {show.Seasons && show.Status && (
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{show.Seasons} Season{show.Seasons > 1 ? 's' : ''}</span>
+                    <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-lg">{show.Name}</CardTitle>
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm font-medium">{show.DKcloudRating}</span>
+                          </div>
                         </div>
-                        <Badge 
-                          variant={show.Status === "Completed" ? "default" : "secondary"}
-                          className={show.Status === "Ongoing" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
-                        >
-                          {show.Status}
-                        </Badge>
-                      </div>
-                    )}
-                    
-                    <div>
-                      <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {show["Why to Watch"]}
-                      </p>
-                    </div>
-                    
-                    {show.Achievements && (
-                      <div>
-                        <h4 className="font-semibold text-sm mb-2 flex items-center">
-                          <Award className="h-4 w-4 mr-1" />
-                          Achievements:
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {show.Achievements}
-                        </p>
-                      </div>
-                    )}
-                    
-                    {show.Awards && (
-                      <div className="pt-2 border-t border-border">
-                        <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
-                          <Award className="h-3 w-3 mr-1" />
-                          {show.Awards}
-                        </Badge>
-                      </div>
-                    )}
-                  </CardContent>
+                        {show.Creator && (
+                          <CardDescription className="font-medium text-primary">
+                            {show.Creator}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      
+                      <CardContent className="space-y-4">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary">{show.Genre}</Badge>
+                          <Badge variant="outline">{show.Platform}</Badge>
+                          <Badge variant="outline">{show.Language}</Badge>
+                        </div>
+                        
+                        {show.Seasons && show.Status && (
+                          <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center space-x-1">
+                              <Calendar className="h-4 w-4" />
+                              <span>{show.Seasons} Season{show.Seasons > 1 ? 's' : ''}</span>
+                            </div>
+                            <Badge 
+                              variant={show.Status === "Completed" ? "default" : "secondary"}
+                              className={show.Status === "Ongoing" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
+                            >
+                              {show.Status}
+                            </Badge>
+                          </div>
+                        )}
+                        
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {show["Why to Watch"]}
+                          </p>
+                        </div>
+                        
+                        {show.Achievements && (
+                          <div>
+                            <h4 className="font-semibold text-sm mb-2 flex items-center">
+                              <Award className="h-4 w-4 mr-1" />
+                              Achievements:
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              {show.Achievements}
+                            </p>
+                          </div>
+                        )}
+                        
+                        {show.Awards && (
+                          <div className="pt-2 border-t border-border">
+                            <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
+                              <Award className="h-3 w-3 mr-1" />
+                              {show.Awards}
+                            </Badge>
+                          </div>
+                        )}
+                      </CardContent>
                     </Card>
                   ))}
                 </div>
