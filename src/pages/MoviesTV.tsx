@@ -1,6 +1,5 @@
-
 import { useState, useEffect, useRef } from "react";
-import { Search, Filter, Star, Award, Calendar, Users, ChevronLeft, ChevronRight, Crown } from "lucide-react";
+import { Search, Filter, Star, Award, Calendar, Users, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,29 +34,11 @@ interface TVSeries {
   Status?: string;
 }
 
-interface UnmissableContent {
-  Name: string;
-  Genre: string;
-  Platform: string;
-  DKcloudRating: number;
-  Language: string;
-  Awards: string;
-  "Why to Watch": string;
-  type: 'movie' | 'tv';
-  Director?: string;
-  Creator?: string;
-  Year?: number;
-  Seasons?: number;
-  Status?: string;
-  Achievements?: string;
-}
-
 const MoviesTV = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [tvSeries, setTvSeries] = useState<TVSeries[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
   const [filteredTvSeries, setFilteredTvSeries] = useState<TVSeries[]>([]);
-  const [filteredUnmissable, setFilteredUnmissable] = useState<UnmissableContent[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [genreFilter, setGenreFilter] = useState("all");
@@ -68,10 +49,8 @@ const MoviesTV = () => {
   const [activeTab, setActiveTab] = useState("movies");
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
   const [currentTvIndex, setCurrentTvIndex] = useState(0);
-  const [currentUnmissableIndex, setCurrentUnmissableIndex] = useState(0);
   const moviesScrollRef = useRef<HTMLDivElement>(null);
   const tvScrollRef = useRef<HTMLDivElement>(null);
-  const unmissableScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchData();
@@ -98,33 +77,6 @@ const MoviesTV = () => {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
-  };
-
-  const getUnmissableContent = (): UnmissableContent[] => {
-    const unmissableMovies: UnmissableContent[] = movies
-      .filter(movie => 
-        parseFloat(String(movie.DKcloudRating)) >= 8.5 || 
-        movie.Awards || 
-        movie.Achievements
-      )
-      .map(movie => ({
-        ...movie,
-        type: 'movie' as const
-      }));
-
-    const unmissableTv: UnmissableContent[] = tvSeries
-      .filter(show => 
-        parseFloat(String(show.DKcloudRating)) >= 8.5 || 
-        show.Awards || 
-        show.Achievements
-      )
-      .map(show => ({
-        ...show,
-        type: 'tv' as const
-      }));
-
-    return [...unmissableMovies, ...unmissableTv]
-      .sort((a, b) => parseFloat(String(b.DKcloudRating)) - parseFloat(String(a.DKcloudRating)));
   };
 
   const filterContent = () => {
@@ -194,35 +146,12 @@ const MoviesTV = () => {
       filteredTvData = filteredTvData.filter((show) => String(show.Awards) === awardsFilter);
     }
 
-    // Filter Unmissable Content
-    let unmissableData = getUnmissableContent();
-    
-    unmissableData = unmissableData.filter((content) =>
-      (String(content.Name || "").toLowerCase()).includes(searchTerm.toLowerCase()) ||
-      (String(content.Director || content.Creator || "").toLowerCase()).includes(searchTerm.toLowerCase())
-    );
-
-    if (genreFilter !== "all") {
-      unmissableData = unmissableData.filter((content) => String(content.Genre) === genreFilter);
-    }
-    if (platformFilter !== "all") {
-      unmissableData = unmissableData.filter((content) => String(content.Platform) === platformFilter);
-    }
-    if (languageFilter !== "all") {
-      unmissableData = unmissableData.filter((content) => String(content.Language) === languageFilter);
-    }
-
     setFilteredMovies(filteredMoviesData);
     setFilteredTvSeries(filteredTvData);
-    setFilteredUnmissable(unmissableData);
   };
 
-  const getUniqueValues = (key: string, type: 'movies' | 'tv' | 'unmissable') => {
-    let data: any[] = [];
-    if (type === 'movies') data = movies;
-    else if (type === 'tv') data = tvSeries;
-    else data = getUnmissableContent();
-    
+  const getUniqueValues = (key: string, type: 'movies' | 'tv') => {
+    const data = type === 'movies' ? movies : tvSeries;
     return Array.from(new Set(data.map((item: any) => item[key]))).filter(Boolean);
   };
 
@@ -236,7 +165,7 @@ const MoviesTV = () => {
   };
 
   const scrollMovies = (direction: 'left' | 'right') => {
-    const itemsPerView = 12;
+    const itemsPerView = 12; // 2 rows of 6 items each
     const maxIndex = Math.ceil(filteredMovies.length / itemsPerView) - 1;
     
     if (direction === 'right' && currentMovieIndex < maxIndex) {
@@ -247,24 +176,13 @@ const MoviesTV = () => {
   };
 
   const scrollTv = (direction: 'left' | 'right') => {
-    const itemsPerView = 12;
+    const itemsPerView = 12; // 2 rows of 6 items each
     const maxIndex = Math.ceil(filteredTvSeries.length / itemsPerView) - 1;
     
     if (direction === 'right' && currentTvIndex < maxIndex) {
       setCurrentTvIndex(prev => prev + 1);
     } else if (direction === 'left' && currentTvIndex > 0) {
       setCurrentTvIndex(prev => prev - 1);
-    }
-  };
-
-  const scrollUnmissable = (direction: 'left' | 'right') => {
-    const itemsPerView = 12;
-    const maxIndex = Math.ceil(filteredUnmissable.length / itemsPerView) - 1;
-    
-    if (direction === 'right' && currentUnmissableIndex < maxIndex) {
-      setCurrentUnmissableIndex(prev => prev + 1);
-    } else if (direction === 'left' && currentUnmissableIndex > 0) {
-      setCurrentUnmissableIndex(prev => prev - 1);
     }
   };
 
@@ -308,7 +226,7 @@ const MoviesTV = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Genres</SelectItem>
-                {getUniqueValues("Genre", activeTab as 'movies' | 'tv' | 'unmissable').map((genre) => (
+                {getUniqueValues("Genre", activeTab as 'movies' | 'tv').map((genre) => (
                   <SelectItem key={String(genre)} value={String(genre)}>
                     {String(genre)}
                   </SelectItem>
@@ -322,7 +240,7 @@ const MoviesTV = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Platforms</SelectItem>
-                {getUniqueValues("Platform", activeTab as 'movies' | 'tv' | 'unmissable').map((platform) => (
+                {getUniqueValues("Platform", activeTab as 'movies' | 'tv').map((platform) => (
                   <SelectItem key={String(platform)} value={String(platform)}>
                     {String(platform)}
                   </SelectItem>
@@ -336,9 +254,11 @@ const MoviesTV = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Ratings</SelectItem>
-                <SelectItem value="high">High (8+)</SelectItem>
-                <SelectItem value="medium">Medium (6-8)</SelectItem>
-                <SelectItem value="low">Low (&lt;6)</SelectItem>
+                {getUniqueValues("DKcloudRating", activeTab as 'movies' | 'tv').map((rating) => (
+                  <SelectItem key={String(rating)} value={String(rating)}>
+                    {String(rating)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -348,7 +268,7 @@ const MoviesTV = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Languages</SelectItem>
-                {getUniqueValues("Language", activeTab as 'movies' | 'tv' | 'unmissable').map((language) => (
+                {getUniqueValues("Language", activeTab as 'movies' | 'tv').map((language) => (
                   <SelectItem key={String(language)} value={String(language)}>
                     {String(language)}
                   </SelectItem>
@@ -365,9 +285,6 @@ const MoviesTV = () => {
               <p className="text-sm text-muted-foreground">
                 TV Series ({filteredTvSeries.length})
               </p>
-              <p className="text-sm text-muted-foreground">
-                Unmissable ({filteredUnmissable.length})
-              </p>
             </div>
             <Button variant="outline" size="sm" onClick={clearFilters}>
               Clear Filters
@@ -377,15 +294,12 @@ const MoviesTV = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="movies" className="text-lg">
               🎬 Movies ({filteredMovies.length})
             </TabsTrigger>
             <TabsTrigger value="tv" className="text-lg">
               📺 TV Series ({filteredTvSeries.length})
-            </TabsTrigger>
-            <TabsTrigger value="unmissable" className="text-lg">
-              👑 Unmissable ({filteredUnmissable.length})
             </TabsTrigger>
           </TabsList>
 
@@ -428,47 +342,47 @@ const MoviesTV = () => {
                 >
                   {filteredMovies.map((movie, index) => (
                     <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <CardTitle className="text-lg">{movie.Name}</CardTitle>
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium">{movie.DKcloudRating}</span>
-                          </div>
-                        </div>
-                        {movie.Director && (
-                          <CardDescription className="font-medium text-primary">
-                            {movie.Director}
-                          </CardDescription>
-                        )}
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="secondary">{movie.Genre}</Badge>
-                          <Badge variant="outline">{movie.Platform}</Badge>
-                          <Badge variant="outline">{movie.Language}</Badge>
-                          {movie.Year && (
-                            <Badge variant="outline">{movie.Year}</Badge>
-                          )}
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {movie["Why to Watch"]}
-                          </p>
-                        </div>
-                        
-                        {movie.Awards && (
-                          <div className="pt-2 border-t border-border">
-                            <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
-                              <Award className="h-3 w-3 mr-1" />
-                              {movie.Awards}
-                            </Badge>
-                          </div>
-                        )}
-                      </CardContent>
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg">{movie.Name}</CardTitle>
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-medium">{movie.DKcloudRating}</span>
+                      </div>
+                    </div>
+                    {movie.Director && (
+                      <CardDescription className="font-medium text-primary">
+                        {movie.Director}
+                      </CardDescription>
+                    )}
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary">{movie.Genre}</Badge>
+                      <Badge variant="outline">{movie.Platform}</Badge>
+                      <Badge variant="outline">{movie.Language}</Badge>
+                      {movie.Year && (
+                        <Badge variant="outline">{movie.Year}</Badge>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {movie["Why to Watch"]}
+                      </p>
+                    </div>
+                    
+                    {movie.Awards && (
+                      <div className="pt-2 border-t border-border">
+                        <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
+                          <Award className="h-3 w-3 mr-1" />
+                          {movie.Awards}
+                        </Badge>
+                      </div>
+                    )}
+                  </CardContent>
                     </Card>
                   ))}
                 </div>
@@ -514,195 +428,72 @@ const MoviesTV = () => {
                   }}
                 >
                   {filteredTvSeries.map((show, index) => (
-                    <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <CardTitle className="text-lg">{show.Name}</CardTitle>
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium">{show.DKcloudRating}</span>
-                          </div>
+                <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0">
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg">{show.Name}</CardTitle>
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-medium">{show.DKcloudRating}</span>
+                      </div>
+                    </div>
+                    {show.Creator && (
+                      <CardDescription className="font-medium text-primary">
+                        {show.Creator}
+                      </CardDescription>
+                    )}
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary">{show.Genre}</Badge>
+                      <Badge variant="outline">{show.Platform}</Badge>
+                      <Badge variant="outline">{show.Language}</Badge>
+                    </div>
+                    
+                    {show.Seasons && show.Status && (
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{show.Seasons} Season{show.Seasons > 1 ? 's' : ''}</span>
                         </div>
-                        {show.Creator && (
-                          <CardDescription className="font-medium text-primary">
-                            {show.Creator}
-                          </CardDescription>
-                        )}
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="secondary">{show.Genre}</Badge>
-                          <Badge variant="outline">{show.Platform}</Badge>
-                          <Badge variant="outline">{show.Language}</Badge>
-                        </div>
-                        
-                        {show.Seasons && show.Status && (
-                          <div className="flex items-center justify-between text-sm">
-                            <div className="flex items-center space-x-1">
-                              <Calendar className="h-4 w-4" />
-                              <span>{show.Seasons} Season{show.Seasons > 1 ? 's' : ''}</span>
-                            </div>
-                            <Badge 
-                              variant={show.Status === "Completed" ? "default" : "secondary"}
-                              className={show.Status === "Ongoing" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
-                            >
-                              {show.Status}
-                            </Badge>
-                          </div>
-                        )}
-                        
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {show["Why to Watch"]}
-                          </p>
-                        </div>
-                        
-                        {show.Achievements && (
-                          <div>
-                            <h4 className="font-semibold text-sm mb-2 flex items-center">
-                              <Award className="h-4 w-4 mr-1" />
-                              Achievements:
-                            </h4>
-                            <p className="text-sm text-muted-foreground">
-                              {show.Achievements}
-                            </p>
-                          </div>
-                        )}
-                        
-                        {show.Awards && (
-                          <div className="pt-2 border-t border-border">
-                            <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
-                              <Award className="h-3 w-3 mr-1" />
-                              {show.Awards}
-                            </Badge>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Unmissable Tab */}
-          <TabsContent value="unmissable">
-            <div className="relative">
-              {/* Navigation Controls */}
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold flex items-center">
-                  <Crown className="h-5 w-5 mr-2 text-yellow-500" />
-                  Unmissable Content ({filteredUnmissable.length})
-                </h3>
-                <div className="flex space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => scrollUnmissable('left')}
-                    disabled={currentUnmissableIndex === 0}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => scrollUnmissable('right')}
-                    disabled={currentUnmissableIndex >= Math.ceil(filteredUnmissable.length / 12) - 1}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              
-              <div ref={unmissableScrollRef} className="overflow-hidden">
-                <div 
-                  className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 pb-4 transition-transform duration-300" 
-                  style={{ 
-                    gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
-                    width: `${Math.ceil(filteredUnmissable.length / 2) * 320}px`,
-                    transform: `translateX(-${currentUnmissableIndex * (6 * 320)}px)`
-                  }}
-                >
-                  {filteredUnmissable.map((content, index) => (
-                    <Card key={index} className="dkloud-card dkloud-card-interactive h-full w-72 flex-shrink-0 border-2 border-gradient-to-r from-yellow-400 to-orange-500">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <CardTitle className="text-lg flex items-center">
-                            {content.Name}
-                            <Crown className="h-4 w-4 ml-2 text-yellow-500" />
-                          </CardTitle>
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium text-yellow-600">{content.DKcloudRating}</span>
-                          </div>
-                        </div>
-                        {(content.Director || content.Creator) && (
-                          <CardDescription className="font-medium text-primary">
-                            {content.Director || content.Creator}
-                          </CardDescription>
-                        )}
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
-                            {content.type === 'movie' ? '🎬 Movie' : '📺 TV Series'}
-                          </Badge>
-                          <Badge variant="secondary">{content.Genre}</Badge>
-                          <Badge variant="outline">{content.Platform}</Badge>
-                          <Badge variant="outline">{content.Language}</Badge>
-                          {content.Year && (
-                            <Badge variant="outline">{content.Year}</Badge>
-                          )}
-                        </div>
-                        
-                        {content.type === 'tv' && content.Seasons && content.Status && (
-                          <div className="flex items-center justify-between text-sm">
-                            <div className="flex items-center space-x-1">
-                              <Calendar className="h-4 w-4" />
-                              <span>{content.Seasons} Season{content.Seasons > 1 ? 's' : ''}</span>
-                            </div>
-                            <Badge 
-                              variant={content.Status === "Completed" ? "default" : "secondary"}
-                              className={content.Status === "Ongoing" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
-                            >
-                              {content.Status}
-                            </Badge>
-                          </div>
-                        )}
-                        
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {content["Why to Watch"]}
-                          </p>
-                        </div>
-                        
-                        {content.Achievements && (
-                          <div>
-                            <h4 className="font-semibold text-sm mb-2 flex items-center">
-                              <Award className="h-4 w-4 mr-1" />
-                              Achievements:
-                            </h4>
-                            <p className="text-sm text-muted-foreground">
-                              {content.Achievements}
-                            </p>
-                          </div>
-                        )}
-                        
-                        {content.Awards && (
-                          <div className="pt-2 border-t border-border">
-                            <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
-                              <Award className="h-3 w-3 mr-1" />
-                              {content.Awards}
-                            </Badge>
-                          </div>
-                        )}
-                      </CardContent>
+                        <Badge 
+                          variant={show.Status === "Completed" ? "default" : "secondary"}
+                          className={show.Status === "Ongoing" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : ""}
+                        >
+                          {show.Status}
+                        </Badge>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {show["Why to Watch"]}
+                      </p>
+                    </div>
+                    
+                    {show.Achievements && (
+                      <div>
+                        <h4 className="font-semibold text-sm mb-2 flex items-center">
+                          <Award className="h-4 w-4 mr-1" />
+                          Achievements:
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {show.Achievements}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {show.Awards && (
+                      <div className="pt-2 border-t border-border">
+                        <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
+                          <Award className="h-3 w-3 mr-1" />
+                          {show.Awards}
+                        </Badge>
+                      </div>
+                    )}
+                  </CardContent>
                     </Card>
                   ))}
                 </div>
@@ -713,8 +504,7 @@ const MoviesTV = () => {
 
         {/* No Results */}
         {((activeTab === "movies" && filteredMovies.length === 0) || 
-          (activeTab === "tv" && filteredTvSeries.length === 0) ||
-          (activeTab === "unmissable" && filteredUnmissable.length === 0)) && !loading && (
+          (activeTab === "tv" && filteredTvSeries.length === 0)) && !loading && (
           <div className="text-center py-12">
             <h3 className="text-2xl font-semibold mb-2">No content found</h3>
             <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
