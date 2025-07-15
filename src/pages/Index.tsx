@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -86,16 +85,22 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <div className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
+              <span className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 bg-clip-text text-transparent">
+                dKloud
+              </span>
+            </h1>
+            
+            <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-purple-400 via-violet-400 to-blue-400 bg-clip-text text-transparent"
                 delay={1000}
               />
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              <span className="bg-gradient-to-r from-red-500 via-red-400 to-rose-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -111,7 +116,7 @@ const Index = () => {
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
               <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                 <span className="text-foreground/60">
-                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
+                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
@@ -148,10 +153,10 @@ const Index = () => {
                 {[
                   { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
                   { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
-                  { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-400 to-blue-500" },
-                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-400 to-teal-500" },
-                  { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-blue-500 to-indigo-600" },
-                  { name: "Tech News", href: "/technews", Icon: Newspaper, desc: "Latest Updates", color: "from-indigo-500 to-blue-600" },
+                  { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
+                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
+                  { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
+                  { name: "Tech News", href: "/technews", Icon: Newspaper, desc: "Latest Updates", color: "from-blue-500 to-indigo-600" },
                   { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
@@ -163,8 +168,8 @@ const Index = () => {
                       duration: 2000 
                     })}
                   >
-                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-primary/20 fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative p-4 text-center">
@@ -190,9 +195,9 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">dKloud</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">dKloud</span></h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent font-medium">entertainment</span>, <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent font-medium">education</span>, and <span style={{ color: "#10b981" }} className="font-medium">technology</span>. 
+              A comprehensive platform combining <span className="bg-gradient-to-r from-purple-500 to-violet-500 bg-clip-text text-transparent font-medium">entertainment</span>, <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent font-medium">education</span>, and <span style={{ color: "#10b981" }} className="font-medium">technology</span>. 
               All data is dynamically powered by <span className="text-accent font-medium">Google Sheets APIs</span> for <span className="text-primary font-medium">real-time updates</span>.
             </p>
           </div>
@@ -285,7 +290,7 @@ const Index = () => {
               <h4 className="text-2xl font-semibold mb-2">Dileep Yadav</h4>
               <p className="text-lg text-accent font-medium mb-6">Founder & Creative Director</p>
               <p className="text-lg text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-                A passionate, <span className="text-primary font-medium">self-taught professional</span> combining <span style={{ color: "#10b981" }} className="font-medium">technology</span>, <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent font-medium">creativity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">community upliftment</span>. 
+                A passionate, <span className="text-primary font-medium">self-taught professional</span> combining <span style={{ color: "#10b981" }} className="font-medium">technology</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">creativity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">community upliftment</span>. 
                 <span style={{ color: "#ec4899" }} className="font-medium">Music composer</span> working with Established Music Director <span className="text-accent font-medium">Arya Sharma</span>, guitarist, pianist, musician, writer, and <span style={{ color: "#06b6d4" }} className="font-medium">AI-driven design expert</span>.
                 I believe in creating platforms that make <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-medium">knowledge more accessible</span>, <span style={{ color: "#10b981" }} className="font-medium">learning more engaging</span>, and <span className="bg-gradient-to-r from-purple-500 to-violet-500 bg-clip-text text-transparent font-medium">creativity more visible</span>.
                 My aim is to build bridges between <span className="text-primary font-medium">tech and people</span> — one tab, one tool, one song at a time.
