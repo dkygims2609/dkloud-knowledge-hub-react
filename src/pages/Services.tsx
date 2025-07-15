@@ -156,10 +156,10 @@ const Services = () => {
           />
 
           {/* Current Service Display */}
-          <Card className={`dkloud-card dkloud-card-interactive h-full fade-in ${currentService.isComingSoon ? 'border-warning/40 bg-warning/5' : ''}`}>
+          <Card className={`dkloud-card dkloud-card-interactive h-full fade-in ${currentService && 'isComingSoon' in currentService && currentService.isComingSoon ? 'border-warning/40 bg-warning/5' : ''}`}>
             <CardHeader>
               <div className="flex items-start space-x-4 mb-4">
-                <div className={`text-primary ${currentService.isComingSoon ? 'text-warning' : ''}`}>{currentService.icon}</div>
+                <div className={`text-primary ${currentService && 'isComingSoon' in currentService && currentService.isComingSoon ? 'text-warning' : ''}`}>{currentService.icon}</div>
                 <div className="flex-1">
                   <CardTitle className="text-xl mb-3">{currentService.title}</CardTitle>
                   <CardDescription className="text-base leading-relaxed mb-4">
@@ -190,14 +190,14 @@ const Services = () => {
               {/* CTA */}
               <div className="text-center">
                 <p className="text-lg font-semibold text-primary mb-4">{currentService.cta}</p>
-                {!currentService.isComingSoon && (
+                {!(currentService && 'isComingSoon' in currentService && currentService.isComingSoon) && (
                   <Button asChild className="btn-gradient">
                     <a href="https://wa.me/918175996960" target="_blank" rel="noopener noreferrer">
                       Get Started
                     </a>
                   </Button>
                 )}
-                {currentService.isComingSoon && (
+                {currentService && 'isComingSoon' in currentService && currentService.isComingSoon && (
                   <Button disabled variant="outline" className="opacity-60">
                     Coming Soon
                   </Button>
