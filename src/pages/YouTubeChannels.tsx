@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Search, ExternalLink, Users, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,24 +48,28 @@ const YouTubeChannels = () => {
     // Filter by category
     if (selectedCategory !== "All") {
       filtered = filtered.filter((channel) =>
-        channel.Category.toLowerCase() === selectedCategory.toLowerCase()
+        channel.Category && channel.Category.toLowerCase() === selectedCategory.toLowerCase()
       );
     }
     
     // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter((channel) =>
-        channel.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        channel.Description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        channel.Category.toLowerCase().includes(searchTerm.toLowerCase())
+        (channel.Name && channel.Name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (channel.Description && channel.Description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (channel.Category && channel.Category.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
     
     setFilteredChannels(filtered);
   };
 
-  // Get unique categories
-  const categories = ["All", ...Array.from(new Set(channels.map(channel => channel.Category)))];
+  // Get unique categories, filtering out undefined/null values
+  const categories = ["All", ...Array.from(new Set(
+    channels
+      .filter(channel => channel.Category) // Filter out channels without Category
+      .map(channel => channel.Category)
+  ))];
 
   const getCategoryColor = (category: string) => {
     const colors = [
@@ -162,15 +167,17 @@ const YouTubeChannels = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                      {channel.Name}
+                      {channel.Name || "Untitled Channel"}
                     </CardTitle>
                     <div className="flex items-center space-x-2 mt-2">
-                      <Badge 
-                        variant="secondary" 
-                        className={`bg-gradient-to-r ${getCategoryColor(channel.Category)} text-white border-0 shadow-md`}
-                      >
-                        {channel.Category}
-                      </Badge>
+                      {channel.Category && (
+                        <Badge 
+                          variant="secondary" 
+                          className={`bg-gradient-to-r ${getCategoryColor(channel.Category)} text-white border-0 shadow-md`}
+                        >
+                          {channel.Category}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -178,7 +185,7 @@ const YouTubeChannels = () => {
               
               <CardContent className="space-y-4">
                 <CardDescription className="text-sm">
-                  {channel.Description}
+                  {channel.Description || "No description available"}
                 </CardDescription>
                 
                 <div className="flex items-center justify-between pt-4 border-t border-border">
