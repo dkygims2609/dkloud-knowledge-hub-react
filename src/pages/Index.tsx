@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,7 @@ const Index = () => {
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       
-      {/* Enhanced Hero Section */}
+      {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20" />
@@ -82,8 +81,8 @@ const Index = () => {
         </div>
         
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse glow-pulse" />
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse glow-pulse" style={{animationDelay: "1s"}} />
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
@@ -91,13 +90,13 @@ const Index = () => {
             <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="text-triple-tone drop-shadow-2xl"
+                className="bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 bg-clip-text text-transparent drop-shadow-lg text-sharp-bright"
                 delay={1000}
               />
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="text-red-500 font-bold tracking-wide text-sharp-bright">
+              <span className="text-red-500 font-bold tracking-wide">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -113,7 +112,7 @@ const Index = () => {
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
               <p className="text-sm md:text-base text-hero-bright leading-relaxed">
                 <span className="text-hero-bright">
-                  At dKloud, we're crafting a <span className="text-primary font-semibold">universe</span> where <span className="text-dual-tone font-semibold">creativity meets the cloud</span>, <span className="text-dual-tone font-semibold">AI fuels curiosity</span>, and <span className="text-dual-tone font-semibold">learning becomes a shared adventure</span>.
+                  At dKloud, we're crafting a <span className="text-primary font-semibold">universe</span> where <span className="text-accent font-semibold">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
@@ -192,9 +191,9 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="text-dual-tone">dKloud</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">dKloud</span></h2>
             <p className="text-xl text-hero-bright max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="text-dual-tone font-semibold">entertainment</span>, <span className="text-dual-tone font-semibold">education</span>, and <span className="text-primary font-semibold">technology</span>. 
+              A comprehensive platform combining <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">entertainment</span>, <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent font-semibold">education</span>, and <span style={{ color: "#10b981" }} className="font-semibold">technology</span>. 
               All data is dynamically powered by <span className="text-accent font-semibold">Google Sheets APIs</span> for <span className="text-primary font-semibold">real-time updates</span>.
             </p>
           </div>
@@ -203,31 +202,31 @@ const Index = () => {
             <Card className="dkloud-card dkloud-card-interactive bounce-in text-center">
               <CardHeader className="pb-8">
                 <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
-                <CardTitle className="text-2xl text-sharp-bright">Google Sheets</CardTitle>
-                <CardDescription className="text-lg text-hero-bright">Data stored and managed in organized spreadsheets</CardDescription>
+                <CardTitle className="text-2xl">Google Sheets</CardTitle>
+                <CardDescription className="text-lg">Data stored and managed in organized spreadsheets</CardDescription>
               </CardHeader>
             </Card>
             
             <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.2s" }}>
               <CardHeader className="pb-8">
                 <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
-                <CardTitle className="text-2xl text-sharp-bright">Live APIs</CardTitle>
-                <CardDescription className="text-lg text-hero-bright">Real-time data fetching via Google Apps Script</CardDescription>
+                <CardTitle className="text-2xl">Live APIs</CardTitle>
+                <CardDescription className="text-lg">Real-time data fetching via Google Apps Script</CardDescription>
               </CardHeader>
             </Card>
             
             <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.4s" }}>
               <CardHeader className="pb-8">
                 <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
-                <CardTitle className="text-2xl text-sharp-bright">Dynamic Site</CardTitle>
-                <CardDescription className="text-lg text-hero-bright">Always up-to-date content without manual updates</CardDescription>
+                <CardTitle className="text-2xl">Dynamic Site</CardTitle>
+                <CardDescription className="text-lg">Always up-to-date content without manual updates</CardDescription>
               </CardHeader>
             </Card>
           </div>
 
           <div className="text-center mb-20">
             <div className="flex items-center justify-center gap-4 mb-8">
-              <h3 className="text-3xl md:text-4xl font-bold slide-up text-sharp-bright">How dKloud Works</h3>
+              <h3 className="text-3xl md:text-4xl font-bold slide-up">How dKloud Works</h3>
               <Button
                 variant="outline"
                 size="sm"
@@ -245,7 +244,7 @@ const Index = () => {
             </div>
             
             <div id="how-dkloud-works">
-              <p className="text-lg text-hero-bright mb-8 max-w-3xl mx-auto">
+              <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
                 Experience the seamless flow of data from your interaction to real-time content delivery
               </p>
               
