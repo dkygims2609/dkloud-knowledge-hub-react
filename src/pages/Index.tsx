@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -91,7 +90,7 @@ const Index = () => {
             <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl animate-neon-pulse font-black tracking-wider"
+                className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent font-black tracking-wider"
                 delay={1000}
               />
             </div>

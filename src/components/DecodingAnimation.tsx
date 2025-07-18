@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 
 interface DecodingAnimationProps {
@@ -11,19 +12,16 @@ const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*![]{}()<>?/\\|~`+
 export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingAnimationProps) {
   const [displayText, setDisplayText] = useState(text);
   const [isDecoding, setIsDecoding] = useState(false);
-  const [glitchIntensity, setGlitchIntensity] = useState(0);
 
   useEffect(() => {
     const startDecoding = () => {
       setIsDecoding(true);
-      setGlitchIntensity(1);
       const originalText = text;
       let iterations = 0;
       const totalIterations = originalText.length + 3;
 
       const interval = setInterval(() => {
         const progress = iterations / totalIterations;
-        setGlitchIntensity(Math.max(0, 1 - progress));
 
         const newText = originalText
           .split("")
@@ -63,9 +61,8 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
           clearInterval(interval);
           setDisplayText(originalText);
           setIsDecoding(false);
-          setGlitchIntensity(0);
         }
-      }, 80); // Slightly faster for more dynamic feel
+      }, 80);
     };
 
     const timer = setTimeout(() => {
@@ -86,20 +83,6 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
   return (
     <span 
       className={`${className} font-mono tracking-wider transition-all duration-200`}
-      style={{
-        textShadow: isDecoding ? 
-          `0 0 ${5 + glitchIntensity * 8}px hsl(var(--primary)), 
-           ${glitchIntensity * 1.5}px 0 0 hsl(224 71% 50%), 
-           -${glitchIntensity * 1.5}px 0 0 hsl(262 83% 58%)` : 
-          'none',
-        filter: 'none',
-        color: isDecoding ? (
-          Math.random() < 0.3 ? 'hsl(var(--primary))' :
-          Math.random() < 0.6 ? 'hsl(224 71% 50%)' :
-          Math.random() < 0.8 ? 'hsl(262 83% 58%)' :
-          'hsl(var(--foreground))'
-        ) : undefined
-      }}
     >
       {displayText}
     </span>
