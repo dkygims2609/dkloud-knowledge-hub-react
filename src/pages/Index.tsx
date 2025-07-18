@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -74,15 +75,15 @@ const Index = () => {
       <IoTFloatingIcons showOnHomePage={true} />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/10 to-background">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.1_0%,_transparent_50%)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/3 to-primary/5 dark:from-primary/10 dark:via-accent/5 dark:to-primary/10" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.05_0%,_transparent_50%)]" />
         </div>
         
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/10 to-primary/10 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
@@ -141,11 +142,11 @@ const Index = () => {
       </section>
 
       {/* Explore Our Sections */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/20 to-muted/5">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
+            <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-6xl mx-auto p-4">
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 w-full">
                 {[
                   { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
                   { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
@@ -164,15 +165,15 @@ const Index = () => {
                       duration: 2000 
                     })}
                   >
-                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in glass-tab" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="relative overflow-hidden rounded-xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 fade-in glass-tab" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
-                      <div className="relative p-4 text-center">
-                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center neon-gradient-text">
-                          <tab.Icon className="h-6 w-6" />
+                      <div className="relative p-3 text-center">
+                        <div className="text-xl mb-2 group-hover:scale-110 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center neon-gradient-text">
+                          <tab.Icon className="h-4 w-4" />
                         </div>
-                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
+                        <h4 className="font-bold text-xs mb-1 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
                           {tab.name}
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
                         </h4>
