@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -90,13 +91,13 @@ const Index = () => {
             <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 bg-clip-text text-transparent drop-shadow-lg text-sharp-bright"
+                className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl animate-neon-pulse font-black tracking-wider"
                 delay={1000}
               />
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="text-red-500 font-bold tracking-wide">
+              <span className="text-red-500 font-bold tracking-wide animate-glow">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -112,7 +113,7 @@ const Index = () => {
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
               <p className="text-sm md:text-base text-hero-bright leading-relaxed">
                 <span className="text-hero-bright">
-                  At dKloud, we're crafting a <span className="text-primary font-semibold">universe</span> where <span className="text-accent font-semibold">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
+                  At dKloud, we're crafting a <span className="text-primary font-semibold neon-gradient-text">universe</span> where <span className="text-accent font-semibold neon-gradient-text">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
@@ -126,7 +127,7 @@ const Index = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.8s"}}>
-              <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl">
+              <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl neon-pulse">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
                   <ArrowRight className="ml-3 h-6 w-6" />
@@ -164,12 +165,12 @@ const Index = () => {
                       duration: 2000 
                     })}
                   >
-                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in glass-tab" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative p-4 text-center">
-                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center">
+                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center neon-gradient-text">
                           <tab.Icon className="h-6 w-6" />
                         </div>
                         <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
@@ -191,10 +192,10 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">dKloud</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-neon-pulse font-black">dKloud</span></h2>
             <p className="text-xl text-hero-bright max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">entertainment</span>, <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent font-semibold">education</span>, and <span style={{ color: "#10b981" }} className="font-semibold">technology</span>. 
-              All data is dynamically powered by <span className="text-accent font-semibold">Google Sheets APIs</span> for <span className="text-primary font-semibold">real-time updates</span>.
+              A comprehensive platform combining <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent font-semibold">entertainment</span>, <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent font-semibold">education</span>, and <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">technology</span>. 
+              All data is dynamically powered by <span className="text-accent font-semibold neon-gradient-text">Google Sheets APIs</span> for <span className="text-primary font-semibold neon-gradient-text">real-time updates</span>.
             </p>
           </div>
 

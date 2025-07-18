@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* dKloud Design System - Indigo-Blue Professional Theme */
+/* dKloud Design System - NeonRain Inspired Blue-Purple Neon Theme */
 
 @layer base {
   :root {
-    /* NeonRain Inspired Dark Neon Theme */
+    /* NeonRain Inspired Dark Neon Theme - Enhanced Blue/Purple */
     --background: 220 27% 8%;
     --foreground: 0 0% 98%;
 
@@ -16,24 +16,24 @@
     --popover: 220 27% 9%;
     --popover-foreground: 0 0% 98%;
 
-    /* Deep Blue Primary */
-    --primary: 224 71% 36%;
+    /* Neon Blue Primary */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 224 76% 48%;
+    --primary-hover: 217 91% 70%;
 
-    /* Rich Purple Secondary */
-    --secondary: 262 83% 58%;
+    /* Electric Purple Secondary */
+    --secondary: 262 83% 68%;
     --secondary-foreground: 0 0% 100%;
 
     /* Dark Muted */
     --muted: 220 27% 12%;
     --muted-foreground: 0 0% 85%;
 
-    /* Indigo Accent */
-    --accent: 239 84% 67%;
+    /* Neon Cyan Accent */
+    --accent: 194 100% 60%;
     --accent-foreground: 0 0% 100%;
 
-    /* Success - Blue Accent */
+    /* Success - Neon Blue */
     --success: 217 91% 60%;
     --success-foreground: 0 0% 100%;
 
@@ -46,28 +46,27 @@
 
     --border: 220 27% 15%;
     --input: 220 27% 12%;
-    --ring: 180 100% 50%;
+    --ring: 194 100% 60%;
 
     --radius: 0.75rem;
 
-    /* Modern Blue-Purple Theme Variables */
-    --neon-blue: 224 71% 36%;
-    --neon-purple: 262 83% 58%;
+    /* NeonRain Theme Variables - Blue/Purple Focus */
+    --neon-blue: 217 91% 60%;
+    --neon-purple: 262 83% 68%;
+    --neon-cyan: 194 100% 60%;
     --neon-indigo: 239 84% 67%;
     --neon-violet: 258 90% 66%;
-    --neon-royal: 217 91% 60%;
 
-    /* Enhanced Blue-Purple Gradients */
-    --hero-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 50%) 50%, hsl(217 91% 70%) 100%);
-    --hero-gradient-blue: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 50%) 50%, hsl(217 91% 70%) 100%);
-    --text-gradient-blue: linear-gradient(90deg, hsl(217 91% 60%), hsl(194 100% 50%), hsl(217 91% 70%));
+    /* Enhanced NeonRain Gradients */
+    --hero-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 60%) 50%, hsl(262 83% 68%) 100%);
+    --text-gradient-neon: linear-gradient(90deg, hsl(194 100% 60%), hsl(217 91% 60%), hsl(262 83% 68%));
     --card-gradient: linear-gradient(145deg, hsl(220 27% 9% / 0.8) 0%, hsl(220 27% 12% / 0.6) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(224 71% 36% / 0.1) 0%, hsl(262 83% 58% / 0.05) 100%);
-    --neon-glow: 0 0 20px hsl(224 71% 36%), 0 0 40px hsl(224 71% 36%), 0 0 60px hsl(224 71% 36%);
-    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.4), 0 0 10px hsl(224 71% 36% / 0.2);
-    --hover-shadow: 0 8px 40px hsl(224 71% 36% / 0.4), 0 0 20px hsl(262 83% 58% / 0.3);
-    --glow-shadow: 0 0 30px hsl(224 71% 36% / 0.6), 0 0 60px hsl(262 83% 58% / 0.4);
-    --banner-gradient: linear-gradient(90deg, hsl(224 71% 36%) 0%, hsl(262 83% 58%) 25%, hsl(239 84% 67%) 50%, hsl(258 90% 66%) 75%, hsl(224 71% 36%) 100%);
+    --glass-gradient: linear-gradient(135deg, hsl(217 91% 60% / 0.1) 0%, hsl(262 83% 68% / 0.05) 100%);
+    --neon-glow: 0 0 20px hsl(217 91% 60%), 0 0 40px hsl(194 100% 60%), 0 0 60px hsl(262 83% 68%);
+    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.4), 0 0 10px hsl(217 91% 60% / 0.2);
+    --hover-shadow: 0 8px 40px hsl(217 91% 60% / 0.4), 0 0 20px hsl(262 83% 68% / 0.3);
+    --glow-shadow: 0 0 30px hsl(217 91% 60% / 0.6), 0 0 60px hsl(262 83% 68% / 0.4);
+    --banner-gradient: linear-gradient(90deg, hsl(217 91% 60%) 0%, hsl(262 83% 68%) 25%, hsl(194 100% 60%) 50%, hsl(258 90% 66%) 75%, hsl(217 91% 60%) 100%);
     
     /* Animation Variables */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -76,7 +75,7 @@
     --transition-glow: all 0.3s ease-in-out;
   }
 
-  /* Light Theme Variables */
+  /* Light Theme Variables - NeonRain Inspired */
   :root {
     --background: 0 0% 100%;
     --foreground: 220 27% 12%;
@@ -87,9 +86,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 27% 12%;
 
-    --primary: 224 71% 36%;
+    --primary: 217 91% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 224 76% 48%;
+    --primary-hover: 217 91% 60%;
 
     --secondary: 262 83% 58%;
     --secondary-foreground: 0 0% 100%;
@@ -97,27 +96,26 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 35%;
 
-    --accent: 239 84% 67%;
+    --accent: 194 100% 50%;
     --accent-foreground: 0 0% 100%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 224 71% 36%;
+    --ring: 217 91% 50%;
 
-    /* Light Mode Gradients & Effects */
-    --hero-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 50%) 50%, hsl(217 91% 70%) 100%);
-    --hero-gradient-blue: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 50%) 50%, hsl(217 91% 70%) 100%);
-    --text-gradient-blue: linear-gradient(90deg, hsl(217 91% 60%), hsl(194 100% 50%), hsl(217 91% 70%));
+    /* Light Mode NeonRain Gradients & Effects */
+    --hero-gradient: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(194 100% 50%) 50%, hsl(262 83% 58%) 100%);
+    --text-gradient-neon: linear-gradient(90deg, hsl(194 100% 50%), hsl(217 91% 50%), hsl(262 83% 58%));
     --card-gradient: linear-gradient(145deg, hsl(0 0% 100% / 0.9) 0%, hsl(210 40% 98% / 0.7) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(224 71% 36% / 0.05) 0%, hsl(262 83% 58% / 0.03) 100%);
-    --neon-glow: 0 0 20px hsl(224 71% 36% / 0.3), 0 0 40px hsl(224 71% 36% / 0.2);
-    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.1), 0 0 10px hsl(224 71% 36% / 0.1);
-    --hover-shadow: 0 8px 40px hsl(224 71% 36% / 0.2), 0 0 20px hsl(262 83% 58% / 0.15);
-    --glow-shadow: 0 0 30px hsl(224 71% 36% / 0.3), 0 0 60px hsl(262 83% 58% / 0.2);
+    --glass-gradient: linear-gradient(135deg, hsl(217 91% 50% / 0.05) 0%, hsl(262 83% 58% / 0.03) 100%);
+    --neon-glow: 0 0 20px hsl(217 91% 50% / 0.3), 0 0 40px hsl(194 100% 50% / 0.2);
+    --card-shadow: 0 4px 20px hsl(0 0% 0% / 0.1), 0 0 10px hsl(217 91% 50% / 0.1);
+    --hover-shadow: 0 8px 40px hsl(217 91% 50% / 0.2), 0 0 20px hsl(262 83% 58% / 0.15);
+    --glow-shadow: 0 0 30px hsl(217 91% 50% / 0.3), 0 0 60px hsl(262 83% 58% / 0.2);
   }
 
   .dark {
-    /* Enhanced Dark Mode with Neon Accents */
+    /* Enhanced NeonRain Dark Mode */
     --background: 220 27% 6%;
     --foreground: 0 0% 98%;
 
@@ -127,33 +125,32 @@
     --popover: 220 27% 7%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 224 76% 48%;
+    --primary: 217 91% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 224 80% 58%;
+    --primary-hover: 217 91% 75%;
 
-    --secondary: 262 90% 68%;
+    --secondary: 262 83% 70%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 27% 10%;
     --muted-foreground: 0 0% 85%;
 
-    --accent: 239 88% 75%;
+    --accent: 194 100% 65%;
     --accent-foreground: 0 0% 100%;
 
     --border: 220 27% 18%;
     --input: 220 27% 10%;
-    --ring: 180 100% 55%;
+    --ring: 194 100% 65%;
 
-    /* Enhanced Dark Blue-Purple Gradients & Effects */
-    --hero-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 50%) 50%, hsl(217 91% 70%) 100%);
-    --hero-gradient-blue: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(194 100% 50%) 50%, hsl(217 91% 70%) 100%);
-    --text-gradient-blue: linear-gradient(90deg, hsl(217 91% 60%), hsl(194 100% 50%), hsl(217 91% 70%));
+    /* Enhanced NeonRain Dark Gradients & Effects */
+    --hero-gradient: linear-gradient(135deg, hsl(217 91% 65%) 0%, hsl(194 100% 65%) 50%, hsl(262 83% 70%) 100%);
+    --text-gradient-neon: linear-gradient(90deg, hsl(194 100% 65%), hsl(217 91% 65%), hsl(262 83% 70%));
     --card-gradient: linear-gradient(145deg, hsl(220 27% 7% / 0.9) 0%, hsl(220 27% 10% / 0.7) 100%);
-    --glass-gradient: linear-gradient(135deg, hsl(224 76% 48% / 0.15) 0%, hsl(262 90% 68% / 0.1) 100%);
-    --neon-glow: 0 0 25px hsl(224 76% 48%), 0 0 50px hsl(224 76% 48%), 0 0 75px hsl(224 76% 48%);
-    --card-shadow: 0 6px 25px hsl(0 0% 0% / 0.5), 0 0 15px hsl(224 76% 48% / 0.3);
-    --hover-shadow: 0 10px 50px hsl(224 76% 48% / 0.5), 0 0 30px hsl(262 90% 68% / 0.4);
-    --glow-shadow: 0 0 40px hsl(224 76% 48% / 0.8), 0 0 80px hsl(262 90% 68% / 0.6);
+    --glass-gradient: linear-gradient(135deg, hsl(217 91% 65% / 0.15) 0%, hsl(262 83% 70% / 0.1) 100%);
+    --neon-glow: 0 0 25px hsl(217 91% 65%), 0 0 50px hsl(194 100% 65%), 0 0 75px hsl(262 83% 70%);
+    --card-shadow: 0 6px 25px hsl(0 0% 0% / 0.5), 0 0 15px hsl(217 91% 65% / 0.3);
+    --hover-shadow: 0 10px 50px hsl(217 91% 65% / 0.5), 0 0 30px hsl(262 83% 70% / 0.4);
+    --glow-shadow: 0 0 40px hsl(217 91% 65% / 0.8), 0 0 80px hsl(262 83% 70% / 0.6);
   }
 
   /* Base Styles */
@@ -186,22 +183,36 @@
 
 /* Custom Component Styles */
 @layer components {
-  /* Text Brightness Enhancement Classes */
+  /* Enhanced Text Brightness for NeonRain Theme */
   .text-sharp-bright {
     color: hsl(var(--foreground));
-    font-weight: 600;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
 
   .text-hero-bright {
     color: hsl(var(--foreground));
-    font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    font-weight: 600;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
   }
   
   .dark .text-hero-bright {
     color: hsl(0 0% 100%);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    text-shadow: 0 3px 12px rgba(0,0,0,0.6), 0 0 20px hsl(var(--neon-blue) / 0.3);
+  }
+
+  .dark .text-sharp-bright {
+    color: hsl(0 0% 100%);
+    text-shadow: 0 3px 15px rgba(0,0,0,0.7), 0 0 25px hsl(var(--neon-cyan) / 0.4);
+  }
+
+  /* NeonRain Gradient Text */
+  .neon-gradient-text {
+    background: var(--text-gradient-neon);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: neonTextGlow 3s ease-in-out infinite alternate;
   }
 
   /* Enhanced Dropdown Card */
@@ -218,11 +229,7 @@
     background: var(--hero-gradient);
   }
 
-  .gradient-blue-bright {
-    background: var(--hero-gradient-blue);
-  }
-
-  /* Enhanced Neon Card Styles */
+  /* Enhanced NeonRain Card Styles */
   .dkloud-card {
     background: var(--card-gradient);
     @apply border border-border/50 rounded-2xl p-6 transition-all duration-500 relative overflow-hidden;
@@ -238,7 +245,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(var(--neon-blue) / 0.2), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-blue) / 0.3), hsl(var(--neon-cyan) / 0.2), transparent);
     transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -259,11 +266,11 @@
     transform: translateY(-6px) scale(1.03);
   }
 
-  /* Modern Button Styles */
+  /* NeonRain Button Styles */
   .btn-neon {
-    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)));
+    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)));
     @apply text-background font-semibold px-6 py-3 rounded-xl border-0;
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+    box-shadow: var(--neon-glow);
     transition: var(--transition-glow);
     position: relative;
     overflow: hidden;
@@ -276,7 +283,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(var(--accent) / 0.3), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--accent) / 0.4), transparent);
     transition: left 0.5s;
   }
 
@@ -285,11 +292,11 @@
   }
 
   .btn-neon:hover {
-    box-shadow: var(--neon-glow);
+    box-shadow: var(--glow-shadow);
     transform: translateY(-2px) scale(1.05);
   }
 
-  /* Enhanced Button Variants - Indigo Theme */
+  /* Enhanced Button Variants - NeonRain Theme */
   .btn-gradient {
     background: var(--hero-gradient);
     @apply text-primary-foreground font-semibold px-8 py-3 rounded-xl;
@@ -313,7 +320,7 @@
     box-shadow: var(--hover-shadow);
   }
 
-  /* Enhanced Neon Glass Tab Styles */
+  /* Enhanced NeonRain Glass Tab Styles */
   .glass-tab {
     background: var(--glass-gradient);
     @apply backdrop-blur-md border border-border/30 rounded-xl relative overflow-hidden;
@@ -328,7 +335,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-green)));
+    background: linear-gradient(90deg, hsl(var(--neon-cyan)), hsl(var(--neon-blue)), hsl(var(--neon-purple)));
     transform: scaleX(0);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 0 0 8px 8px;
@@ -354,11 +361,11 @@
 
   .glass-tab-active::after {
     transform: scaleX(1);
-    background: hsl(var(--neon-green));
+    background: hsl(var(--neon-blue));
     height: 4px;
   }
 
-  /* Neon Pulse Animation */
+  /* NeonRain Pulse Animation */
   .neon-pulse {
     animation: neonPulse 2s ease-in-out infinite alternate;
   }
@@ -376,13 +383,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px hsl(var(--neon-cyan) / 0.5);
+    box-shadow: var(--neon-glow);
     transition: var(--transition-glow);
     z-index: 1000;
   }
 
   .scroll-to-top:hover {
-    box-shadow: var(--neon-glow);
+    box-shadow: var(--glow-shadow);
     transform: translateY(-4px) scale(1.1);
   }
 
@@ -667,10 +674,27 @@
 
 @keyframes neonPulse {
   0% {
-    box-shadow: 0 0 10px hsl(var(--neon-cyan) / 0.5), 0 0 20px hsl(var(--neon-cyan) / 0.3);
+    box-shadow: 0 0 10px hsl(var(--neon-cyan) / 0.5), 0 0 20px hsl(var(--neon-blue) / 0.3);
+    text-shadow: 0 0 10px hsl(var(--neon-cyan) / 0.5), 0 0 20px hsl(var(--neon-blue) / 0.3);
   }
   100% {
-    box-shadow: 0 0 30px hsl(var(--neon-cyan) / 0.8), 0 0 60px hsl(var(--neon-purple) / 0.6), 0 0 90px hsl(var(--neon-cyan) / 0.4);
+    box-shadow: 0 0 30px hsl(var(--neon-cyan) / 0.8), 0 0 60px hsl(var(--neon-purple) / 0.6), 0 0 90px hsl(var(--neon-blue) / 0.4);
+    text-shadow: 0 0 20px hsl(var(--neon-cyan) / 0.8), 0 0 30px hsl(var(--neon-purple) / 0.6), 0 0 40px hsl(var(--neon-blue) / 0.4);
+  }
+}
+
+@keyframes neonTextGlow {
+  0% {
+    filter: hue-rotate(0deg) brightness(1);
+    text-shadow: 0 0 10px hsl(var(--neon-cyan) / 0.5), 0 0 20px hsl(var(--neon-blue) / 0.3);
+  }
+  50% {
+    filter: hue-rotate(90deg) brightness(1.2);
+    text-shadow: 0 0 20px hsl(var(--neon-purple) / 0.6), 0 0 30px hsl(var(--neon-cyan) / 0.4);
+  }
+  100% {
+    filter: hue-rotate(180deg) brightness(1.1);
+    text-shadow: 0 0 15px hsl(var(--neon-blue) / 0.7), 0 0 25px hsl(var(--neon-purple) / 0.5);
   }
 }
 
