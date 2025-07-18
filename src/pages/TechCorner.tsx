@@ -1,13 +1,11 @@
-
 import { useState, useEffect } from "react";
-import { Search, Filter, FileText, Download, ExternalLink, Tag, GraduationCap } from "lucide-react";
+import { Search, Filter, FileText, Download, ExternalLink, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSearchParams } from "react-router-dom";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface TechDocument {
   Title: string;
@@ -26,8 +24,6 @@ const TechCorner = () => {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [searchParams] = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'free';
 
   useEffect(() => {
     fetchDocuments();
@@ -35,7 +31,7 @@ const TechCorner = () => {
 
   useEffect(() => {
     filterDocuments();
-  }, [documents, searchTerm, categoryFilter, typeFilter, selectedTags, activeTab]);
+  }, [documents, searchTerm, categoryFilter, typeFilter, selectedTags]);
 
   const fetchDocuments = async () => {
     try {
@@ -53,22 +49,6 @@ const TechCorner = () => {
 
   const filterDocuments = () => {
     let filtered = documents.filter((doc) => {
-      // Filter by tab - Free Resources vs dKloud Courses
-      if (activeTab === 'free') {
-        // Free resources: SOPs, CheatSheets, and other free content
-        const isFreeContent = doc.Category.toLowerCase().includes('sop') || 
-                             doc.Category.toLowerCase().includes('cheatsheet') ||
-                             doc.Type.toLowerCase().includes('free') ||
-                             !doc.Category.toLowerCase().includes('microcourse');
-        if (!isFreeContent) return false;
-      } else if (activeTab === 'courses') {
-        // dKloud Courses: Micro courses and premium content
-        const isCourseContent = doc.Category.toLowerCase().includes('microcourse') ||
-                               doc.Type.toLowerCase().includes('course') ||
-                               doc.Type.toLowerCase().includes('premium');
-        if (!isCourseContent) return false;
-      }
-
       const searchMatch = 
         doc.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         doc.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,38 +79,11 @@ const TechCorner = () => {
   };
 
   const getUniqueValues = (key: keyof TechDocument) => {
-    const tabFilteredDocs = documents.filter(doc => {
-      if (activeTab === 'free') {
-        return doc.Category.toLowerCase().includes('sop') || 
-               doc.Category.toLowerCase().includes('cheatsheet') ||
-               doc.Type.toLowerCase().includes('free') ||
-               !doc.Category.toLowerCase().includes('microcourse');
-      } else if (activeTab === 'courses') {
-        return doc.Category.toLowerCase().includes('microcourse') ||
-               doc.Type.toLowerCase().includes('course') ||
-               doc.Type.toLowerCase().includes('premium');
-      }
-      return true;
-    });
-    return Array.from(new Set(tabFilteredDocs.map((doc) => doc[key]))).filter(Boolean);
+    return Array.from(new Set(documents.map((doc) => doc[key]))).filter(Boolean);
   };
 
   const getAllTags = () => {
-    const tabFilteredDocs = documents.filter(doc => {
-      if (activeTab === 'free') {
-        return doc.Category.toLowerCase().includes('sop') || 
-               doc.Category.toLowerCase().includes('cheatsheet') ||
-               doc.Type.toLowerCase().includes('free') ||
-               !doc.Category.toLowerCase().includes('microcourse');
-      } else if (activeTab === 'courses') {
-        return doc.Category.toLowerCase().includes('microcourse') ||
-               doc.Type.toLowerCase().includes('course') ||
-               doc.Type.toLowerCase().includes('premium');
-      }
-      return true;
-    });
-    
-    const allTags = tabFilteredDocs
+    const allTags = documents
       .filter(doc => doc.Tags)
       .flatMap(doc => doc.Tags!.split(',').map(tag => tag.trim()))
       .filter(tag => tag.length > 0);
@@ -202,34 +155,6 @@ const TechCorner = () => {
             Technical documentation, SOPs, and learning resources
           </p>
         </div>
-
-        {/* Tabs for Free Resources vs dKloud Courses */}
-        <Tabs value={activeTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="free" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Free Resources
-            </TabsTrigger>
-            <TabsTrigger value="courses" className="flex items-center gap-2">
-              <GraduationCap className="h-4 w-4" />
-              dKloud Courses
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="free" className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">Free Resources</h2>
-              <p className="text-muted-foreground">SOPs, Cheat Sheets, and Technology Guides - Completely Free</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="courses" className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">dKloud Micro Courses</h2>
-              <p className="text-muted-foreground">Premium Digital Courses and Advanced Learning Materials</p>
-            </div>
-          </TabsContent>
-        </Tabs>
 
         {/* Enhanced Filters */}
         <div className="bg-card rounded-xl p-6 mb-8 space-y-6">
@@ -304,19 +229,7 @@ const TechCorner = () => {
           {/* Filter Summary and Clear */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t border-border">
             <div className="text-sm text-muted-foreground">
-              <span>Showing {filteredDocuments.length} of {documents.filter(doc => {
-                if (activeTab === 'free') {
-                  return doc.Category.toLowerCase().includes('sop') || 
-                         doc.Category.toLowerCase().includes('cheatsheet') ||
-                         doc.Type.toLowerCase().includes('free') ||
-                         !doc.Category.toLowerCase().includes('microcourse');
-                } else if (activeTab === 'courses') {
-                  return doc.Category.toLowerCase().includes('microcourse') ||
-                         doc.Type.toLowerCase().includes('course') ||
-                         doc.Type.toLowerCase().includes('premium');
-                }
-                return true;
-              }).length} documents</span>
+              <span>Showing {filteredDocuments.length} of {documents.length} documents</span>
               {(categoryFilter !== "all" || typeFilter !== "all" || selectedTags.length > 0 || searchTerm) && (
                 <span className="ml-2 text-primary">• Filters active</span>
               )}

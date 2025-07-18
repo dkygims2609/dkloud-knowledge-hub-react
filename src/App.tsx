@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,8 +14,8 @@ import MoviesTV from "./pages/MoviesTV";
 import YouTubeChannels from "./pages/YouTubeChannels";
 import AITools from "./pages/AITools";
 import TechCorner from "./pages/TechCorner";
+import TechNews from "./pages/TechNews";
 import SmartTech from "./pages/SmartTech";
-import DigitalProducts from "./pages/DigitalProducts";
 import Portfolio from "./pages/Portfolio";
 import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
@@ -44,8 +43,8 @@ const App = () => (
             <Route path="/ytchannels" element={<YouTubeChannels />} />
             <Route path="/aitools" element={<AITools />} />
             <Route path="/techcorner" element={<TechCorner />} />
+            <Route path="/technews" element={<TechNews />} />
             <Route path="/smarttech" element={<SmartTech />} />
-            <Route path="/digital-products" element={<DigitalProducts />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/services" element={<Services />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
