@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
@@ -28,6 +29,16 @@ const OriginalCompositions = () => {
       title: "Jaatikaar",
       description: "An original composition",
       embedId: "NEjGJ8A2wMI"
+    },
+    {
+      title: "New Composition",
+      description: "Latest original musical creation",
+      embedId: "dc0ZLFkgF-Q"
+    },
+    {
+      title: "Recent Musical Work",
+      description: "A fresh composition showcasing musical evolution",
+      embedId: "GVycjyNpzd4"
     }
   ];
 

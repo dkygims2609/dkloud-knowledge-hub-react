@@ -161,6 +161,16 @@ const Portfolio = () => {
         title: "Jaatikaar",
         embedId: "NEjGJ8A2wMI",
         description: "An original composition with deep emotional resonance"
+      },
+      {
+        title: "New Composition",
+        embedId: "dc0ZLFkgF-Q",
+        description: "Latest original musical creation"
+      },
+      {
+        title: "Recent Musical Work",
+        embedId: "GVycjyNpzd4",
+        description: "A fresh composition showcasing musical evolution"
       }
     ];
 
