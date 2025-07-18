@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { ColorBandSection } from "@/components/ColorBandSection";
 import { FeatureButtons } from "@/components/FeatureButtons";
 import { AudioPlayer } from "@/components/AudioPlayer";
 import TeamSection from "@/components/TeamSection";
+import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
@@ -86,16 +88,16 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="text-3xl md:text-4xl lg:text-5xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="hero-title-gradient"
+                className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent"
                 delay={1000}
               />
             </div>
             
-            <div className="text-xl md:text-2xl lg:text-3xl font-bold mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              <span className="hero-red-text">
+            <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
+              <span className="bg-gradient-to-r from-red-400 via-red-500 to-red-600 bg-clip-text text-transparent">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -109,9 +111,9 @@ const Index = () => {
             </div>
             
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
-              <p className="text-base md:text-lg hero-text-bright leading-relaxed">
-                <span className="hero-text-sharp">
-                  At dKloud, we're crafting a <span className="text-primary font-bold">universe</span> where <span className="text-accent font-bold">creativity meets the cloud</span>, <span className="hero-title-gradient font-bold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent font-bold">learning becomes a shared adventure</span>.
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
+                <span className="text-foreground/90">
+                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
@@ -151,7 +153,7 @@ const Index = () => {
                   { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
                   { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Courses", color: "from-emerald-500 to-teal-600" },
                   { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
-                  { name: "Digi Products", href: "/digital-products", Icon: Wrench, desc: "Smart Tools", color: "from-orange-500 to-red-600" },
+                  { name: "Digital Products", href: "/digital-products", Icon: Wrench, desc: "Smart Tools", color: "from-orange-500 to-red-600" },
                   { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
@@ -190,10 +192,10 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 hero-text-sharp">About <span className="hero-title-gradient">dKloud</span></h2>
-            <p className="text-xl hero-text-bright max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="hero-title-gradient font-bold">entertainment</span>, <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent font-bold">education</span>, and <span style={{ color: "#10b981" }} className="font-bold">technology</span>. 
-              All data is dynamically powered by <span className="text-accent font-bold">Google Sheets APIs</span> for <span className="text-primary font-bold">real-time updates</span>.
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">dKloud</span></h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              A comprehensive platform combining <span className="bg-gradient-to-r from-purple-500 to-violet-500 bg-clip-text text-transparent font-medium">entertainment</span>, <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent font-medium">education</span>, and <span style={{ color: "#10b981" }} className="font-medium">technology</span>. 
+              All data is dynamically powered by <span className="text-accent font-medium">Google Sheets APIs</span> for <span className="text-primary font-medium">real-time updates</span>.
             </p>
           </div>
 
