@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Search, Heart, BookOpen, Feather } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ interface PoetryEntry {
   content: string;
 }
 
-// Static poetry data
+// Updated poetry data with correct content
 const poetryData: PoetryEntry[] = [
   {
     id: 1,

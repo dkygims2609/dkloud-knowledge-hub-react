@@ -135,149 +135,252 @@ const Portfolio = () => {
     </div>
   );
 
-  const renderCompositionsContent = () => (
-    <div className="space-y-8">
-      {/* Original Music */}
-      <Card className="dkloud-card dkloud-card-interactive p-8">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl mb-2">Original Music</CardTitle>
-          <CardDescription className="text-lg text-muted-foreground">
-            Explore a collection of original musical compositions, blending traditional songwriting with AI-enhanced creativity.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { title: "Wedding Song", date: "2023-08-15", link: "#", description: "A custom-made song for a special couple's wedding day.", category: "love" },
-              { title: "Brand Anthem", date: "2023-06-20", link: "#", description: "An anthem created for a tech startup, capturing their innovative spirit.", category: "tech" },
-              { title: "Birthday Surprise", date: "2023-05-01", link: "#", description: "A surprise song for a milestone birthday, filled with personal memories.", category: "personal" },
-              { title: "AI-Generated Melody", date: "2023-03-10", link: "#", description: "An experimental piece combining human lyrics with AI-generated melodies.", category: "ai" }
-            ].map((song, index) => (
-              <div key={index} className="p-6 bg-background/50 rounded-lg hover:bg-background/80 transition-colors">
-                <h4 className="text-lg font-semibold mb-2">{song.title}</h4>
-                <p className="text-sm text-muted-foreground">{song.description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">{new Date(song.date).toLocaleDateString()}</span>
-                  </div>
-                  <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent transition-colors">
-                    Listen <ExternalLink className="h-4 w-4 inline-block ml-1 align-text-top" />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+  const renderCompositionsContent = () => {
+    const compositions = [
+      {
+        title: "Pahla Pyar with Sneh Upadhyay",
+        embedId: "XLgJ4EYof3M",
+        description: "A beautiful romantic composition about first love"
+      },
+      {
+        title: "Raghuwar Ram Aa Gaye",
+        embedId: "153sNf2Z3Qc",
+        description: "A devotional composition celebrating Lord Ram"
+      },
+      {
+        title: "Pyar Nahi Hai Khel Dear",
+        embedId: "rgFtlUeXRqI",
+        description: "A heartfelt song about the seriousness of love"
+      },
+      {
+        title: "Koi Pukare Shankar",
+        embedId: "5jXH_7V3IUU",
+        description: "A spiritual composition invoking Lord Shiva"
+      },
+      {
+        title: "Jaatikaar",
+        embedId: "NEjGJ8A2wMI",
+        description: "An original composition with deep emotional resonance"
+      }
+    ];
 
-      {/* Covers & Remixes */}
-      <Card className="dkloud-card dkloud-card-interactive p-8">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl mb-2">Covers & Remixes</CardTitle>
-          <CardDescription className="text-lg text-muted-foreground">
-            Unique interpretations of popular songs, showcasing musical versatility and creativity.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { title: "Imagine (DK Remix)", date: "2023-09-01", link: "#", description: "A modern remix of John Lennon's classic, blending electronic elements with the original melody.", category: "remix" },
-              { title: "Hallelujah (Acoustic Cover)", date: "2023-07-15", link: "#", description: "An acoustic rendition of Leonard Cohen's masterpiece, highlighting emotional depth.", category: "cover" },
-              { title: "Bohemian Rhapsody (Piano Version)", date: "2023-04-10", link: "#", description: "A piano-only version of Queen's iconic song, showcasing intricate musical arrangements.", category: "piano" },
-              { title: "Stairway to Heaven (AI-Enhanced)", date: "2023-02-28", link: "#", description: "A unique version enhanced with AI-generated harmonies and instrumental layers.", category: "ai" }
-            ].map((song, index) => (
-              <div key={index} className="p-6 bg-background/50 rounded-lg hover:bg-background/80 transition-colors">
-                <h4 className="text-lg font-semibold mb-2">{song.title}</h4>
-                <p className="text-sm text-muted-foreground">{song.description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">{new Date(song.date).toLocaleDateString()}</span>
-                  </div>
-                  <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent transition-colors">
-                    Listen <ExternalLink className="h-4 w-4 inline-block ml-1 align-text-top" />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+    const handleWatchOnYouTube = (embedId: string) => {
+      window.open(`https://www.youtube.com/watch?v=${embedId}`, "_blank", "noopener,noreferrer");
+    };
 
-  const renderPoetryContent = () => (
-    <div className="space-y-8">
-      {/* Featured Poems */}
-      <Card className="dkloud-card dkloud-card-interactive p-8">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl mb-2">Featured Poems</CardTitle>
-          <CardDescription className="text-lg text-muted-foreground">
-            A selection of original poems, exploring themes of love, loss, and the human experience.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { title: "The Silent Echo", date: "2023-09-15", link: "#", description: "A poem about the echoes of past experiences in our present lives.", category: "reflection" },
-              { title: "Whispers of the Wind", date: "2023-07-20", link: "#", description: "A lyrical piece capturing the subtle messages carried by the wind.", category: "nature" },
-              { title: "The Unseen Path", date: "2023-05-01", link: "#", description: "An exploration of the choices we make and the paths we don't see.", category: "introspection" },
-              { title: "Stars in the Night", date: "2023-03-10", link: "#", description: "A romantic poem inspired by the beauty and mystery of the night sky.", category: "love" }
-            ].map((poem, index) => (
-              <div key={index} className="p-6 bg-background/50 rounded-lg hover:bg-background/80 transition-colors">
-                <h4 className="text-lg font-semibold mb-2">{poem.title}</h4>
-                <p className="text-sm text-muted-foreground">{poem.description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">{new Date(poem.date).toLocaleDateString()}</span>
-                  </div>
-                  <a href={poem.link} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent transition-colors">
-                    Read More <ExternalLink className="h-4 w-4 inline-block ml-1 align-text-top" />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+    return (
+      <div className="space-y-8">
+        <Card className="dkloud-card dkloud-card-interactive p-8">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl mb-2 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              🎼 YouTube Compositions
+            </CardTitle>
+            <CardDescription className="text-lg text-muted-foreground">
+              Original musical compositions and covers available on YouTube
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {compositions.map((composition, index) => (
+                <Card key={index} className="dkloud-card h-full">
+                  <CardHeader>
+                    <CardTitle className="text-lg mb-2">{composition.title}</CardTitle>
+                    <CardDescription className="text-sm">{composition.description}</CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    {/* YouTube Embed */}
+                    <div className="aspect-video w-full">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${composition.embedId}`}
+                        title={composition.title}
+                        className="w-full h-full rounded-lg"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                    
+                    <div className="flex justify-center pt-4">
+                      <Button
+                        onClick={() => handleWatchOnYouTube(composition.embedId)}
+                        className="flex items-center space-x-2"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        <span>Watch on YouTube</span>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
 
-      {/* Creative Writings */}
-      <Card className="dkloud-card dkloud-card-interactive p-8">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl mb-2">Creative Writings</CardTitle>
-          <CardDescription className="text-lg text-muted-foreground">
-            A collection of short stories, essays, and other creative writings, showcasing storytelling skills.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { title: "The Lost City", date: "2023-10-01", link: "#", description: "A short story about a group of adventurers discovering a hidden city.", category: "adventure" },
-              { title: "Reflections in a Mirror", date: "2023-08-15", link: "#", description: "An essay exploring the concept of self-reflection and identity.", category: "essay" },
-              { title: "The Time Traveler's Journal", date: "2023-06-20", link: "#", description: "A series of journal entries from a time traveler's perspective.", category: "sci-fi" },
-              { title: "The Painter's Muse", date: "2023-04-10", link: "#", description: "A story about a painter finding inspiration in unexpected places.", category: "art" }
-            ].map((writing, index) => (
-              <div key={index} className="p-6 bg-background/50 rounded-lg hover:bg-background/80 transition-colors">
-                <h4 className="text-lg font-semibold mb-2">{writing.title}</h4>
-                <p className="text-sm text-muted-foreground">{writing.description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">{new Date(writing.date).toLocaleDateString()}</span>
-                  </div>
-                  <a href={writing.link} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent transition-colors">
-                    Read More <ExternalLink className="h-4 w-4 inline-block ml-1 align-text-top" />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const renderPoetryContent = () => {
+    const poetryData = [
+      {
+        id: 1,
+        title: "Meri Peace",
+        content: `मुझे लोग दस बीस नही चाहिए ..
+तुझसे दूरी हरगिज नहीं चाहिए ..
+तेरी बाहों में आके मिलती है जो मुझे ..
+हां हां मुझे पीस वही चाहिए ....`
+      },
+      {
+        id: 2,
+        title: "प्यार के बारे में",
+        content: `मेरे पास वक्त कितना है , नहीं जानता हूं  ।।
+तुम्हारे साथ जीना है मुझे, बस यही जानता हूं ।।
+और तुमने प्यार में सिखाया है जो भी आजतक ।
+प्यार के बारे में मैं बस वही जानता हूं ।।`
+      },
+      {
+        id: 3,
+        title: "उसके आने के बाद",
+        content: `मुझे कुछ नहीं पाना है उसे पाने के बाद    ।
+तुम्हे भी कुछ सुनाऊंगा उसके लिए गाने के बाद ।।
+
+ये पहाड़ , बर्फ नदियां खूबसूरत तो लगते हैं मुझे
+शर्त बस इतनी है उसके आने के बाद ..`
+      },
+      {
+        id: 4,
+        title: "वजहें ग़म",
+        content: `कुछ पल ठहरने को ठिकाने ढूंढ रहा हूं 
+गुजर गए जो वो जमाने ढूंढ रहा हूं ।।
+मारने को मुझे आमदा हैं वजहे गम मेरे ।
+ये तो मैं हूं जो जीने के बहाने ढूंढ रहा हूं ।।`
+      },
+      {
+        id: 5,
+        title: "जो तू है",
+        content: `हर महफिल कमाल सी लगती है ,जो तू है |
+ये दुनिया खयाल सी लगती है ,जो तू है ।।
+जो तू नहीं ,तो लगता है मुझे सब खाक सा ।
+और खाक भी गुलाल सी लगती है , जो तू है ।।`
+      },
+      {
+        id: 6,
+        title: "मरना होगा",
+        content: `जुल्फो में अपने वो पुरवाई लेकर चलती है ।
+होंठो पर लफ्जो की शहनाई लेकर चलती है ।।
+मरना होगा तो देखूंगा जी भर उसकी आंखो में ।।
+आंखो में वो सागर सी गहराई लेकर चलती है`
+      },
+      {
+        id: 7,
+        title: "मुझसे प्यार मत करना",
+        content: `मेरी मासूम बातो पर , एतबार मत करना ।
+गर कभी कर भी लो ,तो बार बार मत करना ।।
+गुरुर चढ़ जाता है मुझे, जरा से इश्क का भी ।
+मैं पसंद आ भी जाऊं कही, तो इजहार मत करना ।।
+अगर कर दू इजहारे दिल मैं ही कभी तुमसे ।
+तो आसानी से मुझसे प्यार मत करना ।
+फिर कूदना हो अगर इश्क दरिया में मेरे साथ ।
+हाथ छुड़ा कर अकेले पार मत करना ।।
+और मर ना सको मेरे इश्क में अगर तुम ।
+मुझसे भूल कर भी प्यार मत करना ।।
+मेरी मासूम बातो पर , एतबार मत करना`
+      },
+      {
+        id: 8,
+        title: "लूट",
+        content: `उसको देखा तो बैट वैट सब हाथ से मेरे छूट गया ।।
+दिल छलका और प्यार व्यार से बांध सब्र का टूट गया ।।
+मैंने छुपा के रखा था ना दा दिल को हां गुल्लक में ।।
+उसका हुनर था ऐसा की बस आंखो से लूट गया ।।`
+      },
+      {
+        id: 9,
+        title: "मां का कहा",
+        content: `जो जो नहीं करना था वही किया हूं।
+गलत करके लगता था सही किया हूं ।
+एक ही मलाल है मेरी जिंदगी का फकत ।
+मा का कहा नहीं किया हूं ।।`
+      },
+      {
+        id: 10,
+        title: "मजाक के बाद",
+        content: `करते हो जताते हो सब खाक करते हो ।
+मजाक के बाद फिर मजाक करते हो ।`
+      },
+      {
+        id: 11,
+        title: "खुद ही",
+        content: `खुद ही अपने हार पर लिखने लगा हूं ।
+भूल के खुद को संसार पर लिखने लगा हूं ।।
+उसने पढ़ाया है कुछ तो अपनी आंखों से ।
+दुबारा मैं प्यार पर लिखने लगा हूं ।।`
+      },
+      {
+        id: 12,
+        title: "कुंभ",
+        content: `40 तक हम घूम घूम के रोज कीहिंन सब पाप ।
+कुंभ में मारिन ती ने डुबकी कई दीहीन सब साफ`
+      },
+      {
+        id: 13,
+        title: "हक नहीं चाहिए",
+        content: `हक नहीं चाहिए , सड़क नही चाहिए ।
+प्यार नही चाहिए , संसार नही चाहिए ।।
+चाहिए नही किताब मुझे , कुछ बनने के ख्वाब मुझे ।
+ईमान पर मेरे शक नही चाहिए , हक नही चाहिए ।।
+इंसाफ नहीं चाहिए , नाला साफ नही चाहिए ।।
+चाहिए नही रोजगार मुझे , टोकने वाले लोग वो चार मुझे ।।
+कान में नेताओ की बक बक नही चाहिए ।।
+हक नही चाहिए ।।`
+      }
+    ];
+
+    return (
+      <div className="space-y-8">
+        <Card className="dkloud-card dkloud-card-interactive p-8">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl mb-2 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+              ✍️ Shayari & Poetry
+            </CardTitle>
+            <CardDescription className="text-lg text-muted-foreground">
+              A collection of heartfelt shayari and poetry expressing emotions and life experiences
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {poetryData.map((entry) => (
+                <Card key={entry.id} className="dkloud-card h-full">
+                  <CardHeader>
+                    <div className="flex items-center space-x-2">
+                      <PenTool className="h-6 w-6 text-primary" />
+                      <CardTitle className="text-lg">{entry.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <div className="whitespace-pre-line text-base leading-relaxed font-medium text-foreground">
+                        {entry.content}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
+                      <div className="flex items-center space-x-2 text-muted-foreground">
+                        <Music className="h-4 w-4" />
+                        <span className="text-sm">Original Shayari</span>
+                      </div>
+                      <Heart className="h-5 w-5 text-red-500 hover:fill-current cursor-pointer transition-colors" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
