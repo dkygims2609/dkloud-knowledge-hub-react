@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase } from "lucide-react";
+import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -87,22 +88,16 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
-              <span className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 bg-clip-text text-transparent">
-                dKloud
-              </span>
-            </h1>
-            
-            <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="text-3xl md:text-4xl lg:text-5xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-purple-400 via-violet-400 to-blue-400 bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent"
                 delay={1000}
               />
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              <span className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-400 via-red-500 to-red-600 bg-clip-text text-transparent">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -116,9 +111,9 @@ const Index = () => {
             </div>
             
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                <span className="text-foreground/60">
-                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
+                <span className="text-foreground/90">
+                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
@@ -156,9 +151,9 @@ const Index = () => {
                   { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
                   { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
                   { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
-                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
+                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Courses", color: "from-emerald-500 to-teal-600" },
                   { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
-                  { name: "Tech News", href: "/technews", Icon: Newspaper, desc: "Latest Updates", color: "from-blue-500 to-indigo-600" },
+                  { name: "Digital Products", href: "/digital-products", Icon: Wrench, desc: "Smart Tools", color: "from-orange-500 to-red-600" },
                   { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
