@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Briefcase, Settings, ChevronDown, FileText, GraduationCap, Wrench } from "lucide-react";
+import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Briefcase, Settings, ChevronDown, FileText, GraduationCap, Wrench, Star, TrendingUp, Play, Smartphone, Code2, User, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -14,9 +14,39 @@ import {
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Movies & TV", href: "/movies-tv", icon: Clapperboard, color: "from-purple-500 to-pink-500" },
-  { name: "YouTube Picks", href: "/ytchannels", icon: Youtube, color: "from-red-500 to-orange-500" },
-  { name: "AI Tools", href: "/aitools", icon: Brain, color: "from-blue-500 to-cyan-500" },
+  { 
+    name: "Movies & TV", 
+    href: "/movies-tv", 
+    icon: Clapperboard, 
+    color: "from-purple-500 to-pink-500",
+    dropdown: [
+      { name: "Latest Movies", href: "/movies-tv?filter=movies", icon: Star, desc: "New movie releases" },
+      { name: "TV Series", href: "/movies-tv?filter=series", icon: Play, desc: "Popular TV shows" },
+      { name: "Reviews", href: "/movies-tv?filter=reviews", icon: TrendingUp, desc: "Movie & TV reviews" }
+    ]
+  },
+  { 
+    name: "YouTube Picks", 
+    href: "/ytchannels", 
+    icon: Youtube, 
+    color: "from-red-500 to-orange-500",
+    dropdown: [
+      { name: "Tech Channels", href: "/ytchannels?category=tech", icon: Code2, desc: "Technology focused channels" },
+      { name: "Entertainment", href: "/ytchannels?category=entertainment", icon: Play, desc: "Fun and entertaining content" },
+      { name: "Educational", href: "/ytchannels?category=education", icon: GraduationCap, desc: "Learning and tutorials" }
+    ]
+  },
+  { 
+    name: "AI Tools", 
+    href: "/aitools", 
+    icon: Brain, 
+    color: "from-blue-500 to-cyan-500",
+    dropdown: [
+      { name: "Latest Tools", href: "/aitools?filter=latest", icon: Star, desc: "Newest AI tools" },
+      { name: "Reviews", href: "/aitools?filter=reviews", icon: TrendingUp, desc: "AI tool reviews" },
+      { name: "Comparisons", href: "/aitools?filter=comparisons", icon: Award, desc: "Tool comparisons" }
+    ]
+  },
   { 
     name: "Tech Corner", 
     href: "/techcorner", 
@@ -27,10 +57,40 @@ const navigation = [
       { name: "dKloud Courses", href: "/techcorner?tab=courses", icon: GraduationCap, desc: "Micro Digital Courses" }
     ]
   },
-  { name: "SmartTech", href: "/smarttech", icon: Zap, color: "from-yellow-500 to-amber-500" },
-  { name: "Digital Products", href: "/digital-products", icon: Wrench, color: "from-orange-500 to-red-500" },
+  { 
+    name: "SmartTech", 
+    href: "/smarttech", 
+    icon: Zap, 
+    color: "from-yellow-500 to-amber-500",
+    dropdown: [
+      { name: "Latest Gadgets", href: "/smarttech?filter=latest", icon: Smartphone, desc: "Newest smart devices" },
+      { name: "Reviews", href: "/smarttech?filter=reviews", icon: TrendingUp, desc: "Gadget reviews" },
+      { name: "Buying Guides", href: "/smarttech?filter=guides", icon: Award, desc: "Purchase recommendations" }
+    ]
+  },
+  { 
+    name: "Digi Products", 
+    href: "/digital-products", 
+    icon: Wrench, 
+    color: "from-orange-500 to-red-500",
+    dropdown: [
+      { name: "Smart Tools", href: "/digital-products?category=tools", icon: Wrench, desc: "Productivity tools" },
+      { name: "Software", href: "/digital-products?category=software", icon: Code2, desc: "Software solutions" },
+      { name: "Utilities", href: "/digital-products?category=utilities", icon: Settings, desc: "Home & business utilities" }
+    ]
+  },
   { name: "Services", href: "/services", icon: Settings, color: "from-pink-500 to-rose-500" },
-  { name: "Portfolio", href: "/portfolio", icon: Briefcase, color: "from-teal-500 to-green-500" },
+  { 
+    name: "Portfolio", 
+    href: "/portfolio", 
+    icon: Briefcase, 
+    color: "from-teal-500 to-green-500",
+    dropdown: [
+      { name: "Projects", href: "/portfolio?section=projects", icon: Code2, desc: "My development projects" },
+      { name: "Skills", href: "/portfolio?section=skills", icon: Award, desc: "Technical skills" },
+      { name: "Experience", href: "/portfolio?section=experience", icon: User, desc: "Professional experience" }
+    ]
+  },
 ];
 
 export function Navbar() {
@@ -90,7 +150,7 @@ export function Navbar() {
                       <ChevronDown className="h-3 w-3" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56 bg-background/95 backdrop-blur-md border border-border/50" align="start">
+                  <DropdownMenuContent className="w-56 bg-background/95 backdrop-blur-md border border-border/50 shadow-xl z-50" align="start">
                     {item.dropdown.map((subItem) => (
                       <DropdownMenuItem key={subItem.name} asChild>
                         <Link

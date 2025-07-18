@@ -1,210 +1,121 @@
 
 import { useState, useEffect } from "react";
-import { Search, Filter, FileText, Download, ExternalLink, Tag, GraduationCap } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FileText, GraduationCap, Search, Filter, BookOpen, Download, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSearchParams } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 
-interface TechDocument {
-  Title: string;
-  Category: string;
-  Type: string;
-  Tags?: string;
-  Description?: string;
-  Link: string;
-}
+const fetchTechCornerData = async () => {
+  const response = await fetch("https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec");
+  if (!response.ok) {
+    throw new Error("Failed to fetch tech corner data");
+  }
+  return response.json();
+};
 
 const TechCorner = () => {
-  const [documents, setDocuments] = useState<TechDocument[]>([]);
-  const [filteredDocuments, setFilteredDocuments] = useState<TechDocument[]>([]);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [searchParams] = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'free';
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  
+  // Get tab from URL parameters
+  const urlParams = new URLSearchParams(location.search);
+  const tabFromUrl = urlParams.get('tab') || 'free';
+  const [activeTab, setActiveTab] = useState(tabFromUrl);
 
+  const { data: techData, isLoading, error } = useQuery({
+    queryKey: ['techCornerData'],
+    queryFn: fetchTechCornerData,
+  });
+
+  // Update URL when tab changes
   useEffect(() => {
-    fetchDocuments();
-  }, []);
+    const newUrl = `/techcorner?tab=${activeTab}`;
+    navigate(newUrl, { replace: true });
+  }, [activeTab, navigate]);
 
+  // Update active tab when URL changes
   useEffect(() => {
-    filterDocuments();
-  }, [documents, searchTerm, categoryFilter, typeFilter, selectedTags, activeTab]);
+    setActiveTab(tabFromUrl);
+  }, [tabFromUrl]);
 
-  const fetchDocuments = async () => {
-    try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec"
-      );
-      const data = await response.json();
-      setDocuments(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching tech documents:", error);
-      setLoading(false);
-    }
-  };
-
-  const filterDocuments = () => {
-    let filtered = documents.filter((doc) => {
-      // Filter by tab - Free Resources vs dKloud Courses
-      if (activeTab === 'free') {
-        // Free resources: SOPs, CheatSheets, and other free content
-        const isFreeContent = doc.Category.toLowerCase().includes('sop') || 
-                             doc.Category.toLowerCase().includes('cheatsheet') ||
-                             doc.Type.toLowerCase().includes('free') ||
-                             !doc.Category.toLowerCase().includes('microcourse');
-        if (!isFreeContent) return false;
-      } else if (activeTab === 'courses') {
-        // dKloud Courses: Micro courses and premium content
-        const isCourseContent = doc.Category.toLowerCase().includes('microcourse') ||
-                               doc.Type.toLowerCase().includes('course') ||
-                               doc.Type.toLowerCase().includes('premium');
-        if (!isCourseContent) return false;
-      }
-
-      const searchMatch = 
-        doc.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        doc.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        doc.Type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (doc.Description && doc.Description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (doc.Tags && doc.Tags.toLowerCase().includes(searchTerm.toLowerCase()));
-
-      return searchMatch;
-    });
-
-    if (categoryFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.Category === categoryFilter);
-    }
-
-    if (typeFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.Type === typeFilter);
-    }
-
-    if (selectedTags.length > 0) {
-      filtered = filtered.filter((doc) =>
-        selectedTags.some(tag =>
-          doc.Tags && doc.Tags.toLowerCase().includes(tag.toLowerCase())
-        )
-      );
-    }
-
-    setFilteredDocuments(filtered);
-  };
-
-  const getUniqueValues = (key: keyof TechDocument) => {
-    const tabFilteredDocs = documents.filter(doc => {
-      if (activeTab === 'free') {
-        return doc.Category.toLowerCase().includes('sop') || 
-               doc.Category.toLowerCase().includes('cheatsheet') ||
-               doc.Type.toLowerCase().includes('free') ||
-               !doc.Category.toLowerCase().includes('microcourse');
-      } else if (activeTab === 'courses') {
-        return doc.Category.toLowerCase().includes('microcourse') ||
-               doc.Type.toLowerCase().includes('course') ||
-               doc.Type.toLowerCase().includes('premium');
-      }
-      return true;
-    });
-    return Array.from(new Set(tabFilteredDocs.map((doc) => doc[key]))).filter(Boolean);
-  };
-
-  const getAllTags = () => {
-    const tabFilteredDocs = documents.filter(doc => {
-      if (activeTab === 'free') {
-        return doc.Category.toLowerCase().includes('sop') || 
-               doc.Category.toLowerCase().includes('cheatsheet') ||
-               doc.Type.toLowerCase().includes('free') ||
-               !doc.Category.toLowerCase().includes('microcourse');
-      } else if (activeTab === 'courses') {
-        return doc.Category.toLowerCase().includes('microcourse') ||
-               doc.Type.toLowerCase().includes('course') ||
-               doc.Type.toLowerCase().includes('premium');
-      }
-      return true;
-    });
+  const filteredData = techData?.filter(item => {
+    const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.category?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const allTags = tabFilteredDocs
-      .filter(doc => doc.Tags)
-      .flatMap(doc => doc.Tags!.split(',').map(tag => tag.trim()))
-      .filter(tag => tag.length > 0);
-    return Array.from(new Set(allTags));
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'cheatsheet':
-        return {
-          bg: 'bg-blue-50 dark:bg-blue-950/20',
-          border: 'border-blue-200 dark:border-blue-800',
-          text: 'text-blue-700 dark:text-blue-300',
-          icon: '📄'
-        };
-      case 'sop':
-        return {
-          bg: 'bg-green-50 dark:bg-green-950/20',
-          border: 'border-green-200 dark:border-green-800',
-          text: 'text-green-700 dark:text-green-300',
-          icon: '📋'
-        };
-      case 'microcourse':
-        return {
-          bg: 'bg-purple-50 dark:bg-purple-950/20',
-          border: 'border-purple-200 dark:border-purple-800',
-          text: 'text-purple-700 dark:text-purple-300',
-          icon: '🎓'
-        };
-      default:
-        return {
-          bg: 'bg-gray-50 dark:bg-gray-950/20',
-          border: 'border-gray-200 dark:border-gray-800',
-          text: 'text-gray-700 dark:text-gray-300',
-          icon: '📄'
-        };
+    const matchesCategory = selectedCategory === "all" || 
+                           item.category?.toLowerCase() === selectedCategory.toLowerCase();
+    
+    // Filter by tab type
+    const isFreeResource = item.type?.toLowerCase() === 'free' || 
+                          item.category?.toLowerCase().includes('sop') ||
+                          item.category?.toLowerCase().includes('cheat') ||
+                          item.category?.toLowerCase().includes('guide');
+    
+    const isCourse = item.type?.toLowerCase() === 'course' || 
+                    item.category?.toLowerCase().includes('course') ||
+                    item.title?.toLowerCase().includes('course');
+    
+    if (activeTab === 'free') {
+      return matchesSearch && matchesCategory && isFreeResource;
+    } else if (activeTab === 'courses') {
+      return matchesSearch && matchesCategory && isCourse;
     }
-  };
+    
+    return matchesSearch && matchesCategory;
+  }) || [];
 
-  const handleDocumentClick = (link: string) => {
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
+  const categories = [...new Set(techData?.map(item => item.category).filter(Boolean) || [])];
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="text-muted-foreground mt-4">Loading tech resources...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center py-20">
+          <p className="text-red-500">Error loading tech corner data</p>
+          <Button onClick={() => window.location.reload()} className="mt-4">
+            Try Again
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            📚 Tech Corner
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+            Tech Corner
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Technical documentation, SOPs, and learning resources
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Discover free resources, SOPs, cheat sheets, and premium micro-courses to enhance your technical skills
           </p>
         </div>
 
-        {/* Tabs for Free Resources vs dKloud Courses */}
-        <Tabs value={activeTab} className="w-full">
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="free" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
@@ -216,220 +127,179 @@ const TechCorner = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="free" className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">Free Resources</h2>
-              <p className="text-muted-foreground">SOPs, Cheat Sheets, and Technology Guides - Completely Free</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="courses" className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">dKloud Micro Courses</h2>
-              <p className="text-muted-foreground">Premium Digital Courses and Advanced Learning Materials</p>
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* Enhanced Filters */}
-        <div className="bg-card rounded-xl p-6 mb-8 space-y-6">
-          {/* Search and Main Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          {/* Search and Filter */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Search title, description, tags..."
+                placeholder="Search resources..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
-            
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-full sm:w-48">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {getUniqueValues("Category").map((category) => {
-                  const colors = getCategoryColor(category);
-                  return (
-                    <SelectItem key={category} value={category}>
-                      <span className="flex items-center gap-2">
-                        <span>{colors.icon}</span>
-                        {category}
-                      </span>
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger>
-                <Tag className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                {getUniqueValues("Type").map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type}
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
 
-          {/* Tag Filter */}
-          {getAllTags().length > 0 && (
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium text-muted-foreground">Filter by Tags:</h4>
-              <div className="flex flex-wrap gap-2">
-                {getAllTags().map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant={selectedTags.includes(tag) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                    onClick={() => toggleTag(tag)}
-                  >
-                    {tag}
-                  </Badge>
+          <TabsContent value="free" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold mb-2">Free Resources</h2>
+              <p className="text-muted-foreground">
+                Access our collection of SOPs, cheat sheets, and technology guides - completely free!
+              </p>
+            </div>
+            
+            {filteredData.length === 0 ? (
+              <div className="text-center py-12">
+                <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No free resources found matching your criteria</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredData.map((item, index) => (
+                  <Card key={index} className="dkloud-card card-tech hover:shadow-xl transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <FileText className="h-8 w-8 text-emerald-500 mb-2" />
+                        <Badge variant="secondary">Free</Badge>
+                      </div>
+                      <CardTitle className="text-lg line-clamp-2">{item.title}</CardTitle>
+                      <CardDescription className="line-clamp-3">
+                        {item.description || "Comprehensive resource for technical guidance"}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {item.category && (
+                          <Badge variant="outline" className="text-xs">
+                            {item.category}
+                          </Badge>
+                        )}
+                        {item.tags?.slice(0, 2).map((tag, tagIndex) => (
+                          <Badge key={tagIndex} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button 
+                          size="sm" 
+                          className="flex-1"
+                          onClick={() => {
+                            if (item.url) {
+                              window.open(item.url, '_blank');
+                            } else {
+                              toast.info("Resource link coming soon!");
+                            }
+                          }}
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          View
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => toast.info("Download feature coming soon!")}
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
-            </div>
-          )}
-          
-          {/* Filter Summary and Clear */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t border-border">
-            <div className="text-sm text-muted-foreground">
-              <span>Showing {filteredDocuments.length} of {documents.filter(doc => {
-                if (activeTab === 'free') {
-                  return doc.Category.toLowerCase().includes('sop') || 
-                         doc.Category.toLowerCase().includes('cheatsheet') ||
-                         doc.Type.toLowerCase().includes('free') ||
-                         !doc.Category.toLowerCase().includes('microcourse');
-                } else if (activeTab === 'courses') {
-                  return doc.Category.toLowerCase().includes('microcourse') ||
-                         doc.Type.toLowerCase().includes('course') ||
-                         doc.Type.toLowerCase().includes('premium');
-                }
-                return true;
-              }).length} documents</span>
-              {(categoryFilter !== "all" || typeFilter !== "all" || selectedTags.length > 0 || searchTerm) && (
-                <span className="ml-2 text-primary">• Filters active</span>
-              )}
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setSearchTerm("");
-                setCategoryFilter("all");
-                setTypeFilter("all");
-                setSelectedTags([]);
-              }}
-              disabled={categoryFilter === "all" && typeFilter === "all" && selectedTags.length === 0 && !searchTerm}
-            >
-              Clear All Filters
-            </Button>
-          </div>
-        </div>
+            )}
+          </TabsContent>
 
-        {/* Enhanced Documents Grid */}
-        <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-          {filteredDocuments.map((doc, index) => {
-            const categoryColors = getCategoryColor(doc.Category);
-            const tags = doc.Tags ? doc.Tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [];
+          <TabsContent value="courses" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold mb-2">dKloud Courses</h2>
+              <p className="text-muted-foreground">
+                Premium micro-courses designed to accelerate your learning journey
+              </p>
+            </div>
             
-            return (
-              <Card 
-                key={index} 
-                className={`dkloud-card h-full cursor-pointer group transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${categoryColors.border}`}
-                onClick={() => handleDocumentClick(doc.Link)}
-              >
-                <CardHeader className="pb-4">
-                  {/* Category Header with Color Coding */}
-                  <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${categoryColors.bg} ${categoryColors.border} border mb-3`}>
-                    <span className="text-lg">{categoryColors.icon}</span>
-                    <Badge 
-                      variant="secondary"
-                      className={`${categoryColors.text} bg-transparent border-none font-medium`}
-                    >
-                      {doc.Category}
-                    </Badge>
-                    <div className="ml-auto">
-                      <Badge variant="outline" className="text-xs">
-                        {doc.Type}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <CardTitle className="text-lg group-hover:text-primary transition-colors leading-tight">
-                    {doc.Title}
-                  </CardTitle>
-
-                  {/* Description */}
-                  {doc.Description && (
-                    <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                      {doc.Description}
-                    </CardDescription>
-                  )}
-                </CardHeader>
-                
-                <CardContent className="pt-0 space-y-4">
-                  {/* Tags */}
-                  {tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {tags.slice(0, 3).map((tag, tagIndex) => (
-                        <Badge 
-                          key={tagIndex} 
-                          variant="outline" 
-                          className="text-xs px-2 py-1 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                      {tags.length > 3 && (
-                        <Badge variant="outline" className="text-xs px-2 py-1 rounded-full">
-                          +{tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Action Button */}
-                  <div className="flex items-center justify-between pt-4 border-t border-border">
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <FileText className="h-4 w-4" />
-                      <span>View Resource</span>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200 hover:scale-105"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDocumentClick(doc.Link);
-                      }}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {filteredDocuments.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <h3 className="text-2xl font-semibold mb-2">No documents found</h3>
-            <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
-          </div>
-        )}
+            {filteredData.length === 0 ? (
+              <div className="text-center py-12">
+                <GraduationCap className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No courses found matching your criteria</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Premium courses are coming soon! Stay tuned for exciting learning opportunities.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredData.map((item, index) => (
+                  <Card key={index} className="dkloud-card card-tech hover:shadow-xl transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <GraduationCap className="h-8 w-8 text-emerald-500 mb-2" />
+                        <Badge variant="default">Premium</Badge>
+                      </div>
+                      <CardTitle className="text-lg line-clamp-2">{item.title}</CardTitle>
+                      <CardDescription className="line-clamp-3">
+                        {item.description || "Comprehensive course for skill development"}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {item.category && (
+                          <Badge variant="outline" className="text-xs">
+                            {item.category}
+                          </Badge>
+                        )}
+                        {item.duration && (
+                          <Badge variant="outline" className="text-xs">
+                            {item.duration}
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="flex justify-between items-center mb-4">
+                        {item.price && (
+                          <span className="text-lg font-bold text-primary">
+                            ₹{item.price}
+                          </span>
+                        )}
+                        {item.rating && (
+                          <div className="flex items-center gap-1">
+                            <span className="text-yellow-500">★</span>
+                            <span className="text-sm">{item.rating}</span>
+                          </div>
+                        )}
+                      </div>
+                      <Button 
+                        className="w-full"
+                        onClick={() => {
+                          if (item.url) {
+                            window.open(item.url, '_blank');
+                          } else {
+                            toast.info("Course enrollment coming soon!");
+                          }
+                        }}
+                      >
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        Enroll Now
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
