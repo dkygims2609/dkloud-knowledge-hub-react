@@ -1,21 +1,115 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Newspaper, Briefcase, Settings } from "lucide-react";
+import { Menu, X, Home, Clapperboard, Youtube, Brain, BookOpen, Zap, Package, Briefcase, Settings, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navigation = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Movies & TV", href: "/movies-tv", icon: Clapperboard, color: "from-purple-500 to-pink-500" },
-  { name: "YouTube Picks", href: "/ytchannels", icon: Youtube, color: "from-red-500 to-orange-500" },
-  { name: "AI Tools", href: "/aitools", icon: Brain, color: "from-blue-500 to-cyan-500" },
-  { name: "Tech Corner", href: "/techcorner", icon: BookOpen, color: "from-green-500 to-emerald-500" },
-  { name: "SmartTech", href: "/smarttech", icon: Zap, color: "from-yellow-500 to-amber-500" },
-  { name: "Tech News", href: "/technews", icon: Newspaper, color: "from-indigo-500 to-purple-500" },
-  { name: "Services", href: "/services", icon: Settings, color: "from-pink-500 to-rose-500" },
-  { name: "Portfolio", href: "/portfolio", icon: Briefcase, color: "from-teal-500 to-green-500" },
+  { 
+    name: "Home", 
+    href: "/", 
+    icon: Home 
+  },
+  { 
+    name: "Movies & TV", 
+    href: "/movies-tv", 
+    icon: Clapperboard, 
+    color: "from-purple-500 to-pink-500",
+    dropdownItems: [
+      { name: "Movies", href: "/movies-tv?filter=movies" },
+      { name: "TV Series", href: "/movies-tv?filter=tv" },
+      { name: "Reviews", href: "/movies-tv?filter=reviews" },
+      { name: "Trending", href: "/movies-tv?filter=trending" }
+    ]
+  },
+  { 
+    name: "YouTube Picks", 
+    href: "/ytchannels", 
+    icon: Youtube, 
+    color: "from-red-500 to-orange-500",
+    dropdownItems: [
+      { name: "Tech Channels", href: "/ytchannels?category=tech" },
+      { name: "Entertainment", href: "/ytchannels?category=entertainment" },
+      { name: "Educational", href: "/ytchannels?category=educational" },
+      { name: "Gaming", href: "/ytchannels?category=gaming" }
+    ]
+  },
+  { 
+    name: "AI Tools", 
+    href: "/aitools", 
+    icon: Brain, 
+    color: "from-blue-500 to-cyan-500",
+    dropdownItems: [
+      { name: "Latest Tools", href: "/aitools?filter=latest" },
+      { name: "Reviews", href: "/aitools?filter=reviews" },
+      { name: "Comparisons", href: "/aitools?filter=comparisons" },
+      { name: "Free Tools", href: "/aitools?filter=free" }
+    ]
+  },
+  { 
+    name: "Tech Corner", 
+    href: "/techcorner", 
+    icon: BookOpen, 
+    color: "from-green-500 to-emerald-500",
+    dropdownItems: [
+      { name: "Free Resources", href: "/techcorner?category=resources" },
+      { name: "dKloud Courses", href: "/techcorner?category=courses" },
+      { name: "SOPs & Guides", href: "/techcorner?category=guides" },
+      { name: "Tutorials", href: "/techcorner?category=tutorials" }
+    ]
+  },
+  { 
+    name: "SmartTech", 
+    href: "/smarttech", 
+    icon: Zap, 
+    color: "from-yellow-500 to-amber-500",
+    dropdownItems: [
+      { name: "Gadgets", href: "/smarttech?category=gadgets" },
+      { name: "Reviews", href: "/smarttech?category=reviews" },
+      { name: "Buying Guides", href: "/smarttech?category=guides" },
+      { name: "Smart Home", href: "/smarttech?category=smarthome" }
+    ]
+  },
+  { 
+    name: "Digi Products", 
+    href: "/digi-products", 
+    icon: Package, 
+    color: "from-orange-500 to-red-500",
+    dropdownItems: [
+      { name: "Smart Tools", href: "/digi-products?category=tools" },
+      { name: "AI Agents", href: "/digi-products?category=ai" },
+      { name: "Digital Solutions", href: "/digi-products?category=solutions" },
+      { name: "Coming Soon", href: "/digi-products?category=coming-soon" }
+    ]
+  },
+  { 
+    name: "Services", 
+    href: "/services", 
+    icon: Settings, 
+    color: "from-pink-500 to-rose-500",
+    dropdownItems: [
+      { name: "Website Building", href: "/services?service=websites" },
+      { name: "Courses", href: "/services?service=courses" },
+      { name: "Consulting", href: "/services?service=consulting" },
+      { name: "Support", href: "/services?service=support" }
+    ]
+  },
+  { 
+    name: "Portfolio", 
+    href: "/portfolio", 
+    icon: Briefcase, 
+    color: "from-teal-500 to-green-500"
+  },
 ];
 
 export function Navbar() {
@@ -56,22 +150,61 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
-                  location.pathname === item.href
-                    ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+              <div key={item.name} className="relative">
+                {item.dropdownItems ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className={cn(
+                          "flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
+                          location.pathname === item.href
+                            ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                            : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+                        )}
+                      >
+                        <item.icon className="h-3 w-3" />
+                        <span className="hidden xl:inline text-xs">{item.name}</span>
+                        <span className="xl:hidden text-[10px] font-semibold">
+                          {item.name.split(' ')[0]}
+                        </span>
+                        <ChevronDown className="h-3 w-3 ml-1" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="dropdown-card min-w-[200px] z-50">
+                      <DropdownMenuLabel className="text-sm font-semibold text-sharp-bright">
+                        {item.name}
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {item.dropdownItems.map((dropItem) => (
+                        <DropdownMenuItem key={dropItem.name} asChild>
+                          <Link 
+                            to={dropItem.href}
+                            className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200"
+                          >
+                            {dropItem.name}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
+                      location.pathname === item.href
+                        ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                        : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+                    )}
+                  >
+                    <item.icon className="h-3 w-3" />
+                    <span className="hidden xl:inline text-xs">{item.name}</span>
+                    <span className="xl:hidden text-[10px] font-semibold">
+                      {item.name.split(' ')[0]}
+                    </span>
+                  </Link>
                 )}
-              >
-                 <item.icon className="h-3 w-3" />
-                <span className="hidden xl:inline text-xs">{item.name}</span>
-                <span className="xl:hidden text-[10px] font-semibold">
-                  {item.name.split(' ')[0]}
-                </span>
-              </Link>
+              </div>
             ))}
           </div>
 
@@ -106,7 +239,7 @@ export function Navbar() {
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   )}
                 >
-                   <item.icon className="h-4 w-4" />
+                  <item.icon className="h-4 w-4" />
                   <span>{item.name}</span>
                 </Link>
               ))}

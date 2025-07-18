@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase } from "lucide-react";
+import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -87,22 +87,16 @@ const Index = () => {
         
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 relative" style={{ fontFamily: "'Inter', 'system-ui', sans-serif", letterSpacing: "-0.02em" }}>
-              <span className="bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 bg-clip-text text-transparent">
-                dKloud
-              </span>
-            </h1>
-            
-            <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-purple-400 via-violet-400 to-blue-400 bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 bg-clip-text text-transparent drop-shadow-lg text-sharp-bright"
                 delay={1000}
               />
             </div>
             
-            <div className="text-lg md:text-xl lg:text-2xl font-medium mb-8 bounce-in" style={{animationDelay: "0.3s"}}>
-              <span className="bg-gradient-to-r from-purple-300 via-violet-300 to-blue-300 bg-clip-text text-transparent">
+            <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
+              <span className="text-red-500 font-bold tracking-wide">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -116,9 +110,9 @@ const Index = () => {
             </div>
             
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                <span className="text-foreground/60">
-                  At dKloud, we're crafting a <span className="text-primary font-medium">universe</span> where <span className="text-accent font-medium">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent font-medium">learning becomes a shared adventure</span>.
+              <p className="text-sm md:text-base text-hero-bright leading-relaxed">
+                <span className="text-hero-bright">
+                  At dKloud, we're crafting a <span className="text-primary font-semibold">universe</span> where <span className="text-accent font-semibold">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
@@ -158,7 +152,7 @@ const Index = () => {
                   { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
                   { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
                   { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
-                  { name: "Tech News", href: "/technews", Icon: Newspaper, desc: "Latest Updates", color: "from-blue-500 to-indigo-600" },
+                  { name: "Digi Products", href: "/digi-products", Icon: Package, desc: "My Products", color: "from-orange-500 to-red-600" },
                   { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
@@ -178,7 +172,7 @@ const Index = () => {
                         <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center">
                           <tab.Icon className="h-6 w-6" />
                         </div>
-                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative">
+                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
                           {tab.name}
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
                         </h4>
@@ -197,10 +191,10 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">About <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">dKloud</span></h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="bg-gradient-to-r from-purple-500 to-violet-500 bg-clip-text text-transparent font-medium">entertainment</span>, <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent font-medium">education</span>, and <span style={{ color: "#10b981" }} className="font-medium">technology</span>. 
-              All data is dynamically powered by <span className="text-accent font-medium">Google Sheets APIs</span> for <span className="text-primary font-medium">real-time updates</span>.
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">dKloud</span></h2>
+            <p className="text-xl text-hero-bright max-w-3xl mx-auto">
+              A comprehensive platform combining <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">entertainment</span>, <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent font-semibold">education</span>, and <span style={{ color: "#10b981" }} className="font-semibold">technology</span>. 
+              All data is dynamically powered by <span className="text-accent font-semibold">Google Sheets APIs</span> for <span className="text-primary font-semibold">real-time updates</span>.
             </p>
           </div>
 
