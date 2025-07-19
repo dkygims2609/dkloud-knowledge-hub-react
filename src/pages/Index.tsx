@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
+import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -123,20 +123,20 @@ const Index = () => {
 
             {/* Mini Hero Cards Section */}
             <div className="mb-8 fade-in" style={{animationDelay: "0.65s"}}>
-              <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
                 {[
                   { name: "Cloud", Icon: Database, desc: "Computing", color: "from-blue-500 to-cyan-500" },
                   { name: "Music", Icon: Music, desc: "Composer", color: "from-purple-500 to-pink-500" },
                   { name: "Content", Icon: BookOpen, desc: "Creator", color: "from-green-500 to-emerald-500" },
                   { name: "Creative", Icon: Lightbulb, desc: "Techy", color: "from-orange-500 to-red-500" }
                 ].map((item, index) => (
-                  <div key={item.name} className="hero-mini-card fade-in" style={{ animationDelay: `${0.7 + index * 0.1}s` }}>
+                  <div key={item.name} className="hero-mini-card-small fade-in" style={{ animationDelay: `${0.7 + index * 0.1}s` }}>
                     <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
-                    <div className="relative p-4 text-center h-full flex flex-col justify-center">
+                    <div className="relative p-3 text-center h-full flex flex-col justify-center">
                       <div className="mb-2 flex justify-center">
-                        <item.Icon className="h-6 w-6 text-primary" />
+                        <item.Icon className="h-4 w-4 text-primary" />
                       </div>
-                      <h4 className="font-bold text-sm mb-1 text-sharp-bright">{item.name}</h4>
+                      <h4 className="font-bold text-xs mb-1 text-sharp-bright">{item.name}</h4>
                       <p className="text-xs text-muted-foreground">{item.desc}</p>
                     </div>
                   </div>
