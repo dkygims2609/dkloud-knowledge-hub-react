@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import { InfographicAnimation } from "@/components/InfographicAnimation";
 import { FloatingIcons } from "@/components/FloatingIcons";
 import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
-import { FeatureButtons } from "@/components/FeatureButtons";
 import { AudioPlayer } from "@/components/AudioPlayer";
 import TeamSection from "@/components/TeamSection";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
@@ -121,11 +121,7 @@ const Index = () => {
               <ColorBandSection />
             </div>
             
-            <div className="fade-in" style={{animationDelay: "0.7s"}}>
-              <FeatureButtons />
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.8s"}}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.7s"}}>
               <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl neon-pulse">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
