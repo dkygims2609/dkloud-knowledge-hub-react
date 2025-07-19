@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,6 @@ import { FloatingIcons } from "@/components/FloatingIcons";
 import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { AudioPlayer } from "@/components/AudioPlayer";
-import { TinyFeatureCards } from "@/components/TinyFeatureCards";
 import TeamSection from "@/components/TeamSection";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
@@ -75,15 +73,15 @@ const Index = () => {
       <IoTFloatingIcons showOnHomePage={true} />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.1_0%,_transparent_50%)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-blue-800/10 to-purple-900/20" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(240_50%_15%/0.3)_0%,_transparent_50%)]" />
         </div>
         
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-purple-600/20 to-blue-600/20 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-blue-600/20 to-purple-600/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
@@ -91,13 +89,13 @@ const Index = () => {
             <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent font-black tracking-wider"
+                className="bg-gradient-to-r from-blue-300 via-purple-400 to-cyan-300 bg-clip-text text-transparent font-black tracking-wider"
                 delay={1000}
               />
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="text-red-500 font-bold tracking-wide animate-glow">
+              <span className="text-red-400 font-bold tracking-wide animate-glow">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -110,19 +108,19 @@ const Index = () => {
               />
             </div>
             
-            <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
-              <p className="text-sm md:text-base text-hero-bright leading-relaxed">
-                <span className="text-hero-bright">
-                  At dKloud, we're crafting a <span className="text-primary font-semibold neon-gradient-text">universe</span> where <span className="text-accent font-semibold neon-gradient-text">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
+            <div className="text-center mb-8 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
+              <p className="text-sm md:text-base text-slate-200 leading-relaxed">
+                <span className="text-slate-100">
+                  At dKloud, we're crafting a <span className="text-purple-300 font-semibold">universe</span> where <span className="text-blue-300 font-semibold">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-purple-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
                 </span>
               </p>
             </div>
 
-            <div className="fade-in" style={{animationDelay: "0.6s"}}>
+            <div className="fade-in mb-8" style={{animationDelay: "0.6s"}}>
               <ColorBandSection />
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in mb-8" style={{animationDelay: "0.7s"}}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in mb-12" style={{animationDelay: "0.7s"}}>
               <Button asChild size="lg" className="neon-outline-btn text-lg px-10 py-4">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
@@ -133,17 +131,12 @@ const Index = () => {
                 <Link to="/portfolio">View Portfolio</Link>
               </Button>
             </div>
-
-            {/* Tiny Feature Cards */}
-            <div className="fade-in" style={{animationDelay: "0.8s"}}>
-              <TinyFeatureCards />
-            </div>
           </div>
         </div>
       </section>
 
       {/* Explore Our Sections */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-800/30 to-purple-900/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
@@ -190,7 +183,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-blue-900/50 to-purple-900/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-neon-pulse font-black">dKloud</span></h2>
