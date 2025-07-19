@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -130,6 +129,115 @@
   @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+  }
+
+  /* Animated Tab Gradient Background */
+  .animated-tab-gradient {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animated-tab-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      hsl(217 91% 60% / 0) 0%,
+      hsl(217 91% 60% / 0.1) 25%,
+      hsl(262 83% 68% / 0.15) 50%,
+      hsl(217 91% 60% / 0.1) 75%,
+      hsl(217 91% 60% / 0) 100%);
+    background-size: 200% 200%;
+    opacity: 0;
+    border-radius: inherit;
+    transition: opacity 0.4s ease-in-out;
+    animation: tabGradientSlide 3s ease-in-out infinite;
+  }
+
+  .animated-tab-gradient:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes tabGradientSlide {
+    0%, 100% { 
+      background-position: 0% 50%;
+      transform: translateX(-100%);
+    }
+    50% { 
+      background-position: 100% 50%;
+      transform: translateX(0%);
+    }
+  }
+
+  /* Animated Border Glow for Portfolio Button */
+  .animated-border-glow {
+    @apply relative font-semibold px-8 py-4 rounded-full overflow-hidden;
+    @apply bg-transparent border-2 border-secondary/60 text-secondary;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:text-secondary-foreground hover:shadow-lg hover:shadow-secondary/25;
+    background: transparent;
+    position: relative;
+  }
+
+  .animated-border-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--accent)) 100%);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease-out;
+    border-radius: inherit;
+  }
+
+  .animated-border-glow::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+      hsl(262 83% 68% / 0.8) 0%, 
+      hsl(192 82% 51% / 0.9) 12.5%,
+      hsl(217 91% 60% / 0.8) 25%, 
+      hsl(262 83% 68% / 0.9) 37.5%,
+      hsl(192 82% 51% / 0.8) 50%,
+      hsl(217 91% 60% / 0.9) 62.5%,
+      hsl(262 83% 68% / 0.8) 75%,
+      hsl(192 82% 51% / 0.9) 87.5%,
+      hsl(262 83% 68% / 0.8) 100%);
+    background-size: 300% 300%;
+    border-radius: inherit;
+    z-index: -2;
+    opacity: 1;
+    animation: borderGlowLoop 2s linear infinite;
+  }
+
+  .animated-border-glow:hover::before {
+    opacity: 1;
+  }
+
+  .animated-border-glow:hover {
+    @apply border-transparent scale-105;
+    box-shadow: 
+      0 0 25px hsl(var(--secondary)/0.5),
+      0 0 50px hsl(var(--secondary)/0.3),
+      0 10px 40px hsl(var(--secondary)/0.4);
+  }
+
+  @keyframes borderGlowLoop {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 100% 0%; }
+    50% { background-position: 200% 50%; }
+    75% { background-position: 100% 100%; }
+    100% { background-position: 0% 50%; }
   }
 
   /* Neon Outline Button - Primary */
@@ -396,5 +504,67 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Navigation Tab Animations */
+.nav-tab-gradient {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-tab-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    hsl(217 91% 60% / 0) 0%,
+    hsl(217 91% 60% / 0.1) 25%,
+    hsl(262 83% 68% / 0.15) 50%,
+    hsl(217 91% 60% / 0.1) 75%,
+    hsl(217 91% 60% / 0) 100%);
+  background-size: 200% 200%;
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity 0.3s ease-in-out;
+  animation: navGradientFlow 2s ease-in-out infinite;
+}
+
+.nav-tab-gradient:hover::before {
+  opacity: 0.6;
+}
+
+.active-tab-glow {
+  box-shadow: 
+    0 0 15px hsl(217 91% 60% / 0.4),
+    0 0 30px hsl(262 83% 68% / 0.3),
+    0 4px 20px hsl(217 91% 60% / 0.2);
+  animation: activeTabPulse 2s ease-in-out infinite;
+}
+
+@keyframes navGradientFlow {
+  0%, 100% { 
+    background-position: 0% 50%;
+  }
+  50% { 
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes activeTabPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 15px hsl(217 91% 60% / 0.4),
+      0 0 30px hsl(262 83% 68% / 0.3),
+      0 4px 20px hsl(217 91% 60% / 0.2);
+  }
+  50% { 
+    box-shadow: 
+      0 0 20px hsl(217 91% 60% / 0.6),
+      0 0 40px hsl(262 83% 68% / 0.5),
+      0 6px 30px hsl(217 91% 60% / 0.4);
   }
 }

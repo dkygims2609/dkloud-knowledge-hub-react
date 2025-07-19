@@ -156,9 +156,9 @@ export function Navbar() {
                     <DropdownMenuTrigger asChild>
                       <button
                         className={cn(
-                          "flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
+                          "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient",
                           location.pathname === item.href
-                            ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                            ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
                             : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
                         )}
                       >
@@ -191,9 +191,9 @@ export function Navbar() {
                   <Link
                     to={item.href}
                     className={cn(
-                      "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
+                      "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient",
                       location.pathname === item.href
-                        ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                        ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
                         : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
                     )}
                   >
@@ -233,9 +233,9 @@ export function Navbar() {
                   to={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                    "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors nav-tab-gradient",
                     location.pathname === item.href
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg active-tab-glow"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   )}
                 >
