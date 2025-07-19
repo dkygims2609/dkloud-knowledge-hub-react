@@ -224,20 +224,56 @@
 
 /* Hero Mini Cards - Small Version */
 .hero-mini-card-small {
-  @apply relative overflow-hidden rounded-xl bg-background/40 backdrop-blur-lg border border-border/30 hover:border-primary/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/10 group;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: hsla(var(--background) / 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid hsla(var(--border) / 0.3);
+  transition: all 0.3s ease;
   min-height: 100px;
   max-width: 150px;
 }
 
+.hero-mini-card-small:hover {
+  border-color: hsla(var(--primary) / 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px hsla(var(--primary) / 0.1);
+}
+
 .hero-mini-card {
-  @apply relative overflow-hidden rounded-xl bg-background/40 backdrop-blur-lg border border-border/30 hover:border-primary/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/10 group;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: hsla(var(--background) / 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid hsla(var(--border) / 0.3);
+  transition: all 0.3s ease;
   min-height: 120px;
   max-width: 180px;
 }
 
+.hero-mini-card:hover {
+  border-color: hsla(var(--primary) / 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px hsla(var(--primary) / 0.1);
+}
+
 .feature-card-small {
-  @apply relative overflow-hidden rounded-xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 group;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: hsla(var(--background) / 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid hsla(var(--border) / 0.4);
+  transition: all 0.5s ease;
   min-height: 140px;
+}
+
+.feature-card-small:hover {
+  border-color: hsla(var(--primary) / 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px hsla(var(--primary) / 0.2);
 }
 
 /* Responsive improvements */
@@ -327,8 +363,15 @@
 
 /* Running Banner Styles */
 .running-banner {
-  @apply w-full bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white py-3 px-4 shadow-lg;
+  width: 100%;
+  background: linear-gradient(135deg, 
+    hsl(260 80% 50%) 0%, 
+    hsl(240 90% 60%) 50%, 
+    hsl(220 100% 70%) 100%);
   background-size: 200% 100%;
+  color: white;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 4px 15px hsla(260 80% 50% / 0.3);
   animation: gradient-shift 8s ease-in-out infinite;
 }
 
@@ -338,7 +381,8 @@
 }
 
 .banner-text {
-  @apply text-sm font-medium;
+  font-size: 0.875rem;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -346,6 +390,6 @@
 
 @media (max-width: 768px) {
   .banner-text {
-    @apply text-xs;
+    font-size: 0.75rem;
   }
 }
