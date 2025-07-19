@@ -1,97 +1,120 @@
-
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { 
-  Smartphone, Wifi, Bluetooth, Radio, Speaker, Monitor,
-  Tv, Camera, Lightbulb, Thermometer, Lock, Shield,
-  Zap, Battery, Cpu, HardDrive, Router, Satellite
-} from 'lucide-react';
-
-interface IoTIcon {
-  id: number;
-  Icon: React.ComponentType<any>;
-  x: number;
-  y: number;
-  animationType: 'float-up' | 'pop-in';
-  delay: number;
-  size: number;
-  opacity: number;
-}
+  Wifi, 
+  Smartphone, 
+  Watch, 
+  Car, 
+  Home, 
+  Lightbulb, 
+  Thermometer, 
+  Camera, 
+  Speaker, 
+  Router,
+  Tv,
+  Gamepad2,
+  Headphones,
+  Tablet,
+  Laptop,
+  Brain,
+  Server,
+  Cpu,
+  Cloud,
+  Shield
+} from "lucide-react";
 
 const iotIcons = [
-  Smartphone, Wifi, Bluetooth, Radio, Speaker, Monitor,
-  Tv, Camera, Lightbulb, Thermometer, Lock, Shield,
-  Zap, Battery, Cpu, HardDrive, Router, Satellite
+  { Icon: Wifi, color: "text-primary" },
+  { Icon: Smartphone, color: "text-secondary" },
+  { Icon: Watch, color: "text-accent" },
+  { Icon: Car, color: "text-primary" },
+  { Icon: Home, color: "text-secondary" },
+  { Icon: Lightbulb, color: "text-accent" },
+  { Icon: Thermometer, color: "text-primary" },
+  { Icon: Camera, color: "text-secondary" },
+  { Icon: Speaker, color: "text-accent" },
+  { Icon: Router, color: "text-primary" },
+  { Icon: Tv, color: "text-secondary" },
+  { Icon: Gamepad2, color: "text-accent" },
+  { Icon: Headphones, color: "text-primary" },
+  { Icon: Tablet, color: "text-secondary" },
+  { Icon: Laptop, color: "text-accent" },
+  { Icon: Brain, color: "text-primary" },
+  { Icon: Server, color: "text-secondary" },
+  { Icon: Cpu, color: "text-accent" },
+  { Icon: Cloud, color: "text-primary" },
+  { Icon: Shield, color: "text-secondary" }
 ];
 
-interface IoTFloatingIconsProps {
-  showOnHomePage?: boolean;
+interface FloatingIcon {
+  id: number;
+  Icon: any;
+  color: string;
+  x: number;
+  y: number;
+  duration: number;
+  delay: number;
+  scale: number;
 }
 
-export const IoTFloatingIcons: React.FC<IoTFloatingIconsProps> = ({ showOnHomePage = false }) => {
-  const [icons, setIcons] = useState<IoTIcon[]>([]);
+export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: boolean }) {
+  const [floatingIcons, setFloatingIcons] = useState<FloatingIcon[]>([]);
 
   useEffect(() => {
+    // Only show on home page when showOnHomePage is true
     if (!showOnHomePage) return;
 
     const createIcon = () => {
-      const newIcon: IoTIcon = {
+      const randomIcon = iotIcons[Math.floor(Math.random() * iotIcons.length)];
+      const newIcon: FloatingIcon = {
         id: Date.now() + Math.random(),
-        Icon: iotIcons[Math.floor(Math.random() * iotIcons.length)],
-        x: Math.random() * (window.innerWidth - 60),
-        y: Math.random() < 0.6 ? window.innerHeight + 50 : Math.random() * window.innerHeight,
-        animationType: Math.random() < 0.6 ? 'float-up' : 'pop-in',
-        delay: Math.random() * 3,
-        size: Math.random() * 10 + 18, // 18-28px
-        opacity: Math.random() * 0.25 + 0.15, // 0.15-0.4
+        Icon: randomIcon.Icon,
+        color: randomIcon.color,
+        x: Math.random() * (window.innerWidth - 100),
+        y: window.innerHeight + 50,
+        duration: 8000 + Math.random() * 4000, // 8-12 seconds
+        delay: Math.random() * 2000,
+        scale: 0.8 + Math.random() * 0.4 // 0.8 to 1.2
       };
 
-      setIcons(prev => [...prev, newIcon]);
+      setFloatingIcons(prev => [...prev, newIcon]);
 
       // Remove icon after animation completes
       setTimeout(() => {
-        setIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
-      }, newIcon.animationType === 'float-up' ? 25000 : 15000);
+        setFloatingIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
+      }, newIcon.duration + newIcon.delay);
     };
 
-    // Create icons even less frequently (every 5-8 seconds)
-    const interval = setInterval(createIcon, Math.random() * 3000 + 5000);
+    // Create initial icons with staggered timing
+    const initialInterval = setInterval(createIcon, 3000); // Every 3 seconds
 
-    // Initial icons
-    setTimeout(() => {
-      for (let i = 0; i < 2; i++) {
-        setTimeout(createIcon, i * 1500);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
+    // Cleanup
+    return () => clearInterval(initialInterval);
   }, [showOnHomePage]);
 
-  if (!showOnHomePage) return null;
-
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {icons.map((icon) => {
-        const { Icon, id, x, y, animationType, delay, size, opacity } = icon;
-        
-        return (
-          <Icon
-            key={id}
-            className={`absolute text-accent/30 transition-all duration-1000 ${
-              animationType === 'float-up' ? 'animate-float-up' : 'animate-pop-in'
-            }`}
+    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+      {floatingIcons.map((icon) => (
+        <div
+          key={icon.id}
+          className="absolute animate-float-up opacity-60"
+          style={{
+            left: `${icon.x}px`,
+            bottom: `-60px`,
+            animationDuration: `${icon.duration}ms`,
+            animationDelay: `${icon.delay}ms`,
+            transform: `scale(${icon.scale})`
+          }}
+        >
+          <icon.Icon 
+            className={`h-8 w-8 ${icon.color} animate-pulse`}
             style={{
-              left: `${x}px`,
-              top: animationType === 'pop-in' ? `${y}px` : 'auto',
-              bottom: animationType === 'float-up' ? '-50px' : 'auto',
-              animationDelay: `${delay}s`,
-              width: `${size}px`,
-              height: `${size}px`,
-              opacity: opacity,
-              filter: 'drop-shadow(0 0 6px hsla(var(--accent) / 0.2))',
+              filter: 'drop-shadow(0 0 12px currentColor)',
+              animationDuration: '3s',
+              animationDelay: `${Math.random() * 2000}ms`
             }}
           />
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
-};
+}

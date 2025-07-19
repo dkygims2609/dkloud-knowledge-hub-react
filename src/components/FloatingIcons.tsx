@@ -1,91 +1,80 @@
+import { useEffect, useState } from "react";
+import { Cloud, Film, Cpu, Brain, Wifi, Database, Code, Smartphone, Monitor, Zap } from "lucide-react";
 
-import React, { useEffect, useState } from 'react';
-import { 
-  Cloud, Code, Smartphone, Lightbulb, Cpu, Globe, 
-  Database, Zap, Wifi, Monitor, Server, Bluetooth,
-  Music, Film, BookOpen, Brain, Gamepad2, Camera,
-  Headphones, Mic, Video, Radio, Speaker, Disc
-} from 'lucide-react';
+const icons = [
+  { Icon: Cloud, color: "text-blue-400" },
+  { Icon: Film, color: "text-purple-400" },
+  { Icon: Cpu, color: "text-green-400" },
+  { Icon: Brain, color: "text-pink-400" },
+  { Icon: Wifi, color: "text-cyan-400" },
+  { Icon: Database, color: "text-orange-400" },
+  { Icon: Code, color: "text-yellow-400" },
+  { Icon: Smartphone, color: "text-indigo-400" },
+  { Icon: Monitor, color: "text-red-400" },
+  { Icon: Zap, color: "text-emerald-400" }
+];
 
 interface FloatingIcon {
   id: number;
-  Icon: React.ComponentType<any>;
+  Icon: any;
+  color: string;
   x: number;
   y: number;
-  animationType: 'float-up' | 'pop-in';
   delay: number;
-  size: number;
-  opacity: number;
 }
 
-const dkloudIcons = [
-  Cloud, Code, Smartphone, Lightbulb, Cpu, Globe, 
-  Database, Zap, Wifi, Monitor, Server, Bluetooth,
-  Music, Film, BookOpen, Brain, Gamepad2, Camera,
-  Headphones, Mic, Video, Radio, Speaker, Disc
-];
-
-export const FloatingIcons: React.FC = () => {
-  const [icons, setIcons] = useState<FloatingIcon[]>([]);
+export function FloatingIcons() {
+  const [floatingIcons, setFloatingIcons] = useState<FloatingIcon[]>([]);
 
   useEffect(() => {
     const createIcon = () => {
+      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
       const newIcon: FloatingIcon = {
         id: Date.now() + Math.random(),
-        Icon: dkloudIcons[Math.floor(Math.random() * dkloudIcons.length)],
-        x: Math.random() * (window.innerWidth - 60),
-        y: Math.random() < 0.7 ? window.innerHeight + 50 : Math.random() * window.innerHeight,
-        animationType: Math.random() < 0.7 ? 'float-up' : 'pop-in',
-        delay: Math.random() * 2,
-        size: Math.random() * 12 + 16, // 16-28px
-        opacity: Math.random() * 0.3 + 0.2, // 0.2-0.5
+        Icon: randomIcon.Icon,
+        color: randomIcon.color,
+        x: Math.random() * (window.innerWidth - 100),
+        y: window.innerHeight + 50,
+        delay: 0
       };
 
-      setIcons(prev => [...prev, newIcon]);
+      setFloatingIcons(prev => [...prev, newIcon]);
 
       // Remove icon after animation completes
       setTimeout(() => {
-        setIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
-      }, newIcon.animationType === 'float-up' ? 22000 : 12000);
+        setFloatingIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
+      }, 6000);
     };
 
-    // Create icons less frequently (every 4-6 seconds)
-    const interval = setInterval(createIcon, Math.random() * 2000 + 4000);
+    // Create initial icons
+    const initialInterval = setInterval(createIcon, 2000);
 
-    // Initial icons
-    setTimeout(() => {
-      for (let i = 0; i < 3; i++) {
-        setTimeout(createIcon, i * 1000);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
+    // Cleanup
+    return () => clearInterval(initialInterval);
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {icons.map((icon) => {
-        const { Icon, id, x, y, animationType, delay, size, opacity } = icon;
-        
-        return (
-          <Icon
-            key={id}
-            className={`absolute text-primary/40 transition-all duration-1000 ${
-              animationType === 'float-up' ? 'animate-float-up' : 'animate-pop-in'
-            }`}
+    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+      {floatingIcons.map((icon) => (
+        <div
+          key={icon.id}
+          className="absolute animate-float-up opacity-70"
+          style={{
+            left: `${icon.x}px`,
+            bottom: `-50px`,
+            animationDuration: '6s',
+            animationDelay: `${icon.delay}ms`
+          }}
+        >
+          <icon.Icon 
+            className={`h-6 w-6 ${icon.color} animate-pulse`}
             style={{
-              left: `${x}px`,
-              top: animationType === 'pop-in' ? `${y}px` : 'auto',
-              bottom: animationType === 'float-up' ? '-50px' : 'auto',
-              animationDelay: `${delay}s`,
-              width: `${size}px`,
-              height: `${size}px`,
-              opacity: opacity,
-              filter: 'drop-shadow(0 0 8px hsla(var(--primary) / 0.3))',
+              filter: 'drop-shadow(0 0 8px currentColor)',
+              animationDuration: '2s'
             }}
           />
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
-};
+}

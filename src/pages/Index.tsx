@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import { InfographicAnimation } from "@/components/InfographicAnimation";
 import { FloatingIcons } from "@/components/FloatingIcons";
 import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
-import { FeatureCards } from "@/components/FeatureCards";
+import { FeatureButtons } from "@/components/FeatureButtons";
 import { AudioPlayer } from "@/components/AudioPlayer";
 import TeamSection from "@/components/TeamSection";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
@@ -42,7 +41,7 @@ const Index = () => {
         const aitoolsData = await aitoolsResponse.json();
         
         // Tech Corner
-        const techcornerResponse = await fetch("https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIi epb6kUjmqKwKcVr/exec");
+        const techcornerResponse = await fetch("https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec");
         const techcornerData = await techcornerResponse.json();
 
         setPreviewData({
@@ -75,7 +74,17 @@ const Index = () => {
       <IoTFloatingIcons showOnHomePage={true} />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.1_0%,_transparent_50%)]" />
+        </div>
+        
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+        </div>
+        
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="fade-in">
             <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
@@ -87,7 +96,7 @@ const Index = () => {
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="text-red-500 font-bold tracking-wide">
+              <span className="text-red-500 font-bold tracking-wide animate-glow">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -101,27 +110,29 @@ const Index = () => {
             </div>
             
             <div className="text-center mb-6 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                At dKloud, we're crafting a universe where creativity meets the cloud, AI fuels curiosity, and learning becomes a shared adventure.
+              <p className="text-sm md:text-base text-hero-bright leading-relaxed">
+                <span className="text-hero-bright">
+                  At dKloud, we're crafting a <span className="text-primary font-semibold neon-gradient-text">universe</span> where <span className="text-accent font-semibold neon-gradient-text">creativity meets the cloud</span>, <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
+                </span>
               </p>
             </div>
 
-            <div className="fade-in mb-8" style={{animationDelay: "0.6s"}}>
+            <div className="fade-in" style={{animationDelay: "0.6s"}}>
               <ColorBandSection />
             </div>
-
-            <div className="fade-in mb-8" style={{animationDelay: "0.7s"}}>
-              <FeatureCards />
+            
+            <div className="fade-in" style={{animationDelay: "0.7s"}}>
+              <FeatureButtons />
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in" style={{animationDelay: "0.8s"}}>
-              <Button asChild size="lg" className="text-lg px-10 py-4 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
+              <Button asChild size="lg" className="btn-gradient text-lg px-10 py-4 shadow-2xl neon-pulse">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-10 py-4">
+              <Button asChild variant="outline" size="lg" className="btn-glass text-lg px-10 py-4 shadow-lg hover:shadow-xl">
                 <Link to="/portfolio">View Portfolio</Link>
               </Button>
             </div>
@@ -130,18 +141,18 @@ const Index = () => {
       </section>
 
       {/* Explore Our Sections */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-6xl mx-auto p-4">
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 w-full">
+            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
                 {[
-                  { name: "Movies", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
-                  { name: "YouTube", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
+                  { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
+                  { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
                   { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
-                  { name: "Tech Tips", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
-                  { name: "Smart Tech", href: "/smarttech", Icon: Zap, desc: "Gadgets", color: "from-purple-500 to-blue-600" },
-                  { name: "Products", href: "/digi-products", Icon: Package, desc: "My Products", color: "from-orange-500 to-red-600" },
+                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
+                  { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
+                  { name: "Digi Products", href: "/digi-products", Icon: Package, desc: "My Products", color: "from-orange-500 to-red-600" },
                   { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
@@ -153,14 +164,20 @@ const Index = () => {
                       duration: 2000 
                     })}
                   >
-                    <div className="glass-card rounded-xl p-4 text-center hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer fade-in min-h-[120px] flex flex-col justify-center" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <div className="text-xl mb-3 group-hover:scale-110 transition-transform duration-300 flex justify-center">
-                        <tab.Icon className="h-5 w-5 text-primary" />
+                    <div className="relative overflow-hidden rounded-2xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 fade-in glass-tab" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      <div className="relative p-4 text-center">
+                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center neon-gradient-text">
+                          <tab.Icon className="h-6 w-6" />
+                        </div>
+                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
+                          {tab.name}
+                          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
+                        </h4>
+                        <p className="text-xs text-muted-foreground group-hover:text-foreground transition-colors duration-300">{tab.desc}</p>
                       </div>
-                      <h4 className="font-bold text-sm mb-2 text-foreground group-hover:text-primary transition-colors duration-300">
-                        {tab.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground">{tab.desc}</p>
                     </div>
                   </Link>
                 ))}
@@ -174,33 +191,33 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">About <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent font-black">dKloud</span></h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              A comprehensive platform combining entertainment, education, and technology. 
-              All data is dynamically powered by Google Sheets APIs for real-time updates.
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-neon-pulse font-black">dKloud</span></h2>
+            <p className="text-xl text-hero-bright max-w-3xl mx-auto">
+              A comprehensive platform combining <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent font-semibold">entertainment</span>, <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent font-semibold">education</span>, and <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent font-semibold">technology</span>. 
+              All data is dynamically powered by <span className="text-accent font-semibold neon-gradient-text">Google Sheets APIs</span> for <span className="text-primary font-semibold neon-gradient-text">real-time updates</span>.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            <Card className="glass-card bounce-in text-center">
+            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center">
               <CardHeader className="pb-8">
-                <Database className="h-16 w-16 text-primary mx-auto mb-6" />
+                <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
                 <CardTitle className="text-2xl">Google Sheets</CardTitle>
                 <CardDescription className="text-lg">Data stored and managed in organized spreadsheets</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="glass-card bounce-in text-center" style={{ animationDelay: "0.2s" }}>
+            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.2s" }}>
               <CardHeader className="pb-8">
-                <Zap className="h-16 w-16 text-accent mx-auto mb-6" />
+                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
                 <CardTitle className="text-2xl">Live APIs</CardTitle>
                 <CardDescription className="text-lg">Real-time data fetching via Google Apps Script</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="glass-card bounce-in text-center" style={{ animationDelay: "0.4s" }}>
+            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.4s" }}>
               <CardHeader className="pb-8">
-                <Sparkles className="h-16 w-16 text-success mx-auto mb-6" />
+                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
                 <CardTitle className="text-2xl">Dynamic Site</CardTitle>
                 <CardDescription className="text-lg">Always up-to-date content without manual updates</CardDescription>
               </CardHeader>
