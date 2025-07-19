@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -47,11 +48,11 @@ export function Navbar() {
 
   const navigationItems = [
     { name: "Movies & TV", href: "/movies-tv" },
-    { name: "YouTube Channels", href: "/youtube-channels" },
+    { name: "YouTube", href: "/youtube-channels" },
     { name: "AI Tools", href: "/aitools" },
     { name: "Tech Corner", href: "/techcorner" },
     { name: "Smart Tech", href: "/smarttech" },
-    { name: "Digi Products", href: "/digi-products" },
+    { name: "Products", href: "/digi-products" },
     { name: "Portfolio", href: "/portfolio" },
     { name: "Services", href: "/services" },
   ];
@@ -61,7 +62,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link to="/" className="flex items-center space-x-2 group flex-shrink-0">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300">
               dK
             </div>
@@ -71,13 +72,13 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 flex-1 justify-center max-w-4xl overflow-x-auto scrollbar-hide">
-            <div className="flex items-center space-x-1 px-4">
+          <div className="hidden lg:flex items-center flex-1 justify-center mx-8">
+            <div className="flex items-center space-x-1 overflow-x-auto scrollbar-hide max-w-full">
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-sm font-medium hover:text-primary transition-colors duration-200 px-3 py-2 rounded-md"
+                  className="text-sm font-medium hover:text-primary transition-colors duration-200 px-3 py-2 rounded-md whitespace-nowrap flex-shrink-0"
                 >
                   {item.name}
                 </Link>
@@ -86,7 +87,7 @@ export function Navbar() {
           </div>
 
           {/* Right side items */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 flex-shrink-0">
             <ThemeToggle />
             
             {user ? (
@@ -131,7 +132,7 @@ export function Navbar() {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-card shadow-md rounded-md p-4 mt-2">
+          <div className="lg:hidden absolute top-full left-0 right-0 glass-card shadow-md rounded-md p-4 mt-2 mx-4">
             <div className="flex flex-col space-y-3">
               {navigationItems.map((item) => (
                 <Link
