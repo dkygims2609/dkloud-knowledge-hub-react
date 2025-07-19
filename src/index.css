@@ -72,10 +72,11 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: linear-gradient(135deg, 
       hsl(240 30% 6%) 0%, 
@@ -86,6 +87,32 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
+}
+
+/* Scrollbar utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Navbar backdrop */
+.navbar-backdrop {
+  backdrop-filter: blur(20px);
+  background: hsla(var(--background) / 0.8);
+  border-bottom: 1px solid hsla(var(--border) / 0.3);
+}
+
+/* Dropdown card styling */
+.dropdown-card {
+  backdrop-filter: blur(20px);
+  background: hsla(var(--background) / 0.95);
+  border: 1px solid hsla(var(--border) / 0.5);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px hsla(0 0% 0% / 0.3);
 }
 
 /* Enhanced Animations */
@@ -222,43 +249,6 @@
   animation: glow 2s ease-in-out infinite;
 }
 
-/* Hero Mini Cards - Small Version */
-.hero-mini-card-small {
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  background: hsla(var(--background) / 0.4);
-  backdrop-filter: blur(16px);
-  border: 1px solid hsla(var(--border) / 0.3);
-  transition: all 0.3s ease;
-  min-height: 100px;
-  max-width: 150px;
-}
-
-.hero-mini-card-small:hover {
-  border-color: hsla(var(--primary) / 0.4);
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px hsla(var(--primary) / 0.1);
-}
-
-.hero-mini-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  background: hsla(var(--background) / 0.4);
-  backdrop-filter: blur(16px);
-  border: 1px solid hsla(var(--border) / 0.3);
-  transition: all 0.3s ease;
-  min-height: 120px;
-  max-width: 180px;
-}
-
-.hero-mini-card:hover {
-  border-color: hsla(var(--primary) / 0.4);
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px hsla(var(--primary) / 0.1);
-}
-
 .feature-card-small {
   position: relative;
   overflow: hidden;
@@ -278,16 +268,6 @@
 
 /* Responsive improvements */
 @media (max-width: 768px) {
-  .hero-mini-card-small {
-    min-height: 90px;
-    max-width: 130px;
-  }
-  
-  .hero-mini-card {
-    min-height: 100px;
-    max-width: 160px;
-  }
-  
   .feature-card-small {
     min-height: 120px;
   }

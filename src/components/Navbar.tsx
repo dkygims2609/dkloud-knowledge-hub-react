@@ -33,7 +33,7 @@ const navigation = [
     ]
   },
   { 
-    name: "YouTube Picks", 
+    name: "YouTube", 
     href: "/ytchannels", 
     icon: Youtube, 
     color: "from-red-500 to-orange-500",
@@ -81,7 +81,7 @@ const navigation = [
     ]
   },
   { 
-    name: "Digi Products", 
+    name: "Products", 
     href: "/digi-products", 
     icon: Package, 
     color: "from-orange-500 to-red-500",
@@ -147,65 +147,61 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg">
-            {navigation.map((item) => (
-              <div key={item.name} className="relative">
-                {item.dropdownItems ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className={cn(
-                          "flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
-                          location.pathname === item.href
-                            ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
-                            : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
-                        )}
-                      >
-                        <item.icon className="h-3 w-3" />
-                        <span className="hidden xl:inline text-xs">{item.name}</span>
-                        <span className="xl:hidden text-[10px] font-semibold">
-                          {item.name.split(' ')[0]}
-                        </span>
-                        <ChevronDown className="h-3 w-3 ml-1" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="dropdown-card min-w-[200px] z-50">
-                      <DropdownMenuLabel className="text-sm font-semibold text-sharp-bright">
-                        {item.name}
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      {item.dropdownItems.map((dropItem) => (
-                        <DropdownMenuItem key={dropItem.name} asChild>
-                          <Link 
-                            to={dropItem.href}
-                            className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200"
-                          >
-                            {dropItem.name}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Link
-                    to={item.href}
-                    className={cn(
-                      "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden",
-                      location.pathname === item.href
-                        ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
-                        : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
-                    )}
-                  >
-                    <item.icon className="h-3 w-3" />
-                    <span className="hidden xl:inline text-xs">{item.name}</span>
-                    <span className="xl:hidden text-[10px] font-semibold">
-                      {item.name.split(' ')[0]}
-                    </span>
-                  </Link>
-                )}
-              </div>
-            ))}
+          {/* Desktop Navigation - Fixed to stay in one line */}
+          <div className="hidden lg:flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg overflow-x-auto scrollbar-hide">
+            <div className="flex items-center space-x-1 min-w-max">
+              {navigation.map((item) => (
+                <div key={item.name} className="relative flex-shrink-0">
+                  {item.dropdownItems ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          className={cn(
+                            "flex items-center space-x-1 px-2 py-2 rounded-xl text-xs font-medium transition-all duration-300 whitespace-nowrap",
+                            location.pathname === item.href
+                              ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                              : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+                          )}
+                        >
+                          <item.icon className="h-3 w-3 flex-shrink-0" />
+                          <span className="text-xs truncate max-w-16">{item.name}</span>
+                          <ChevronDown className="h-3 w-3 flex-shrink-0" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="dropdown-card min-w-[200px] z-50">
+                        <DropdownMenuLabel className="text-sm font-semibold text-sharp-bright">
+                          {item.name}
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {item.dropdownItems.map((dropItem) => (
+                          <DropdownMenuItem key={dropItem.name} asChild>
+                            <Link 
+                              to={dropItem.href}
+                              className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200"
+                            >
+                              {dropItem.name}
+                            </Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      className={cn(
+                        "relative flex items-center space-x-1 px-2 py-2 rounded-xl text-xs font-medium transition-all duration-300 whitespace-nowrap",
+                        location.pathname === item.href
+                          ? "bg-primary/90 text-primary-foreground shadow-md scale-105"
+                          : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+                      )}
+                    >
+                      <item.icon className="h-3 w-3 flex-shrink-0" />
+                      <span className="text-xs truncate max-w-16">{item.name}</span>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Theme Toggle & Mobile Menu Button */}
