@@ -24,6 +24,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Disclaimer from "./pages/Disclaimer";
 import AdminPanel from "./pages/AdminPanel";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
           <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/movies-tv" element={<MoviesTV />} />
             <Route path="/youtube-channels" element={<YouTubeChannels />} />
             <Route path="/ytchannels" element={<YouTubeChannels />} />
