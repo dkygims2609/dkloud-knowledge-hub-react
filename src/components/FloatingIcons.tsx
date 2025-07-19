@@ -1,125 +1,91 @@
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { 
-  Cloud, 
-  Film, 
-  Cpu, 
-  Brain, 
-  Wifi, 
-  Database, 
-  Code, 
-  Smartphone, 
-  Monitor, 
-  Zap,
-  Music,
-  Camera,
-  Tv,
-  Gamepad2,
-  Headphones,
-  Server,
-  Globe,
-  Shield,
-  Clapperboard,
-  Radio,
-  Microchip,
-  HardDrive,
-  Router
-} from "lucide-react";
-
-const icons = [
-  { Icon: Cloud, color: "text-blue-400" },
-  { Icon: Film, color: "text-purple-400" },
-  { Icon: Cpu, color: "text-green-400" },
-  { Icon: Brain, color: "text-pink-400" },
-  { Icon: Wifi, color: "text-cyan-400" },
-  { Icon: Database, color: "text-orange-400" },
-  { Icon: Code, color: "text-yellow-400" },
-  { Icon: Smartphone, color: "text-indigo-400" },
-  { Icon: Monitor, color: "text-red-400" },
-  { Icon: Zap, color: "text-emerald-400" },
-  { Icon: Music, color: "text-violet-400" },
-  { Icon: Camera, color: "text-rose-400" },
-  { Icon: Tv, color: "text-teal-400" },
-  { Icon: Gamepad2, color: "text-lime-400" },
-  { Icon: Headphones, color: "text-fuchsia-400" },
-  { Icon: Server, color: "text-slate-400" },
-  { Icon: Globe, color: "text-sky-400" },
-  { Icon: Shield, color: "text-amber-400" },
-  { Icon: Clapperboard, color: "text-purple-500" },
-  { Icon: Radio, color: "text-blue-500" },
-  { Icon: Microchip, color: "text-green-500" },
-  { Icon: HardDrive, color: "text-orange-500" },
-  { Icon: Router, color: "text-cyan-500" }
-];
+  Cloud, Code, Smartphone, Lightbulb, Cpu, Globe, 
+  Database, Zap, Wifi, Monitor, Server, Bluetooth,
+  Music, Film, BookOpen, Brain, Gamepad2, Camera,
+  Headphones, Mic, Video, Radio, Speaker, Disc
+} from 'lucide-react';
 
 interface FloatingIcon {
   id: number;
-  Icon: any;
-  color: string;
+  Icon: React.ComponentType<any>;
   x: number;
   y: number;
+  animationType: 'float-up' | 'pop-in';
   delay: number;
-  scale: number;
-  duration: number;
+  size: number;
+  opacity: number;
 }
 
-export function FloatingIcons() {
-  const [floatingIcons, setFloatingIcons] = useState<FloatingIcon[]>([]);
+const dkloudIcons = [
+  Cloud, Code, Smartphone, Lightbulb, Cpu, Globe, 
+  Database, Zap, Wifi, Monitor, Server, Bluetooth,
+  Music, Film, BookOpen, Brain, Gamepad2, Camera,
+  Headphones, Mic, Video, Radio, Speaker, Disc
+];
+
+export const FloatingIcons: React.FC = () => {
+  const [icons, setIcons] = useState<FloatingIcon[]>([]);
 
   useEffect(() => {
     const createIcon = () => {
-      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-      const duration = 6000 + Math.random() * 4000; // 6-10 seconds
       const newIcon: FloatingIcon = {
         id: Date.now() + Math.random(),
-        Icon: randomIcon.Icon,
-        color: randomIcon.color,
+        Icon: dkloudIcons[Math.floor(Math.random() * dkloudIcons.length)],
         x: Math.random() * (window.innerWidth - 60),
-        y: window.innerHeight + 30,
-        delay: Math.random() * 1000,
-        scale: 0.4 + Math.random() * 0.3, // Smaller icons: 0.4 to 0.7
-        duration
+        y: Math.random() < 0.7 ? window.innerHeight + 50 : Math.random() * window.innerHeight,
+        animationType: Math.random() < 0.7 ? 'float-up' : 'pop-in',
+        delay: Math.random() * 2,
+        size: Math.random() * 12 + 16, // 16-28px
+        opacity: Math.random() * 0.3 + 0.2, // 0.2-0.5
       };
 
-      setFloatingIcons(prev => [...prev, newIcon]);
+      setIcons(prev => [...prev, newIcon]);
 
       // Remove icon after animation completes
       setTimeout(() => {
-        setFloatingIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
-      }, duration + newIcon.delay);
+        setIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
+      }, newIcon.animationType === 'float-up' ? 22000 : 12000);
     };
 
-    // Create icons more frequently for better visual effect
-    const initialInterval = setInterval(createIcon, 1500);
+    // Create icons less frequently (every 4-6 seconds)
+    const interval = setInterval(createIcon, Math.random() * 2000 + 4000);
 
-    // Cleanup
-    return () => clearInterval(initialInterval);
+    // Initial icons
+    setTimeout(() => {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(createIcon, i * 1000);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-      {floatingIcons.map((icon) => (
-        <div
-          key={icon.id}
-          className="absolute animate-float-up opacity-50"
-          style={{
-            left: `${icon.x}px`,
-            bottom: `-30px`,
-            animationDuration: `${icon.duration}ms`,
-            animationDelay: `${icon.delay}ms`,
-            transform: `scale(${icon.scale})`
-          }}
-        >
-          <icon.Icon 
-            className={`h-4 w-4 ${icon.color} animate-pulse`}
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {icons.map((icon) => {
+        const { Icon, id, x, y, animationType, delay, size, opacity } = icon;
+        
+        return (
+          <Icon
+            key={id}
+            className={`absolute text-primary/40 transition-all duration-1000 ${
+              animationType === 'float-up' ? 'animate-float-up' : 'animate-pop-in'
+            }`}
             style={{
-              filter: 'drop-shadow(0 0 6px currentColor)',
-              animationDuration: '2s',
-              animationDelay: `${Math.random() * 1000}ms`
+              left: `${x}px`,
+              top: animationType === 'pop-in' ? `${y}px` : 'auto',
+              bottom: animationType === 'float-up' ? '-50px' : 'auto',
+              animationDelay: `${delay}s`,
+              width: `${size}px`,
+              height: `${size}px`,
+              opacity: opacity,
+              filter: 'drop-shadow(0 0 8px hsla(var(--primary) / 0.3))',
             }}
           />
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
-}
+};

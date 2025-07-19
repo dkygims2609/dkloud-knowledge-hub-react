@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -75,15 +74,15 @@ const Index = () => {
       <IoTFloatingIcons showOnHomePage={true} />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-background via-muted/10 to-background">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden deep-gradient-bg">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/3 to-primary/5 dark:from-primary/10 dark:via-accent/5 dark:to-primary/10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.05_0%,_transparent_50%)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-accent/5 to-primary/8 dark:from-primary/12 dark:via-accent/8 dark:to-primary/12" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)/0.08_0%,_transparent_50%)]" />
         </div>
         
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/10 to-primary/10 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/15 to-accent/15 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/15 to-primary/15 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
@@ -118,11 +117,34 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="fade-in" style={{animationDelay: "0.6s"}}>
+            <div className="fade-in mb-8" style={{animationDelay: "0.6s"}}>
               <ColorBandSection />
             </div>
+
+            {/* Mini Hero Cards Section */}
+            <div className="mb-8 fade-in" style={{animationDelay: "0.65s"}}>
+              <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+                {[
+                  { name: "Cloud", Icon: Database, desc: "Computing", color: "from-blue-500 to-cyan-500" },
+                  { name: "Music", Icon: Music, desc: "Composer", color: "from-purple-500 to-pink-500" },
+                  { name: "Content", Icon: BookOpen, desc: "Creator", color: "from-green-500 to-emerald-500" },
+                  { name: "Creative", Icon: Lightbulb, desc: "Techy", color: "from-orange-500 to-red-500" }
+                ].map((item, index) => (
+                  <div key={item.name} className="hero-mini-card fade-in" style={{ animationDelay: `${0.7 + index * 0.1}s` }}>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
+                    <div className="relative p-4 text-center h-full flex flex-col justify-center">
+                      <div className="mb-2 flex justify-center">
+                        <item.Icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <h4 className="font-bold text-sm mb-1 text-sharp-bright">{item.name}</h4>
+                      <p className="text-xs text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
             
-            <div className="fade-in" style={{animationDelay: "0.7s"}}>
+            <div className="fade-in mb-8" style={{animationDelay: "0.7s"}}>
               <FeatureButtons />
             </div>
             
@@ -148,12 +170,12 @@ const Index = () => {
             <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-6xl mx-auto p-4">
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 w-full">
                 {[
-                  { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
-                  { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
+                  { name: "Movies", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-violet-500 to-purple-600" },
+                  { name: "YouTube", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
                   { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-cyan-500 to-blue-600" },
-                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
-                  { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-purple-500 to-blue-600" },
-                  { name: "Digi Products", href: "/digi-products", Icon: Package, desc: "My Products", color: "from-orange-500 to-red-600" },
+                  { name: "Tech Tips", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-emerald-500 to-teal-600" },
+                  { name: "Smart Tech", href: "/smarttech", Icon: Zap, desc: "Gadgets", color: "from-purple-500 to-blue-600" },
+                  { name: "Products", href: "/digi-products", Icon: Package, desc: "My Products", color: "from-orange-500 to-red-600" },
                   { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-pink-500 to-purple-600" },
                 ].map((tab, index) => (
                   <Link 
@@ -165,15 +187,15 @@ const Index = () => {
                       duration: 2000 
                     })}
                   >
-                    <div className="relative overflow-hidden rounded-xl bg-background/60 backdrop-blur-lg border border-border/40 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 fade-in glass-tab" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="feature-card-small fade-in glass-tab" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                       <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
-                      <div className="relative p-3 text-center">
-                        <div className="text-xl mb-2 group-hover:scale-110 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center neon-gradient-text">
-                          <tab.Icon className="h-4 w-4" />
+                      <div className="relative p-4 text-center h-full flex flex-col justify-center">
+                        <div className="text-xl mb-3 group-hover:scale-110 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center neon-gradient-text">
+                          <tab.Icon className="h-5 w-5" />
                         </div>
-                        <h4 className="font-bold text-xs mb-1 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
+                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
                           {tab.name}
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
                         </h4>
@@ -200,7 +222,7 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center">
+            <Card className="glass-card bounce-in text-center">
               <CardHeader className="pb-8">
                 <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
                 <CardTitle className="text-2xl">Google Sheets</CardTitle>
@@ -208,7 +230,7 @@ const Index = () => {
               </CardHeader>
             </Card>
             
-            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.2s" }}>
+            <Card className="glass-card bounce-in text-center" style={{ animationDelay: "0.2s" }}>
               <CardHeader className="pb-8">
                 <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
                 <CardTitle className="text-2xl">Live APIs</CardTitle>
@@ -216,7 +238,7 @@ const Index = () => {
               </CardHeader>
             </Card>
             
-            <Card className="dkloud-card dkloud-card-interactive bounce-in text-center" style={{ animationDelay: "0.4s" }}>
+            <Card className="glass-card bounce-in text-center" style={{ animationDelay: "0.4s" }}>
               <CardHeader className="pb-8">
                 <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
                 <CardTitle className="text-2xl">Dynamic Site</CardTitle>

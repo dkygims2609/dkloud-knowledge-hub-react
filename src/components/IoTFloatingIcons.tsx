@@ -1,131 +1,97 @@
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { 
-  Wifi, 
-  Smartphone, 
-  Watch, 
-  Car, 
-  Home, 
-  Lightbulb, 
-  Thermometer, 
-  Camera, 
-  Speaker, 
-  Router,
-  Tv,
-  Gamepad2,
-  Headphones,
-  Tablet,
-  Laptop,
-  Brain,
-  Server,
-  Cpu,
-  Cloud,
-  Shield,
-  Music,
-  Film,
-  Code,
-  Database,
-  Globe
-} from "lucide-react";
+  Smartphone, Wifi, Bluetooth, Radio, Speaker, Monitor,
+  Tv, Camera, Lightbulb, Thermometer, Lock, Shield,
+  Zap, Battery, Cpu, HardDrive, Router, Satellite
+} from 'lucide-react';
 
-const iotIcons = [
-  { Icon: Wifi, color: "text-primary" },
-  { Icon: Smartphone, color: "text-secondary" },
-  { Icon: Watch, color: "text-accent" },
-  { Icon: Car, color: "text-primary" },
-  { Icon: Home, color: "text-secondary" },
-  { Icon: Lightbulb, color: "text-accent" },
-  { Icon: Thermometer, color: "text-primary" },
-  { Icon: Camera, color: "text-secondary" },
-  { Icon: Speaker, color: "text-accent" },
-  { Icon: Router, color: "text-primary" },
-  { Icon: Tv, color: "text-secondary" },
-  { Icon: Gamepad2, color: "text-accent" },
-  { Icon: Headphones, color: "text-primary" },
-  { Icon: Tablet, color: "text-secondary" },
-  { Icon: Laptop, color: "text-accent" },
-  { Icon: Brain, color: "text-primary" },
-  { Icon: Server, color: "text-secondary" },
-  { Icon: Cpu, color: "text-accent" },
-  { Icon: Cloud, color: "text-primary" },
-  { Icon: Shield, color: "text-secondary" },
-  { Icon: Music, color: "text-accent" },
-  { Icon: Film, color: "text-primary" },
-  { Icon: Code, color: "text-secondary" },
-  { Icon: Database, color: "text-accent" },
-  { Icon: Globe, color: "text-primary" }
-];
-
-interface FloatingIcon {
+interface IoTIcon {
   id: number;
-  Icon: any;
-  color: string;
+  Icon: React.ComponentType<any>;
   x: number;
   y: number;
-  duration: number;
+  animationType: 'float-up' | 'pop-in';
   delay: number;
-  scale: number;
+  size: number;
+  opacity: number;
 }
 
-export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: boolean }) {
-  const [floatingIcons, setFloatingIcons] = useState<FloatingIcon[]>([]);
+const iotIcons = [
+  Smartphone, Wifi, Bluetooth, Radio, Speaker, Monitor,
+  Tv, Camera, Lightbulb, Thermometer, Lock, Shield,
+  Zap, Battery, Cpu, HardDrive, Router, Satellite
+];
+
+interface IoTFloatingIconsProps {
+  showOnHomePage?: boolean;
+}
+
+export const IoTFloatingIcons: React.FC<IoTFloatingIconsProps> = ({ showOnHomePage = false }) => {
+  const [icons, setIcons] = useState<IoTIcon[]>([]);
 
   useEffect(() => {
-    // Only show on home page when showOnHomePage is true
     if (!showOnHomePage) return;
 
     const createIcon = () => {
-      const randomIcon = iotIcons[Math.floor(Math.random() * iotIcons.length)];
-      const newIcon: FloatingIcon = {
+      const newIcon: IoTIcon = {
         id: Date.now() + Math.random(),
-        Icon: randomIcon.Icon,
-        color: randomIcon.color,
-        x: Math.random() * (window.innerWidth - 50),
-        y: window.innerHeight + 40,
-        duration: 8000 + Math.random() * 4000, // 8-12 seconds
-        delay: Math.random() * 2000,
-        scale: 0.3 + Math.random() * 0.2 // Even smaller: 0.3 to 0.5
+        Icon: iotIcons[Math.floor(Math.random() * iotIcons.length)],
+        x: Math.random() * (window.innerWidth - 60),
+        y: Math.random() < 0.6 ? window.innerHeight + 50 : Math.random() * window.innerHeight,
+        animationType: Math.random() < 0.6 ? 'float-up' : 'pop-in',
+        delay: Math.random() * 3,
+        size: Math.random() * 10 + 18, // 18-28px
+        opacity: Math.random() * 0.25 + 0.15, // 0.15-0.4
       };
 
-      setFloatingIcons(prev => [...prev, newIcon]);
+      setIcons(prev => [...prev, newIcon]);
 
       // Remove icon after animation completes
       setTimeout(() => {
-        setFloatingIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
-      }, newIcon.duration + newIcon.delay);
+        setIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
+      }, newIcon.animationType === 'float-up' ? 25000 : 15000);
     };
 
-    // Create initial icons with staggered timing
-    const initialInterval = setInterval(createIcon, 2500); // Every 2.5 seconds
+    // Create icons even less frequently (every 5-8 seconds)
+    const interval = setInterval(createIcon, Math.random() * 3000 + 5000);
 
-    // Cleanup
-    return () => clearInterval(initialInterval);
+    // Initial icons
+    setTimeout(() => {
+      for (let i = 0; i < 2; i++) {
+        setTimeout(createIcon, i * 1500);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
   }, [showOnHomePage]);
 
+  if (!showOnHomePage) return null;
+
   return (
-    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-      {floatingIcons.map((icon) => (
-        <div
-          key={icon.id}
-          className="absolute animate-float-up opacity-40"
-          style={{
-            left: `${icon.x}px`,
-            bottom: `-40px`,
-            animationDuration: `${icon.duration}ms`,
-            animationDelay: `${icon.delay}ms`,
-            transform: `scale(${icon.scale})`
-          }}
-        >
-          <icon.Icon 
-            className={`h-3 w-3 ${icon.color} animate-pulse`}
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {icons.map((icon) => {
+        const { Icon, id, x, y, animationType, delay, size, opacity } = icon;
+        
+        return (
+          <Icon
+            key={id}
+            className={`absolute text-accent/30 transition-all duration-1000 ${
+              animationType === 'float-up' ? 'animate-float-up' : 'animate-pop-in'
+            }`}
             style={{
-              filter: 'drop-shadow(0 0 8px currentColor)',
-              animationDuration: '3s',
-              animationDelay: `${Math.random() * 2000}ms`
+              left: `${x}px`,
+              top: animationType === 'pop-in' ? `${y}px` : 'auto',
+              bottom: animationType === 'float-up' ? '-50px' : 'auto',
+              animationDelay: `${delay}s`,
+              width: `${size}px`,
+              height: `${size}px`,
+              opacity: opacity,
+              filter: 'drop-shadow(0 0 6px hsla(var(--accent) / 0.2))',
             }}
           />
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
-}
+};
