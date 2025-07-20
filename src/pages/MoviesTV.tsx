@@ -149,13 +149,13 @@ const MoviesTV = () => {
   const filterContent = () => {
     const applyFilters = (data: ContentItem[]) => {
       return data.filter((item) => {
-        // Get the name/title safely - handle both Name and Title properties
-        const itemName = item.Name || item.Title || "";
-        const itemGenre = item.Genre || "";
-        const itemPlatform = item.Platform || "";
-        const itemLanguage = item.Language || "";
-        const itemDirector = item.Director || "";
-        const itemCreator = item.Creator || "";
+        // Get the name/title safely - handle both Name and Title properties and ensure they're strings
+        const itemName = String(item.Name || item.Title || "");
+        const itemGenre = String(item.Genre || "");
+        const itemPlatform = String(item.Platform || "");
+        const itemLanguage = String(item.Language || "");
+        const itemDirector = String(item.Director || "");
+        const itemCreator = String(item.Creator || "");
         
         const matchesSearch = 
           itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
