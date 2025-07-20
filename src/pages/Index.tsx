@@ -73,8 +73,8 @@ const Index = () => {
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       
-      {/* Hero Section with Enhanced Colors */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+      {/* Hero Section with Portfolio-synced Background */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-background">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/3 to-accent/5" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.1)_0%,_transparent_50%)]" />
