@@ -10,10 +10,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
 interface ContentItem {
-  Name: string;
+  Name?: string;
+  Title?: string;
   Genre: string;
   Platform: string;
-  DKcloudRating: number;
+  DKcloudRating: number | string;
   Language: string;
   Awards?: string;
   "Why to Watch": string;
@@ -148,20 +149,29 @@ const MoviesTV = () => {
   const filterContent = () => {
     const applyFilters = (data: ContentItem[]) => {
       return data.filter((item) => {
+        // Get the name/title safely - handle both Name and Title properties
+        const itemName = item.Name || item.Title || "";
+        const itemGenre = item.Genre || "";
+        const itemPlatform = item.Platform || "";
+        const itemLanguage = item.Language || "";
+        const itemDirector = item.Director || "";
+        const itemCreator = item.Creator || "";
+        
         const matchesSearch = 
-          item.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (item.Director && item.Director.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (item.Creator && item.Creator.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          item.Genre.toLowerCase().includes(searchTerm.toLowerCase());
+          itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          itemDirector.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          itemCreator.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          itemGenre.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesGenre = genreFilter === "all" || item.Genre === genreFilter;
-        const matchesPlatform = platformFilter === "all" || item.Platform === platformFilter;
-        const matchesLanguage = languageFilter === "all" || item.Language === languageFilter;
+        const matchesGenre = genreFilter === "all" || itemGenre === genreFilter;
+        const matchesPlatform = platformFilter === "all" || itemPlatform === platformFilter;
+        const matchesLanguage = languageFilter === "all" || itemLanguage === languageFilter;
         
         let matchesRating = true;
-        if (ratingFilter === "high") matchesRating = item.DKcloudRating >= 8;
-        else if (ratingFilter === "medium") matchesRating = item.DKcloudRating >= 6 && item.DKcloudRating < 8;
-        else if (ratingFilter === "low") matchesRating = item.DKcloudRating < 6;
+        const rating = parseFloat(String(item.DKcloudRating)) || 0;
+        if (ratingFilter === "high") matchesRating = rating >= 8;
+        else if (ratingFilter === "medium") matchesRating = rating >= 6 && rating < 8;
+        else if (ratingFilter === "low") matchesRating = rating < 6;
 
         return matchesSearch && matchesGenre && matchesPlatform && matchesLanguage && matchesRating;
       });
@@ -217,7 +227,7 @@ const MoviesTV = () => {
     <Card key={index} className="dkloud-card dkloud-card-interactive h-full">
       <CardHeader>
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{item.Name}</CardTitle>
+          <CardTitle className="text-lg">{item.Name || item.Title}</CardTitle>
           <div className="flex items-center space-x-1">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
             <span className="text-sm font-medium">{item.DKcloudRating}</span>
