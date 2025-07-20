@@ -26,10 +26,10 @@ const navigation = [
     icon: Clapperboard, 
     color: "from-purple-500 to-pink-500",
     dropdownItems: [
-      { name: "Movies", href: "/movies-tv?filter=movies" },
-      { name: "TV Series", href: "/movies-tv?filter=tv" },
-      { name: "Reviews", href: "/movies-tv?filter=reviews" },
-      { name: "Trending", href: "/movies-tv?filter=trending" }
+      { name: "Movies", href: "/movies-tv?tab=movies" },
+      { name: "TV Series", href: "/movies-tv?tab=tv" },
+      { name: "Ultimate List", href: "/movies-tv?tab=ultimate" },
+      { name: "Trending", href: "/movies-tv?tab=trending" }
     ]
   },
   { 
@@ -89,7 +89,7 @@ const navigation = [
       { name: "Smart Tools", href: "/digi-products?category=tools" },
       { name: "AI Agents", href: "/digi-products?category=ai" },
       { name: "Digital Solutions", href: "/digi-products?category=solutions" },
-      { name: "Coming Soon", href: "/digi-products?category=coming-soon" }
+      { name: "Micro Courses - Coming Soon!", href: "/digi-products?category=courses" }
     ]
   },
   { 
@@ -170,18 +170,24 @@ export function Navbar() {
                         <ChevronDown className="h-3 w-3 ml-1" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="dropdown-card min-w-[200px] z-50">
-                      <DropdownMenuLabel className="text-sm font-semibold text-sharp-bright">
+                    <DropdownMenuContent className="bg-background/95 backdrop-blur-lg border border-border/50 shadow-2xl min-w-[220px] z-[100]">
+                      <DropdownMenuLabel className="text-sm font-semibold text-foreground bg-gradient-to-r from-primary/10 to-secondary/10 rounded-md mx-1 px-2 py-1">
                         {item.name}
                       </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
+                      <DropdownMenuSeparator className="bg-border/30" />
                       {item.dropdownItems.map((dropItem) => (
-                        <DropdownMenuItem key={dropItem.name} asChild>
+                        <DropdownMenuItem key={dropItem.name} asChild className="focus:bg-primary/10 focus:text-primary">
                           <Link 
                             to={dropItem.href}
-                            className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200"
+                            className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1"
                           >
-                            {dropItem.name}
+                            {dropItem.name.includes("Coming Soon") ? (
+                              <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
+                                {dropItem.name}
+                              </span>
+                            ) : (
+                              dropItem.name
+                            )}
                           </Link>
                         </DropdownMenuItem>
                       ))}
@@ -225,23 +231,38 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden border-t border-border">
+          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-lg">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors nav-tab-gradient",
-                    location.pathname === item.href
-                      ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg active-tab-glow"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                <div key={item.name} className="space-y-1">
+                  <Link
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors nav-tab-gradient",
+                      location.pathname === item.href
+                        ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg active-tab-glow"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    <span>{item.name}</span>
+                  </Link>
+                  {item.dropdownItems && (
+                    <div className="ml-6 space-y-1">
+                      {item.dropdownItems.map((dropItem) => (
+                        <Link
+                          key={dropItem.name}
+                          to={dropItem.href}
+                          onClick={() => setIsOpen(false)}
+                          className="block px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {dropItem.name}
+                        </Link>
+                      ))}
+                    </div>
                   )}
-                >
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.name}</span>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

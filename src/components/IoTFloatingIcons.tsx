@@ -99,9 +99,9 @@ export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: 
         color: randomIcon.color,
         x: Math.random() * (window.innerWidth - 60),
         y: animationType === 'fade-in-out' ? Math.random() * (window.innerHeight - 100) : window.innerHeight + 50,
-        duration: 3000 + Math.random() * 4000, // 3-7 seconds
-        delay: Math.random() * 1000,
-        scale: 0.6 + Math.random() * 0.4, // 0.6 to 1.0 (smaller icons)
+        duration: 8000 + Math.random() * 7000, // Increased from 3-7s to 8-15s
+        delay: Math.random() * 2000, // Increased delay variation
+        scale: 0.4 + Math.random() * 0.3, // Reduced from 0.6-1.0 to 0.4-0.7 (smaller icons)
         animationType,
         direction: Math.random() * 360 // for random direction animation
       };
@@ -111,11 +111,11 @@ export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: 
       // Remove icon after animation completes
       setTimeout(() => {
         setFloatingIcons(prev => prev.filter(icon => icon.id !== newIcon.id));
-      }, newIcon.duration + newIcon.delay + 1000);
+      }, newIcon.duration + newIcon.delay + 2000);
     };
 
-    // More frequent spawning - every 1-2 seconds
-    const initialInterval = setInterval(createIcon, 1000 + Math.random() * 1000);
+    // Reduced frequency from 1-2 seconds to 4-6 seconds
+    const initialInterval = setInterval(createIcon, 4000 + Math.random() * 2000);
 
     // Cleanup
     return () => clearInterval(initialInterval);
@@ -168,17 +168,17 @@ export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: 
   const getAnimationClass = (animationType: FloatingIcon['animationType']) => {
     switch (animationType) {
       case 'float-up':
-        return 'animate-float-up opacity-70';
+        return 'animate-float-up opacity-30'; // Reduced from opacity-70 to opacity-30
       case 'fade-in-out':
-        return 'animate-fade-in-out opacity-60';
+        return 'animate-fade-in-out opacity-25'; // Reduced from opacity-60 to opacity-25
       case 'spiral':
-        return 'animate-spiral opacity-65';
+        return 'animate-spiral opacity-35'; // Reduced from opacity-65 to opacity-35
       case 'random-direction':
-        return 'animate-random-direction opacity-75';
+        return 'animate-random-direction opacity-40'; // Reduced from opacity-75 to opacity-40
       case 'power-pulse':
-        return 'animate-power-pulse opacity-80';
+        return 'animate-power-pulse opacity-45'; // Reduced from opacity-80 to opacity-45
       default:
-        return 'animate-float-up opacity-70';
+        return 'animate-float-up opacity-30';
     }
   };
 
@@ -191,11 +191,11 @@ export function IoTFloatingIcons({ showOnHomePage = false }: { showOnHomePage?: 
           style={getAnimationStyle(icon)}
         >
           <icon.Icon 
-            className={`h-4 w-4 ${icon.color} animate-pulse`}
+            className={`h-3 w-3 ${icon.color} animate-pulse`} // Reduced from h-4 w-4 to h-3 w-3
             style={{
-              filter: `drop-shadow(0 0 ${icon.animationType === 'power-pulse' ? '16px' : '8px'}) currentColor`,
-              animationDuration: icon.animationType === 'power-pulse' ? '1s' : '2s',
-              animationDelay: `${Math.random() * 2000}ms`
+              filter: `drop-shadow(0 0 ${icon.animationType === 'power-pulse' ? '12px' : '6px'}) currentColor`, // Reduced glow effect
+              animationDuration: icon.animationType === 'power-pulse' ? '2s' : '4s', // Slower pulse animation
+              animationDelay: `${Math.random() * 4000}ms` // Increased delay variation
             }}
           />
         </div>

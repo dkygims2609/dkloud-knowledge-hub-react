@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Search, Filter, Star, Award, Calendar, ChevronLeft, ChevronRight, TrendingUp, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -51,6 +50,7 @@ const MoviesTV = () => {
   const [platformFilter, setPlatformFilter] = useState("all");
   const [ratingFilter, setRatingFilter] = useState("all");
   const [languageFilter, setLanguageFilter] = useState("all");
+  const [awardsFilter, setAwardsFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("movies");
 
   const [currentPage, setCurrentPage] = useState({
@@ -59,7 +59,7 @@ const MoviesTV = () => {
     ultimate: 0
   });
 
-  const ITEMS_PER_PAGE = 12;
+  const ITEMS_PER_PAGE = 6;
 
   useEffect(() => {
     fetchAllData();
@@ -67,7 +67,7 @@ const MoviesTV = () => {
 
   useEffect(() => {
     filterContent();
-  }, [movies, tvSeries, ultimateList, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, activeTab]);
+  }, [movies, tvSeries, ultimateList, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter, activeTab]);
 
   useEffect(() => {
     // Reset filters when switching tabs
@@ -156,6 +156,7 @@ const MoviesTV = () => {
         const itemLanguage = String(item.Language || "");
         const itemDirector = String(item.Director || "");
         const itemCreator = String(item.Creator || "");
+        const itemAwards = String(item.Awards || "");
         
         const matchesSearch = 
           itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -166,6 +167,7 @@ const MoviesTV = () => {
         const matchesGenre = genreFilter === "all" || itemGenre === genreFilter;
         const matchesPlatform = platformFilter === "all" || itemPlatform === platformFilter;
         const matchesLanguage = languageFilter === "all" || itemLanguage === languageFilter;
+        const matchesAwards = awardsFilter === "all" || (awardsFilter === "yes" && itemAwards !== "") || (awardsFilter === "no" && itemAwards === "");
         
         let matchesRating = true;
         const rating = parseFloat(String(item.DKcloudRating)) || 0;
@@ -173,7 +175,7 @@ const MoviesTV = () => {
         else if (ratingFilter === "medium") matchesRating = rating >= 6 && rating < 8;
         else if (ratingFilter === "low") matchesRating = rating < 6;
 
-        return matchesSearch && matchesGenre && matchesPlatform && matchesLanguage && matchesRating;
+        return matchesSearch && matchesGenre && matchesPlatform && matchesLanguage && matchesRating && matchesAwards;
       });
     };
 
@@ -202,6 +204,7 @@ const MoviesTV = () => {
     setPlatformFilter("all");
     setRatingFilter("all");
     setLanguageFilter("all");
+    setAwardsFilter("all");
   };
 
   const handlePageChange = (direction: 'prev' | 'next') => {
@@ -223,60 +226,83 @@ const MoviesTV = () => {
     return data.slice(start, start + ITEMS_PER_PAGE);
   };
 
+  const getCardGradient = (index: number) => {
+    const gradients = [
+      "from-purple-500/20 via-pink-500/20 to-red-500/20",
+      "from-blue-500/20 via-cyan-500/20 to-teal-500/20",
+      "from-green-500/20 via-emerald-500/20 to-blue-500/20",
+      "from-orange-500/20 via-red-500/20 to-pink-500/20",
+      "from-indigo-500/20 via-purple-500/20 to-pink-500/20",
+      "from-teal-500/20 via-green-500/20 to-blue-500/20"
+    ];
+    return gradients[index % gradients.length];
+  };
+
   const renderContentCard = (item: ContentItem, index: number) => (
-    <Card key={index} className="dkloud-card dkloud-card-interactive h-full">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{item.Name || item.Title}</CardTitle>
-          <div className="flex items-center space-x-1">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium">{item.DKcloudRating}</span>
-          </div>
-        </div>
-        {(item.Director || item.Creator) && (
-          <CardDescription className="font-medium text-primary">
-            {item.Director || item.Creator}
-          </CardDescription>
-        )}
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary">{item.Genre}</Badge>
-          <Badge variant="outline">{item.Platform}</Badge>
-          <Badge variant="outline">{item.Language}</Badge>
-          {item.Year && <Badge variant="outline">{item.Year}</Badge>}
-          {item.Type && <Badge variant="default">{item.Type}</Badge>}
-        </div>
-        
-        {item.Seasons && item.Status && (
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-1">
-              <Calendar className="h-4 w-4" />
-              <span>{item.Seasons} Season{item.Seasons > 1 ? 's' : ''}</span>
+    <Card key={index} className={`dkloud-card dkloud-card-interactive h-full relative overflow-hidden bg-gradient-to-br ${getCardGradient(index)} border-0 shadow-xl hover:shadow-2xl transition-all duration-500`}>
+      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95 backdrop-blur-sm" />
+      <div className="relative z-10">
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              {item.Name || item.Title}
+            </CardTitle>
+            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full px-2 py-1">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-sm font-bold">{item.DKcloudRating}</span>
             </div>
-            <Badge variant={item.Status === "Completed" ? "default" : "secondary"}>
-              {item.Status}
-            </Badge>
           </div>
-        )}
+          {(item.Director || item.Creator) && (
+            <CardDescription className="font-semibold text-primary/80">
+              {item.Director || item.Creator}
+            </CardDescription>
+          )}
+        </CardHeader>
         
-        <div>
-          <h4 className="font-semibold text-sm mb-2">Why to Watch:</h4>
-          <p className="text-sm text-muted-foreground line-clamp-3">
-            {item["Why to Watch"]}
-          </p>
-        </div>
-        
-        {item.Awards && (
-          <div className="pt-2 border-t border-border">
-            <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
-              <Award className="h-3 w-3 mr-1" />
-              {item.Awards}
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary" className="bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground border-primary/30">
+              {item.Genre}
             </Badge>
+            <Badge variant="outline" className="border-accent/50 text-accent">
+              {item.Platform}
+            </Badge>
+            <Badge variant="outline" className="border-muted-foreground/30">
+              {item.Language}
+            </Badge>
+            {item.Year && <Badge variant="outline" className="border-primary/30 text-primary">{item.Year}</Badge>}
+            {item.Type && <Badge variant="default" className="bg-gradient-to-r from-secondary to-accent">{item.Type}</Badge>}
           </div>
-        )}
-      </CardContent>
+          
+          {item.Seasons && item.Status && (
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center space-x-1">
+                <Calendar className="h-4 w-4 text-primary" />
+                <span className="text-foreground/80">{item.Seasons} Season{item.Seasons > 1 ? 's' : ''}</span>
+              </div>
+              <Badge variant={item.Status === "Completed" ? "default" : "secondary"} className="bg-gradient-to-r from-green-500/20 to-emerald-500/20">
+                {item.Status}
+              </Badge>
+            </div>
+          )}
+          
+          <div>
+            <h4 className="font-semibold text-sm mb-2 text-primary">Why to Watch:</h4>
+            <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+              {item["Why to Watch"]}
+            </p>
+          </div>
+          
+          {item.Awards && (
+            <div className="pt-2 border-t border-border/30">
+              <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500 shadow-lg">
+                <Award className="h-3 w-3 mr-1" />
+                {item.Awards}
+              </Badge>
+            </div>
+          )}
+        </CardContent>
+      </div>
     </Card>
   );
 
@@ -288,8 +314,21 @@ const MoviesTV = () => {
   );
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative">
+      {/* Subtle background text */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 text-6xl font-bold text-muted-foreground/5 rotate-12 select-none">
+          What content should I watch?
+        </div>
+        <div className="absolute top-1/2 right-1/4 text-5xl font-bold text-muted-foreground/5 -rotate-12 select-none">
+          Best movies & series?
+        </div>
+        <div className="absolute bottom-1/4 left-1/3 text-4xl font-bold text-muted-foreground/5 rotate-6 select-none">
+          dKloud recommends
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -319,8 +358,8 @@ const MoviesTV = () => {
 
           {/* Filters - Only show for Movies, TV, Ultimate tabs */}
           {activeTab !== "trending" && (
-            <div className="bg-card rounded-xl p-6 mb-8 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="bg-card rounded-xl p-6 mb-8 space-y-4 shadow-lg border border-border/20">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                 <div className="relative">
                   <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -384,6 +423,19 @@ const MoviesTV = () => {
                     ))}
                   </SelectContent>
                 </Select>
+
+                {activeTab === "movies" && (
+                  <Select value={awardsFilter} onValueChange={setAwardsFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Awards" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Movies</SelectItem>
+                      <SelectItem value="yes">Award Winners</SelectItem>
+                      <SelectItem value="no">No Awards</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
               
               <div className="flex justify-between items-center">
@@ -430,7 +482,7 @@ const MoviesTV = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {getCurrentPageData(filteredMovies).map((movie, index) => renderContentCard(movie, index))}
                 </div>
                 
@@ -474,7 +526,7 @@ const MoviesTV = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {getCurrentPageData(filteredTvSeries).map((show, index) => renderContentCard(show, index))}
                 </div>
                 
@@ -518,7 +570,7 @@ const MoviesTV = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {getCurrentPageData(filteredUltimateList).map((item, index) => renderContentCard(item, index))}
                 </div>
                 
@@ -546,58 +598,66 @@ const MoviesTV = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {trending.slice(0, 9).map((item, index) => (
-                    <Card key={index} className="dkloud-card dkloud-card-interactive relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {trending.slice(0, 6).map((item, index) => (
+                    <Card key={index} className={`dkloud-card dkloud-card-interactive relative overflow-hidden group bg-gradient-to-br ${getCardGradient(index)} border-0 shadow-xl`}>
+                      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95 backdrop-blur-sm" />
                       <div className="absolute top-4 right-4 z-10">
                         <Badge variant="default" className="bg-gradient-to-r from-red-500 to-orange-500 animate-pulse">
                           #{index + 1} Trending
                         </Badge>
                       </div>
                       
-                      <CardHeader className="relative z-10">
-                        <div className="flex justify-between items-start mb-2">
-                          <CardTitle className="text-xl font-bold">{item.Name}</CardTitle>
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                            <span className="text-lg font-bold">{item.DKcloudRating}</span>
+                      <div className="relative z-10">
+                        <CardHeader>
+                          <div className="flex justify-between items-start mb-2">
+                            <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                              {item.Name}
+                            </CardTitle>
+                            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full px-2 py-1">
+                              <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                              <span className="text-lg font-bold">{item.DKcloudRating}</span>
+                            </div>
                           </div>
-                        </div>
-                        {(item.Director || item.Creator) && (
-                          <CardDescription className="font-medium text-primary text-lg">
-                            {item.Director || item.Creator}
-                          </CardDescription>
-                        )}
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4 relative z-10">
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="secondary">{item.Genre}</Badge>
-                          <Badge variant="outline">{item.Platform}</Badge>
-                          <Badge variant="outline">{item.Language}</Badge>
-                          {item.Type && (
-                            <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
-                              {item.Type}
-                            </Badge>
+                          {(item.Director || item.Creator) && (
+                            <CardDescription className="font-medium text-primary text-lg">
+                              {item.Director || item.Creator}
+                            </CardDescription>
                           )}
-                        </div>
+                        </CardHeader>
                         
-                        <div>
-                          <h4 className="font-semibold mb-2 text-primary">🔥 Why It's Trending:</h4>
-                          <p className="text-muted-foreground leading-relaxed">
-                            {item["Why to Watch"]}
-                          </p>
-                        </div>
-                        
-                        {item.Awards && (
-                          <div className="pt-4 border-t border-border">
-                            <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
-                              <Award className="h-4 w-4 mr-1" />
-                              {item.Awards}
+                        <CardContent className="space-y-4">
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary" className="bg-gradient-to-r from-primary/20 to-secondary/20">
+                              {item.Genre}
                             </Badge>
+                            <Badge variant="outline" className="border-accent/50 text-accent">
+                              {item.Platform}
+                            </Badge>
+                            <Badge variant="outline">{item.Language}</Badge>
+                            {item.Type && (
+                              <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
+                                {item.Type}
+                              </Badge>
+                            )}
                           </div>
-                        )}
-                      </CardContent>
+                          
+                          <div>
+                            <h4 className="font-semibold mb-2 text-primary">🔥 Why It's Trending:</h4>
+                            <p className="text-muted-foreground leading-relaxed">
+                              {item["Why to Watch"]}
+                            </p>
+                          </div>
+                          
+                          {item.Awards && (
+                            <div className="pt-4 border-t border-border">
+                              <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
+                                <Award className="h-4 w-4 mr-1" />
+                                {item.Awards}
+                              </Badge>
+                            </div>
+                          )}
+                        </CardContent>
+                      </div>
                     </Card>
                   ))}
                 </div>
