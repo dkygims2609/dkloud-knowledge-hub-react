@@ -349,7 +349,7 @@ const MoviesTV = () => {
                 <SelectItem value="all">All Ratings</SelectItem>
                 <SelectItem value="high">High (8+)</SelectItem>
                 <SelectItem value="medium">Medium (6-8)</SelectItem>
-                <SelectItem value="low">Low (<6)</SelectItem>
+                <SelectItem value="low">Low (&lt;6)</SelectItem>
               </SelectContent>
             </Select>
 
