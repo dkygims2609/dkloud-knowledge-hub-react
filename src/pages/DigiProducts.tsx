@@ -16,11 +16,11 @@ import {
   Calendar,
   ArrowRight
 } from "lucide-react";
-import { digiProductsSample } from "@/data/digiProductsSample";
+import { sampleDigiProducts } from "@/data/digiProductsSample";
 import { BackgroundQuestions } from "@/components/BackgroundQuestions";
 
 const DigiProducts = () => {
-  const [products] = useState(digiProductsSample);
+  const [products] = useState(sampleDigiProducts);
 
   const handleProductClick = (productId: number) => {
     console.log(`Product ${productId} clicked`);
@@ -86,57 +86,46 @@ const DigiProducts = () => {
               className="dkloud-card h-full group hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-background to-purple-50/10 dark:to-purple-950/20 border-2 hover:border-purple-500/50 cursor-pointer"
               onClick={() => handleProductClick(product.id)}
             >
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img 
-                  src={product.image} 
-                  alt={product.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 p-8">
+                <div className="text-center">
+                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r ${getCategoryGradient(product.category)} text-white mb-4`}>
+                    {getCategoryIcon(product.category)}
+                  </div>
+                </div>
                 
                 {/* Status Badge */}
                 <Badge 
                   className={`absolute top-4 right-4 ${
                     product.status === 'available' 
                       ? 'bg-green-500 hover:bg-green-600' 
-                      : product.status === 'coming_soon'
+                      : product.status === 'coming-soon'
                       ? 'bg-orange-500 hover:bg-orange-600 animate-pulse'
                       : 'bg-blue-500 hover:bg-blue-600'
                   } text-white border-none`}
                 >
                   {product.status === 'available' ? '✅ Available' : 
-                   product.status === 'coming_soon' ? '🚀 Coming Soon' : '🔧 In Development'}
+                   product.status === 'coming-soon' ? '🚀 Coming Soon' : '🔧 In Development'}
                 </Badge>
               </div>
 
               <CardHeader className="pb-4">
-                {/* Category and Rating */}
+                {/* Category and Badge */}
                 <div className="flex items-center justify-between mb-3">
                   <div className={`flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${getCategoryGradient(product.category)} text-white text-sm font-medium`}>
                     {getCategoryIcon(product.category)}
                     <span>{product.category}</span>
                   </div>
                   
-                  {product.rating && (
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`h-3 w-3 ${
-                            i < Math.floor(product.rating!) 
-                              ? 'fill-yellow-400 text-yellow-400' 
-                              : 'text-gray-300'
-                          }`} 
-                        />
-                      ))}
-                      <span className="text-sm font-medium ml-1">{product.rating}</span>
-                    </div>
+                  {product.badge && (
+                    <Badge variant="secondary" className="text-xs">
+                      {product.badge}
+                    </Badge>
                   )}
                 </div>
 
                 {/* Title and Description */}
                 <CardTitle className="text-xl leading-tight group-hover:text-purple-600 transition-colors mb-2">
-                  {product.title}
+                  {product.name}
                 </CardTitle>
                 
                 <CardDescription className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
@@ -165,24 +154,10 @@ const DigiProducts = () => {
 
                   {/* Pricing and CTA */}
                   <div className="border-t border-border pt-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-purple-600">
-                          {product.price}
-                        </span>
-                        {product.originalPrice && (
-                          <span className="text-sm text-muted-foreground line-through">
-                            {product.originalPrice}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {product.users && (
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Users className="h-3 w-3" />
-                          <span>{product.users}+ users</span>
-                        </div>
-                      )}
+                    <div className="flex items-center justify-center mb-3">
+                      <span className="text-2xl font-bold text-purple-600">
+                        {product.price}
+                      </span>
                     </div>
                     
                     <Button 
