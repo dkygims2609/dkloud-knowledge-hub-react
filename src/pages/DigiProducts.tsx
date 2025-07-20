@@ -1,212 +1,233 @@
 
 import { useState } from "react";
-import { Package, Star, ArrowRight, Sparkles, Clock, CheckCircle, Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { sampleDigiProducts, courseAnnouncement } from "@/data/digiProductsSample";
+import { Button } from "@/components/ui/button";
+import { 
+  Zap, 
+  Bot, 
+  Globe, 
+  Smartphone, 
+  Code, 
+  Users, 
+  Star, 
+  ExternalLink,
+  ShoppingCart,
+  Calendar,
+  ArrowRight
+} from "lucide-react";
+import { digiProductsSample } from "@/data/digiProductsSample";
+import { BackgroundQuestions } from "@/components/BackgroundQuestions";
 
 const DigiProducts = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [products] = useState(digiProductsSample);
 
-  const categories = [
-    { id: "all", name: "All Products", count: sampleDigiProducts.length },
-    { id: "tools", name: "Smart Tools", count: sampleDigiProducts.filter(p => p.category === "tools").length },
-    { id: "ai", name: "AI Agents", count: sampleDigiProducts.filter(p => p.category === "ai").length },
-    { id: "solutions", name: "Digital Solutions", count: sampleDigiProducts.filter(p => p.category === "solutions").length },
-    { id: "courses", name: "Micro Courses", count: sampleDigiProducts.filter(p => p.category === "courses").length }
-  ];
-
-  const filteredProducts = selectedCategory === "all" 
-    ? sampleDigiProducts 
-    : sampleDigiProducts.filter(product => product.category === selectedCategory);
-
-  const getCardGradient = (index: number) => {
-    const gradients = [
-      "from-blue-500/20 via-purple-500/20 to-pink-500/20",
-      "from-green-500/20 via-teal-500/20 to-blue-500/20",
-      "from-orange-500/20 via-red-500/20 to-pink-500/20",
-      "from-purple-500/20 via-indigo-500/20 to-blue-500/20",
-      "from-yellow-500/20 via-orange-500/20 to-red-500/20"
-    ];
-    return gradients[index % gradients.length];
+  const handleProductClick = (productId: number) => {
+    console.log(`Product ${productId} clicked`);
+    // Handle product navigation or action
   };
 
-  const getBadgeVariant = (status: string) => {
-    switch (status) {
-      case "available": return "default";
-      case "coming-soon": return "secondary";
-      default: return "outline";
+  const getCategoryIcon = (category: string) => {
+    switch (category.toLowerCase()) {
+      case 'ai agents':
+        return <Bot className="h-5 w-5" />;
+      case 'smart tools':
+        return <Zap className="h-5 w-5" />;
+      case 'digital solutions':
+        return <Globe className="h-5 w-5" />;
+      case 'mobile apps':
+        return <Smartphone className="h-5 w-5" />;
+      case 'web tools':
+        return <Code className="h-5 w-5" />;
+      default:
+        return <Star className="h-5 w-5" />;
+    }
+  };
+
+  const getCategoryGradient = (category: string) => {
+    switch (category.toLowerCase()) {
+      case 'ai agents':
+        return 'from-blue-500 to-cyan-500';
+      case 'smart tools':
+        return 'from-purple-500 to-pink-500';
+      case 'digital solutions':
+        return 'from-green-500 to-emerald-500';
+      case 'mobile apps':
+        return 'from-orange-500 to-red-500';
+      case 'web tools':
+        return 'from-indigo-500 to-purple-500';
+      default:
+        return 'from-gray-500 to-gray-600';
     }
   };
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative">
-      {/* Subtle background text */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 text-6xl font-bold text-muted-foreground/5 rotate-12 select-none">
-          Digital Innovation
-        </div>
-        <div className="absolute top-1/2 right-1/4 text-5xl font-bold text-muted-foreground/5 -rotate-12 select-none">
-          Smart Solutions
-        </div>
-        <div className="absolute bottom-1/4 left-1/3 text-4xl font-bold text-muted-foreground/5 rotate-6 select-none">
-          dKloud Products
-        </div>
-      </div>
-
+      <BackgroundQuestions />
+      
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            📦 dKloud Digital Products
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              📦 Digital Products
+            </span>
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Innovative digital solutions to accelerate your business growth
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Innovative digital solutions designed to streamline your workflow and boost productivity
           </p>
         </div>
 
-        {/* Course Announcement Banner */}
-        <Alert className="mb-8 bg-gradient-to-r from-orange-500/10 via-red-500/10 to-pink-500/10 border-orange-500/30">
-          <Sparkles className="h-5 w-5 text-orange-500" />
-          <AlertTitle className="text-lg font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-            {courseAnnouncement.title}
-          </AlertTitle>
-          <AlertDescription className="mt-2 space-y-2">
-            <p className="text-foreground/80">{courseAnnouncement.description}</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-              {courseAnnouncement.highlights.map((highlight, index) => (
-                <div key={index} className="flex items-center text-sm text-foreground/70">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                  {highlight}
-                </div>
-              ))}
-            </div>
-            <Button className="mt-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-              <Bell className="h-4 w-4 mr-2" />
-              {courseAnnouncement.cta}
-            </Button>
-          </AlertDescription>
-        </Alert>
-
-        {/* Category Tabs */}
-        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8 h-auto p-1">
-            {categories.map((category) => (
-              <TabsTrigger key={category.id} value={category.id} className="text-sm lg:text-base p-3">
-                {category.name} ({category.count})
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product, index) => (
-              <Card key={product.id} className={`dkloud-card dkloud-card-interactive h-full relative overflow-hidden bg-gradient-to-br ${getCardGradient(index)} border-0 shadow-xl hover:shadow-2xl transition-all duration-500`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95 backdrop-blur-sm" />
+        {/* Products Grid */}
+        <div className="grid gap-8 mobile-single-column tablet-two-columns desktop-three-columns">
+          {products.map((product) => (
+            <Card 
+              key={product.id} 
+              className="dkloud-card h-full group hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-background to-purple-50/10 dark:to-purple-950/20 border-2 hover:border-purple-500/50 cursor-pointer"
+              onClick={() => handleProductClick(product.id)}
+            >
+              <div className="relative overflow-hidden rounded-t-lg">
+                <img 
+                  src={product.image} 
+                  alt={product.title}
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                {/* Badge */}
-                {product.badge && (
-                  <div className="absolute top-4 right-4 z-20">
-                    <Badge variant={getBadgeVariant(product.status)} className="shadow-lg">
-                      {product.badge}
-                    </Badge>
-                  </div>
-                )}
+                {/* Status Badge */}
+                <Badge 
+                  className={`absolute top-4 right-4 ${
+                    product.status === 'available' 
+                      ? 'bg-green-500 hover:bg-green-600' 
+                      : product.status === 'coming_soon'
+                      ? 'bg-orange-500 hover:bg-orange-600 animate-pulse'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  } text-white border-none`}
+                >
+                  {product.status === 'available' ? '✅ Available' : 
+                   product.status === 'coming_soon' ? '🚀 Coming Soon' : '🔧 In Development'}
+                </Badge>
+              </div>
 
-                <div className="relative z-10 h-full flex flex-col">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent pr-16">
-                      {product.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm text-muted-foreground leading-relaxed">
-                      {product.description}
-                    </CardDescription>
-                    {product.announcement && (
-                      <div className="mt-2 p-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg border border-green-500/20">
-                        <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-                          {product.announcement}
-                        </p>
-                      </div>
-                    )}
-                  </CardHeader>
+              <CardHeader className="pb-4">
+                {/* Category and Rating */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${getCategoryGradient(product.category)} text-white text-sm font-medium`}>
+                    {getCategoryIcon(product.category)}
+                    <span>{product.category}</span>
+                  </div>
                   
-                  <CardContent className="space-y-4 flex-1 flex flex-col">
-                    {/* Price */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-                        {product.price}
-                      </span>
-                      {product.status === "coming-soon" && (
-                        <div className="flex items-center text-sm text-orange-500">
-                          <Clock className="h-4 w-4 mr-1" />
-                          Coming Soon
+                  {product.rating && (
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star 
+                          key={i} 
+                          className={`h-3 w-3 ${
+                            i < Math.floor(product.rating!) 
+                              ? 'fill-yellow-400 text-yellow-400' 
+                              : 'text-gray-300'
+                          }`} 
+                        />
+                      ))}
+                      <span className="text-sm font-medium ml-1">{product.rating}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Title and Description */}
+                <CardTitle className="text-xl leading-tight group-hover:text-purple-600 transition-colors mb-2">
+                  {product.title}
+                </CardTitle>
+                
+                <CardDescription className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                  {product.description}
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="pt-0">
+                <div className="space-y-4">
+                  {/* Features */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Key Features</p>
+                    <div className="flex flex-wrap gap-1">
+                      {product.features.slice(0, 3).map((feature, idx) => (
+                        <Badge key={idx} variant="outline" className="text-xs px-2 py-1 rounded-full">
+                          ✨ {feature}
+                        </Badge>
+                      ))}
+                      {product.features.length > 3 && (
+                        <Badge variant="outline" className="text-xs px-2 py-1 rounded-full">
+                          +{product.features.length - 3} more
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Pricing and CTA */}
+                  <div className="border-t border-border pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-bold text-purple-600">
+                          {product.price}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            {product.originalPrice}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {product.users && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <Users className="h-3 w-3" />
+                          <span>{product.users}+ users</span>
                         </div>
                       )}
                     </div>
-
-                    {/* Features */}
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-sm mb-3 text-primary">Key Features:</h4>
-                      <div className="space-y-2">
-                        {product.features.map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-center text-sm">
-                            <Star className="h-3 w-3 text-accent mr-2" />
-                            <span className="text-foreground/80">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Action Button */}
-                    <div className="pt-4 border-t border-border/30">
-                      <Button 
-                        className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
-                        disabled={product.status === "coming-soon"}
-                      >
-                        {product.status === "coming-soon" ? (
-                          <>
-                            <Bell className="h-4 w-4 mr-2" />
-                            Get Notified
-                          </>
-                        ) : (
-                          <>
-                            Learn More
-                            <ArrowRight className="h-4 w-4 ml-2" />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </CardContent>
+                    
+                    <Button 
+                      className={`w-full bg-gradient-to-r ${getCategoryGradient(product.category)} hover:opacity-90 text-white font-medium group-hover:scale-105 transition-all duration-200`}
+                      disabled={product.status !== 'available'}
+                    >
+                      {product.status === 'available' ? (
+                        <>
+                          <ShoppingCart className="h-4 w-4 mr-2" />
+                          Get Started
+                        </>
+                      ) : product.status === 'coming_soon' ? (
+                        <>
+                          <Calendar className="h-4 w-4 mr-2" />
+                          Notify Me
+                        </>
+                      ) : (
+                        <>
+                          <ArrowRight className="h-4 w-4 mr-2" />
+                          Learn More
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </Card>
-            ))}
-          </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-          {/* Empty State */}
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
-              <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold mb-2">No products found</h3>
-              <p className="text-muted-foreground">Check back soon for new digital products!</p>
-            </div>
-          )}
-        </Tabs>
-
-        {/* Coming Soon Section */}
+        {/* CTA Section */}
         <div className="mt-16 text-center">
-          <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">
-            More Products Coming Soon
-          </h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            We're constantly developing new digital solutions to help you succeed
-          </p>
-          <Button variant="outline" size="lg" className="animated-border-glow">
-            <Bell className="h-5 w-5 mr-2" />
-            Subscribe for Updates
-          </Button>
+          <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-2xl p-8 border border-purple-200 dark:border-purple-800">
+            <h2 className="text-2xl font-bold mb-4">
+              Don't see what you need?
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              We specialize in creating custom digital solutions tailored to your specific requirements. 
+              Let's discuss how we can help transform your ideas into reality.
+            </p>
+            <Button className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-medium px-8 py-3">
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Request Custom Solution
+            </Button>
+          </div>
         </div>
       </div>
     </div>
