@@ -1,492 +1,377 @@
-import { useState, useEffect } from "react";
-import { Search, Filter, FileText, Download, ExternalLink, Tag, BookOpen, GraduationCap, Lightbulb, Code, Users, Zap, Calendar, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ModernIconTabs } from "@/components/ui/modern-icon-tabs";
+import { 
+  BookOpen, 
+  GraduationCap, 
+  FileText, 
+  Video, 
+  Monitor, 
+  Server, 
+  Network, 
+  Cloud, 
+  Code, 
+  TestTube, 
+  Users, 
+  MessageSquare,
+  Globe,
+  Bell,
+  Star,
+  Clock,
+  Award,
+  Sparkles
+} from "lucide-react";
 import { BackgroundQuestions } from "@/components/BackgroundQuestions";
 
-interface TechDocument {
-  Title: string;
-  Category: string;
-  Type: string;
-  Tags?: string;
-  Description?: string;
-  Link: string;
-}
-
-const tabData = [
-  {
-    id: 'resources',
-    label: 'Free Resources',
-    icon: BookOpen,
-    gradient: 'from-blue-500 to-cyan-500',
-    description: 'Free learning materials'
-  },
-  {
-    id: 'courses',
-    label: 'dKloud Courses',
-    icon: GraduationCap,
-    gradient: 'from-purple-500 to-pink-500',
-    description: 'Premium courses & micro-courses'
-  },
-  {
-    id: 'guides',
-    label: 'SOPs & Guides',
-    icon: Lightbulb,
-    gradient: 'from-green-500 to-emerald-500',
-    description: 'Step-by-step procedures'
-  },
-  {
-    id: 'tutorials',
-    label: 'Tutorials',
-    icon: Code,
-    gradient: 'from-orange-500 to-red-500',
-    description: 'Hands-on learning'
-  }
-];
-
-const microCourses = [
-  {
-    id: 1,
-    title: "AI Fundamentals for Beginners",
-    description: "Learn the basics of Artificial Intelligence, Machine Learning, and how to implement AI solutions in real-world scenarios.",
-    category: "AI & ML",
-    duration: "4 weeks",
-    level: "Beginner",
-    price: "₹2,999",
-    status: "launching_soon",
-    features: ["Interactive Labs", "Real Projects", "Certificate", "Lifetime Access"],
-    image: "/placeholder.svg"
-  },
-  {
-    id: 2,
-    title: "Digital Marketing Mastery",
-    description: "Complete guide to digital marketing including SEO, Social Media, PPC, and Analytics for business growth.",
-    category: "Marketing",
-    duration: "6 weeks",
-    level: "Intermediate",
-    price: "₹4,999",
-    status: "launching_soon",
-    features: ["Live Sessions", "Case Studies", "Tools Access", "Community Support"],
-    image: "/placeholder.svg"
-  }
-];
-
 const TechCorner = () => {
-  const [documents, setDocuments] = useState<TechDocument[]>([]);
-  const [filteredDocuments, setFilteredDocuments] = useState<TechDocument[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState('resources');
+  const [activeTab, setActiveTab] = useState('courses');
 
-  useEffect(() => {
-    fetchDocuments();
-  }, []);
-
-  useEffect(() => {
-    filterDocuments();
-  }, [documents, searchTerm, categoryFilter, typeFilter, selectedTags]);
-
-  const fetchDocuments = async () => {
-    try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec"
-      );
-      const data = await response.json();
-      setDocuments(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching tech documents:", error);
-      setLoading(false);
+  const courses = [
+    {
+      id: 1,
+      title: "Zero to Hero in Computers",
+      category: "Digital Literacy",
+      icon: <Monitor className="h-5 w-5" />,
+      description: "Complete computer fundamentals course covering typing, MS Office, browsing, OS, troubleshooting, and internet basics.",
+      duration: "4-6 weeks",
+      level: "Beginner",
+      badge: "Like a Mini Diploma",
+      gradient: "from-blue-500 to-cyan-500",
+      modules: ["Typing & Basics", "MS Office Suite", "Internet & Browsing", "Troubleshooting", "Operating Systems"]
+    },
+    {
+      id: 2,
+      title: "System & Server Engineering",
+      category: "Infrastructure",
+      icon: <Server className="h-5 w-5" />,
+      description: "Windows Server roles, Active Directory, DNS, DHCP, GPO, plus Linux essentials including commands, shells, users, and crontabs.",
+      duration: "6-8 weeks",
+      level: "Intermediate",
+      badge: "System Admin Ready",
+      gradient: "from-green-500 to-emerald-500",
+      modules: ["Windows Server", "Active Directory", "Linux Essentials", "Unix Commands", "Server Management"]
+    },
+    {
+      id: 3,
+      title: "Network Engineering",
+      category: "Networking",
+      icon: <Network className="h-5 w-5" />,
+      description: "CCNA-level networking basics including IP, subnetting, routing, plus hands-on with Wireshark, Nmap, and Putty.",
+      duration: "8-10 weeks",
+      level: "Intermediate",
+      badge: "Network Pro Track",
+      gradient: "from-purple-500 to-pink-500",
+      modules: ["IP & Subnetting", "Routing Protocols", "Network Tools", "Wireshark Analysis", "Network Security"]
+    },
+    {
+      id: 4,
+      title: "Cloud Computing",
+      category: "Cloud",
+      icon: <Cloud className="h-5 w-5" />,
+      description: "AWS, Azure, GCP from basics to certification path. Covers IAM, EC2, S3, VPC, RDS, Resource Groups and more.",
+      duration: "10-12 weeks",
+      level: "Intermediate",
+      badge: "Cloud Certification Path",
+      gradient: "from-orange-500 to-red-500",
+      modules: ["AWS Fundamentals", "Azure Basics", "GCP Essentials", "Cloud Architecture", "Certification Prep"]
+    },
+    {
+      id: 5,
+      title: "DevOps Toolkit",
+      category: "DevOps",
+      icon: <Code className="h-5 w-5" />,
+      description: "Complete DevOps workflow with GitHub, Docker, CI/CD pipelines, Terraform, Jenkins, and Infrastructure as Code.",
+      duration: "8-10 weeks",
+      level: "Advanced",
+      badge: "DevOps Engineer Ready",
+      gradient: "from-indigo-500 to-purple-500",
+      modules: ["Git & GitHub", "Docker Containers", "CI/CD Pipelines", "Terraform", "Jenkins Automation"]
+    },
+    {
+      id: 6,
+      title: "Developer Roadmap",
+      category: "Programming",
+      icon: <Code className="h-5 w-5" />,
+      description: "Full-stack development path: JavaScript, Python, C, SQL, HTML/CSS/React, Node.js, databases, and APIs.",
+      duration: "12-16 weeks",
+      level: "Beginner to Advanced",
+      badge: "Full-Stack Developer",
+      gradient: "from-pink-500 to-rose-500",
+      modules: ["Frontend Basics", "JavaScript", "React", "Backend", "Databases", "APIs"]
+    },
+    {
+      id: 7,
+      title: "Software Testing",
+      category: "Quality Assurance",
+      icon: <TestTube className="h-5 w-5" />,
+      description: "Manual testing basics, automation with Selenium/Cypress, writing test cases, bug tracking, and testing tools.",
+      duration: "6-8 weeks",
+      level: "Beginner",
+      badge: "QA Tester Ready",
+      gradient: "from-teal-500 to-green-500",
+      modules: ["Manual Testing", "Test Automation", "Test Cases", "Bug Tracking", "QA Tools"]
+    },
+    {
+      id: 8,
+      title: "Break Into IT Toolkit",
+      category: "Career Prep",
+      icon: <Users className="h-5 w-5" />,
+      description: "Complete career preparation: resume building, LinkedIn optimization, freelancing platforms, interview prep, portfolio, and GitHub best practices.",
+      duration: "4-6 weeks",
+      level: "All Levels",
+      badge: "Career Ready",
+      gradient: "from-amber-500 to-orange-500",
+      modules: ["Resume Building", "LinkedIn Strategy", "Portfolio Creation", "Interview Prep", "Freelancing"]
+    },
+    {
+      id: 9,
+      title: "Communication Training",
+      category: "Soft Skills",
+      icon: <MessageSquare className="h-5 w-5" />,
+      description: "Professional communication skills: email etiquette, team meetings, client calls, written and verbal clarity.",
+      duration: "3-4 weeks",
+      level: "All Levels",
+      badge: "Communication Pro",
+      gradient: "from-sky-500 to-blue-500",
+      modules: ["Email Etiquette", "Meeting Skills", "Client Communication", "Verbal Skills", "Written Communication"]
+    },
+    {
+      id: 10,
+      title: "Cross-Cultural Training",
+      category: "Global Skills",
+      icon: <Globe className="h-5 w-5" />,
+      description: "Work effectively with US/UK/Europe clients. Cultural nuances, timezone etiquette, do's and don'ts in global collaboration.",
+      duration: "2-3 weeks",
+      level: "All Levels",
+      badge: "Global Ready",
+      gradient: "from-violet-500 to-purple-500",
+      modules: ["Cultural Awareness", "Timezone Management", "Global Etiquette", "Remote Collaboration", "Client Relations"]
     }
-  };
+  ];
 
-  const filterDocuments = () => {
-    let filtered = documents.filter((doc) => {
-      const searchMatch = 
-        doc.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        doc.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        doc.Type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (doc.Description && doc.Description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (doc.Tags && doc.Tags.toLowerCase().includes(searchTerm.toLowerCase()));
-
-      return searchMatch;
-    });
-
-    if (categoryFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.Category === categoryFilter);
+  const resources = [
+    {
+      title: "Free Tech Resources",
+      description: "Curated collection of free learning materials, tools, and documentation.",
+      icon: <BookOpen className="h-5 w-5" />,
+      count: "50+ Resources"
+    },
+    {
+      title: "Industry Best Practices",
+      description: "SOPs, guidelines, and best practices from industry experts.",
+      icon: <FileText className="h-5 w-5" />,
+      count: "25+ Guides"
+    },
+    {
+      title: "Video Tutorials",
+      description: "Step-by-step video tutorials for various tech topics.",
+      icon: <Video className="h-5 w-5" />,
+      count: "100+ Videos"
     }
+  ];
 
-    if (typeFilter !== "all") {
-      filtered = filtered.filter((doc) => doc.Type === typeFilter);
+  const tabs = [
+    {
+      id: 'courses',
+      label: 'dKloud Courses',
+      icon: GraduationCap,
+      count: courses.length,
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    {
+      id: 'resources',
+      label: 'Free Resources',
+      icon: BookOpen,
+      count: resources.length,
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
+      id: 'guides',
+      label: 'SOPs & Guides',
+      icon: FileText,
+      count: 25,
+      gradient: 'from-green-500 to-emerald-500'
+    },
+    {
+      id: 'tutorials',
+      label: 'Tutorials',
+      icon: Video,
+      count: 100,
+      gradient: 'from-orange-500 to-red-500'
     }
+  ];
 
-    if (selectedTags.length > 0) {
-      filtered = filtered.filter((doc) =>
-        selectedTags.some(tag =>
-          doc.Tags && doc.Tags.toLowerCase().includes(tag.toLowerCase())
-        )
-      );
-    }
-
-    setFilteredDocuments(filtered);
+  const handleNotifyMe = (courseTitle: string) => {
+    console.log(`Notify me for ${courseTitle}`);
+    // Handle notification signup
   };
 
-  const getUniqueValues = (key: keyof TechDocument) => {
-    return Array.from(new Set(documents.map((doc) => doc[key]))).filter(Boolean);
-  };
+  const renderCourses = () => (
+    <div className="space-y-8">
+      {/* Announcement Banner */}
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 text-center">
+        <div className="flex items-center justify-center mb-3">
+          <Star className="h-6 w-6 text-primary mr-2" />
+          <h3 className="text-xl font-bold">🚀 Launching Soon</h3>
+        </div>
+        <p className="text-muted-foreground">
+          dKloud MicroCourses — Future-Ready Tech Learning, Visual & Simplified
+        </p>
+      </div>
 
-  const getAllTags = () => {
-    const allTags = documents
-      .filter(doc => doc.Tags)
-      .flatMap(doc => doc.Tags!.split(',').map(tag => tag.trim()))
-      .filter(tag => tag.length > 0);
-    return Array.from(new Set(allTags));
-  };
+      {/* Course Categories */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {courses.map((course) => (
+          <Card 
+            key={course.id} 
+            className="group relative overflow-hidden bg-gradient-to-br from-background to-muted/50 border-2 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20"
+          >
+            {/* Animated glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-500" 
+                 style={{background: `linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))`}} />
+            
+            {/* Badge */}
+            <div className="absolute top-4 right-4 z-10">
+              <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse">
+                🚀 Launching Soon
+              </Badge>
+            </div>
 
-  const getCategoryColor = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'cheatsheet':
-        return {
-          bg: 'bg-blue-50 dark:bg-blue-950/20',
-          border: 'border-blue-200 dark:border-blue-800',
-          text: 'text-blue-700 dark:text-blue-300',
-          icon: '📄'
-        };
-      case 'sop':
-        return {
-          bg: 'bg-green-50 dark:bg-green-950/20',
-          border: 'border-green-200 dark:border-green-800',
-          text: 'text-green-700 dark:text-green-300',
-          icon: '📋'
-        };
-      case 'microcourse':
-        return {
-          bg: 'bg-purple-50 dark:bg-purple-950/20',
-          border: 'border-purple-200 dark:border-purple-800',
-          text: 'text-purple-700 dark:text-purple-300',
-          icon: '🎓'
-        };
-      default:
-        return {
-          bg: 'bg-gray-50 dark:bg-gray-950/20',
-          border: 'border-gray-200 dark:border-gray-800',
-          text: 'text-gray-700 dark:text-gray-300',
-          icon: '📄'
-        };
-    }
-  };
+            {/* Level Badge */}
+            <div className="absolute top-4 left-4 z-10">
+              <Badge variant="outline" className="text-xs">
+                {course.level}
+              </Badge>
+            </div>
 
-  const handleDocumentClick = (link: string) => {
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
+            <CardHeader className="text-center pb-4">
+              {/* Icon */}
+              <div className={`mx-auto w-14 h-14 rounded-full bg-gradient-to-r ${course.gradient} flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                {course.icon}
+              </div>
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
-  };
+              {/* Title and Category */}
+              <CardTitle className="text-lg mb-1 group-hover:text-primary transition-colors">
+                {course.title}
+              </CardTitle>
+              
+              <Badge variant="secondary" className="mb-3">
+                {course.category}
+              </Badge>
+
+              <CardDescription className="text-sm leading-relaxed">
+                {course.description}
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="pt-0">
+              {/* Course Details */}
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span>{course.duration}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Award className="h-4 w-4 text-primary" />
+                    <span className="text-primary font-medium">{course.badge}</span>
+                  </div>
+                </div>
+
+                {/* Modules */}
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Course Modules</p>
+                  <div className="space-y-1">
+                    {course.modules.slice(0, 3).map((module, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs">
+                        <Sparkles className="h-3 w-3 text-primary" />
+                        <span>{module}</span>
+                      </div>
+                    ))}
+                    {course.modules.length > 3 && (
+                      <p className="text-xs text-muted-foreground pl-5">
+                        +{course.modules.length - 3} more modules
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <Button 
+                className={`w-full bg-gradient-to-r ${course.gradient} hover:opacity-90 text-white font-medium group-hover:shadow-lg transition-all duration-300`}
+                onClick={() => handleNotifyMe(course.title)}
+              >
+                <Bell className="h-4 w-4 mr-2" />
+                Get Early Access
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderResources = () => (
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {resources.map((resource, index) => (
+        <Card key={index} className="group hover:shadow-xl transition-all duration-300">
+          <CardHeader className="text-center">
+            <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white mb-4">
+              {resource.icon}
+            </div>
+            <CardTitle className="text-lg group-hover:text-primary transition-colors">
+              {resource.title}
+            </CardTitle>
+            <Badge variant="outline">{resource.count}</Badge>
+          </CardHeader>
+          <CardContent>
+            <CardDescription className="text-center">
+              {resource.description}
+            </CardDescription>
+            <Button className="w-full mt-4" variant="outline">
+              <Bell className="h-4 w-4 mr-2" />
+              Coming Soon
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'courses':
+        return renderCourses();
+      case 'resources':
+        return renderResources();
+      case 'guides':
+      case 'tutorials':
         return (
-          <div className="space-y-8">
-            {/* Announcement Banner */}
-            <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-200 dark:border-purple-800 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white">
-                  <GraduationCap className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-purple-700 dark:text-purple-300">
-                    🚀 Digital Micro Courses - Launching Soon!
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Comprehensive learning experiences designed for modern professionals
-                  </p>
-                </div>
+          <div className="text-center py-16">
+            <div className="mb-4">
+              <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white mb-4">
+                {activeTab === 'guides' ? <FileText className="h-8 w-8" /> : <Video className="h-8 w-8" />}
               </div>
             </div>
-
-            {/* Micro Courses Grid */}
-            <div className="grid gap-6 mobile-single-column tablet-two-columns">
-              {microCourses.map((course) => (
-                <Card key={course.id} className="dkloud-card h-full group hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-background to-purple-50/10 dark:to-purple-950/20 border-2 hover:border-purple-500/50">
-                  <div className="relative">
-                    <img 
-                      src={course.image} 
-                      alt={course.title}
-                      className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-lg"
-                    />
-                    <Badge 
-                      className="absolute top-3 right-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white animate-pulse"
-                    >
-                      Coming Soon
-                    </Badge>
-                  </div>
-
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <Badge variant="secondary" className="shrink-0 bg-gradient-to-r from-purple-500 to-pink-600 text-white">
-                        {course.category}
-                      </Badge>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>{course.duration}</span>
-                      </div>
-                    </div>
-                    
-                    <CardTitle className="text-lg leading-tight group-hover:text-purple-600 transition-colors">
-                      {course.title}
-                    </CardTitle>
-                    
-                    <CardDescription className="text-sm line-clamp-3">
-                      {course.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="pt-0">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xl font-bold text-purple-600">
-                            {course.price}
-                          </span>
-                          <Badge variant="outline" className="text-xs">
-                            {course.level}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <p className="text-xs font-medium text-muted-foreground">What's Included:</p>
-                        <div className="flex flex-wrap gap-1">
-                          {course.features.slice(0, 2).map((feature, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
-                              ✓ {feature}
-                            </Badge>
-                          ))}
-                          {course.features.length > 2 && (
-                            <Badge variant="outline" className="text-xs">
-                              +{course.features.length - 2} more
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <Button 
-                        size="sm" 
-                        className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
-                        disabled
-                      >
-                        <Calendar className="h-3 w-3 mr-2" />
-                        Notify Me When Available
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <h3 className="text-2xl font-bold mb-4">
+              {activeTab === 'guides' ? 'SOPs & Guides' : 'Video Tutorials'}
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              {activeTab === 'guides' 
+                ? 'Comprehensive standard operating procedures and industry guides'
+                : 'Step-by-step video tutorials for hands-on learning'
+              }
+            </p>
+            <Badge className="animate-pulse">🚀 Coming Soon</Badge>
           </div>
         );
-
       default:
-        return (
-          <div className="space-y-8">
-            {/* Enhanced Filters */}
-            <div className="bg-card rounded-xl p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search title, description, tags..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                  <SelectTrigger>
-                    <Filter className="h-4 w-4 mr-2" />
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {getUniqueValues("Category").map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={typeFilter} onValueChange={setTypeFilter}>
-                  <SelectTrigger>
-                    <Tag className="h-4 w-4 mr-2" />
-                    <SelectValue placeholder="Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    {getUniqueValues("Type").map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Tag Filter */}
-              {getAllTags().length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-muted-foreground">Filter by Tags:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {getAllTags().map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant={selectedTags.includes(tag) ? "default" : "outline"}
-                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                        onClick={() => toggleTag(tag)}
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t border-border">
-                <div className="text-sm text-muted-foreground">
-                  <span>Showing {filteredDocuments.length} of {documents.length} documents</span>
-                  {(categoryFilter !== "all" || typeFilter !== "all" || selectedTags.length > 0 || searchTerm) && (
-                    <span className="ml-2 text-primary">• Filters active</span>
-                  )}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setCategoryFilter("all");
-                    setTypeFilter("all");
-                    setSelectedTags([]);
-                  }}
-                  disabled={categoryFilter === "all" && typeFilter === "all" && selectedTags.length === 0 && !searchTerm}
-                >
-                  Clear All Filters
-                </Button>
-              </div>
-            </div>
-
-            {/* Documents Grid */}
-            <div className="grid gap-6 mobile-single-column tablet-two-columns desktop-three-columns">
-              {filteredDocuments.map((doc, index) => {
-                const categoryColors = getCategoryColor(doc.Category);
-                const tags = doc.Tags ? doc.Tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [];
-                
-                return (
-                  <Card 
-                    key={index} 
-                    className={`dkloud-card h-full cursor-pointer group transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${categoryColors.border}`}
-                    onClick={() => handleDocumentClick(doc.Link)}
-                  >
-                    <CardHeader className="pb-4">
-                      <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${categoryColors.bg} ${categoryColors.border} border mb-3`}>
-                        <span className="text-lg">{categoryColors.icon}</span>
-                        <Badge 
-                          variant="secondary"
-                          className={`${categoryColors.text} bg-transparent border-none font-medium`}
-                        >
-                          {doc.Category}
-                        </Badge>
-                        <div className="ml-auto">
-                          <Badge variant="outline" className="text-xs">
-                            {doc.Type}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors leading-tight">
-                        {doc.Title}
-                      </CardTitle>
-
-                      {doc.Description && (
-                        <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                          {doc.Description}
-                        </CardDescription>
-                      )}
-                    </CardHeader>
-                    
-                    <CardContent className="pt-0 space-y-4">
-                      {tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {tags.slice(0, 3).map((tag, tagIndex) => (
-                            <Badge 
-                              key={tagIndex} 
-                              variant="outline" 
-                              className="text-xs px-2 py-1 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                          {tags.length > 3 && (
-                            <Badge variant="outline" className="text-xs px-2 py-1 rounded-full">
-                              +{tags.length - 3}
-                            </Badge>
-                          )}
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between pt-4 border-t border-border">
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <FileText className="h-4 w-4" />
-                          <span>View Resource</span>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200 hover:scale-105"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDocumentClick(doc.Link);
-                          }}
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-
-            {filteredDocuments.length === 0 && !loading && (
-              <div className="text-center py-12">
-                <h3 className="text-2xl font-semibold mb-2">No documents found</h3>
-                <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
-              </div>
-            )}
-          </div>
-        );
+        return renderCourses();
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative">
@@ -494,95 +379,24 @@ const TechCorner = () => {
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            📚 Tech Corner
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              📚 dKloud TechCorner
+            </span>
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Technical documentation, SOPs, and learning resources
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Future-Ready Tech Learning, Visual & Simplified. Short, practical, high-impact courses designed for freshers, switchers, and freelancers.
           </p>
         </div>
 
-        {/* Modern Tab System */}
+        {/* Tabs */}
         <div className="mb-8">
-          <div className="hidden md:flex bg-background/20 backdrop-blur-md border border-border/30 rounded-2xl p-2">
-            {tabData.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`group relative flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 flex-1 overflow-hidden ${
-                    isActive
-                      ? `bg-gradient-to-r ${tab.gradient} backdrop-blur-sm shadow-2xl border border-white/30 text-white shadow-[0_0_30px_rgba(168,85,247,0.6)]`
-                      : "hover:bg-background/40 hover:scale-105 hover:shadow-lg hover:border-primary/30 border border-transparent"
-                  }`}
-                >
-                  <div className={`relative p-2 rounded-lg transition-all duration-300 ${
-                    isActive 
-                      ? "bg-white/20 text-white shadow-lg backdrop-blur-sm" 
-                      : "bg-muted/50 text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary group-hover:scale-110"
-                  }`}>
-                    <Icon className="h-5 w-5 transition-transform duration-300" />
-                  </div>
-                  
-                  <div className="flex flex-col items-start">
-                    <span className={`font-semibold text-sm transition-colors ${
-                      isActive ? "text-white drop-shadow-sm" : "text-muted-foreground group-hover:text-primary"
-                    }`}>
-                      {tab.label}
-                    </span>
-                    <span className="text-xs text-muted-foreground opacity-70">
-                      {tab.description}
-                    </span>
-                  </div>
-                  
-                  {isActive && (
-                    <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r rounded-full shadow-lg ${tab.gradient}`} />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Mobile Tab Selector */}
-          <div className="md:hidden">
-            <div className="bg-background/20 backdrop-blur-md border border-border/30 rounded-xl p-3">
-              <div className="grid grid-cols-2 gap-2">
-                {tabData.map((tab) => {
-                  const Icon = tab.icon;
-                  const isActive = activeTab === tab.id;
-                  
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center space-x-2 p-3 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? `bg-gradient-to-r ${tab.gradient} shadow-lg border border-white/30 text-white`
-                          : "hover:bg-background/40"
-                      }`}
-                    >
-                      <div className={`p-1.5 rounded-md transition-all duration-200 ${
-                        isActive 
-                          ? "bg-white/20 text-white backdrop-blur-sm" 
-                          : "bg-muted/50 text-muted-foreground"
-                      }`}>
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <span className={`font-medium text-xs ${
-                        isActive ? "text-white font-semibold" : "text-muted-foreground"
-                      }`}>
-                        {tab.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <ModernIconTabs 
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
         </div>
 
         {/* Tab Content */}
