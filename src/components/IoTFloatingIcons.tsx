@@ -1,4 +1,5 @@
 
+// IoT Floating Icons Component
 import { useEffect, useState } from "react";
 import { 
   Wifi, 
