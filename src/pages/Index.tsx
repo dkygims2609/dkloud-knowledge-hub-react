@@ -72,16 +72,17 @@ const Index = () => {
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       
-      {/* Hero Section with Portfolio-synced Background */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-background">
+      {/* Hero Section with Enhanced Background */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden hero-background-enhanced">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/3 to-accent/5" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.1)_0%,_transparent_50%)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-secondary/5 to-accent/8" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.15)_0%,_transparent_50%)]" />
         </div>
         
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-accent/10 to-primary/10 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+          <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-primary/20 to-secondary/15 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-accent/15 to-primary/20 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/8 to-transparent rounded-full blur-2xl"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
@@ -89,13 +90,13 @@ const Index = () => {
             <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-black tracking-wider"
+                className="hero-title-enhanced font-black tracking-wider"
                 delay={1000}
               />
             </div>
             
             <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-transparent font-bold tracking-wide">
+              <span className="hero-subtitle-enhanced font-bold tracking-wide">
                 Library Of Unique Discoveries
               </span>
             </div>

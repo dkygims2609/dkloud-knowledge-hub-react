@@ -689,6 +689,103 @@
   backdrop-filter: blur(12px);
 }
 
+/* Running Banner Styles */
+.running-banner {
+  @apply bg-gradient-to-r from-primary via-primary/90 to-primary;
+  @apply text-white py-2 px-4 overflow-hidden relative;
+  @apply border-b border-primary/20;
+}
+
+.banner-text {
+  @apply whitespace-nowrap;
+  animation: scroll-left 60s linear infinite;
+  @apply text-sm font-medium;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Enhanced Navigation Hover Effects */
+.nav-tab-hover {
+  @apply transition-all duration-300 ease-in-out;
+  @apply hover:bg-primary/20 hover:text-primary;
+  @apply hover:shadow-lg hover:shadow-primary/25;
+  @apply relative overflow-hidden;
+}
+
+.nav-tab-hover::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5;
+  @apply opacity-0 transition-opacity duration-300;
+  @apply pointer-events-none;
+}
+
+.nav-tab-hover:hover::before {
+  @apply opacity-100;
+}
+
+/* Enhanced Background Textures */
+.hero-background-enhanced {
+  background: linear-gradient(135deg, 
+    hsl(var(--background)) 0%, 
+    hsl(var(--muted)/0.3) 25%,
+    hsl(var(--background)) 50%,
+    hsl(var(--muted)/0.3) 75%,
+    hsl(var(--background)) 100%);
+  background-size: 400% 400%;
+  animation: gradient-shift 20s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Enhanced Hero Text Gradients */
+.hero-title-enhanced {
+  background: linear-gradient(135deg, 
+    hsl(var(--foreground)) 0%,
+    hsl(var(--primary)) 25%,
+    hsl(var(--primary)/0.8) 50%,
+    hsl(var(--primary)) 75%,
+    hsl(var(--foreground)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: text-gradient-shift 8s ease-in-out infinite;
+}
+
+@keyframes text-gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-subtitle-enhanced {
+  background: linear-gradient(90deg,
+    hsl(var(--muted-foreground)) 0%,
+    hsl(var(--primary)/0.9) 30%,
+    hsl(var(--primary)) 50%,
+    hsl(var(--primary)/0.9) 70%,
+    hsl(var(--muted-foreground)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: subtitle-gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes subtitle-gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* Navbar Enhancement */
 .navbar-backdrop {
   background: hsl(var(--background) / 0.8);
