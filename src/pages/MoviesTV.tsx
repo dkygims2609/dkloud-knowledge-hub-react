@@ -1,678 +1,248 @@
 import { useState, useEffect } from "react";
-import { Search, Filter, Star, Award, Calendar, ChevronLeft, ChevronRight, TrendingUp, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, Filter, Calendar, Star, TrendingUp, Film, Tv, Trophy, ExternalLink, Play } from "lucide-react";
 import { toast } from "sonner";
+import { ModernTabSystem } from "@/components/ModernTabSystem";
 
-interface ContentItem {
-  Name?: string;
-  Title?: string;
-  Genre: string;
-  Platform: string;
-  DKcloudRating: number | string;
-  Language: string;
-  Awards?: string;
-  "Why to Watch": string;
-  Year?: number;
-  Director?: string;
-  Creator?: string;
-  Seasons?: number;
-  Status?: string;
-  Achievements?: string;
-  Type?: string;
-  TrendingRank?: number;
-  PopularityScore?: number;
+interface Movie {
+  id: string;
+  title: string;
+  description: string;
+  genre: string;
+  rating: string;
+  year: string;
+  type: string;
+  category: string;
+  trending?: boolean;
+  ultimate?: boolean;
+  poster?: string;
+  imdb_link?: string;
+  trailer_link?: string;
 }
 
 const MoviesTV = () => {
-  const [movies, setMovies] = useState<ContentItem[]>([]);
-  const [tvSeries, setTvSeries] = useState<ContentItem[]>([]);
-  const [ultimateList, setUltimateList] = useState<ContentItem[]>([]);
-  const [trending, setTrending] = useState<ContentItem[]>([]);
-  
-  const [filteredMovies, setFilteredMovies] = useState<ContentItem[]>([]);
-  const [filteredTvSeries, setFilteredTvSeries] = useState<ContentItem[]>([]);
-  const [filteredUltimateList, setFilteredUltimateList] = useState<ContentItem[]>([]);
-  
-  const [loading, setLoading] = useState({
-    movies: true,
-    tv: true,
-    ultimate: true,
-    trending: true
-  });
-  
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'trending';
+
+  const [data, setData] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [genreFilter, setGenreFilter] = useState("all");
-  const [platformFilter, setPlatformFilter] = useState("all");
-  const [ratingFilter, setRatingFilter] = useState("all");
-  const [languageFilter, setLanguageFilter] = useState("all");
-  const [awardsFilter, setAwardsFilter] = useState("all");
-  const [activeTab, setActiveTab] = useState("movies");
-
-  const [currentPage, setCurrentPage] = useState({
-    movies: 0,
-    tv: 0,
-    ultimate: 0
-  });
-
-  const ITEMS_PER_PAGE = 6;
+  const [selectedGenre, setSelectedGenre] = useState("all");
+  const [sortBy, setSortBy] = useState("year");
 
   useEffect(() => {
-    fetchAllData();
-  }, []);
-
-  useEffect(() => {
-    filterContent();
-  }, [movies, tvSeries, ultimateList, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter, activeTab]);
-
-  useEffect(() => {
-    // Reset filters when switching tabs
-    clearFilters();
-    setCurrentPage(prev => ({ ...prev, [activeTab]: 0 }));
-  }, [activeTab]);
-
-  const fetchAllData = async () => {
-    const endpoints = {
-      movies: "https://script.google.com/macros/s/AKfycbzO53FfgLV-2Kq5pP0fYF7yjFw1CQlZkZoc5TEIn3rDcPSxv8MB8koOasYlf6BuXXCQ/exec",
-      tv: "https://script.google.com/macros/s/AKfycbxr64a2W4VL2ymbigPXUB3EQmMULCmUhMuDDwvhGNaG4lSwgqAQitXO_hTY2lhh3n1f/exec",
-      ultimate: "https://script.google.com/macros/s/AKfycbwA8KIHelLQllAKNIgIYtfo3dyvBCef7kOfuYuEfM4SEF4y1ivyTHFddVUO1VrWyA4c-Q/exec",
-      trending: "https://script.google.com/macros/s/AKfycbyCeRakH_SOeSQO3PGFMtphknTGIe3mzcFRZcCmjQdAEkOtiK8-3m2WSL1tJ8dOXy8/exec"
-    };
-
-    const fetchWithRetry = async (url: string, retries = 3) => {
-      for (let i = 0; i < retries; i++) {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          console.error(`Attempt ${i + 1} failed for ${url}:`, error);
-          if (i === retries - 1) throw error;
-          await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-        }
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec");
+        const result = await response.json();
+        setData(result || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to load movies and TV shows. Please try again later.");
+        setData([]);
+      } finally {
+        setLoading(false);
       }
     };
 
-    // Fetch Movies
-    try {
-      const moviesData = await fetchWithRetry(endpoints.movies);
-      setMovies(Array.isArray(moviesData) ? moviesData : []);
-      setLoading(prev => ({ ...prev, movies: false }));
-    } catch (error) {
-      console.error("Failed to fetch movies:", error);
-      setMovies([]);
-      setLoading(prev => ({ ...prev, movies: false }));
-      toast.error("Failed to load movies data");
+    fetchData();
+  }, []);
+
+  const tabs = [
+    {
+      id: "trending",
+      label: "🔥 Trending",
+      icon: TrendingUp,
+      color: "from-red-500 to-orange-600",
+      content: <div>Trending content will be displayed here</div>
+    },
+    {
+      id: "movies",
+      label: "🎬 Movies",
+      icon: Film,
+      color: "from-blue-500 to-purple-600",
+      content: <div>Movies content will be displayed here</div>
+    },
+    {
+      id: "tv",
+      label: "📺 TV Series",
+      icon: Tv,
+      color: "from-green-500 to-teal-600",
+      content: <div>TV Series content will be displayed here</div>
+    },
+    {
+      id: "ultimate",
+      label: "⭐ Ultimate",
+      icon: Trophy,
+      color: "from-yellow-500 to-amber-600",
+      content: <div>Ultimate collection content will be displayed here</div>
+    }
+  ];
+
+  const filteredData = data.filter(item => {
+    const searchTermLower = searchTerm.toLowerCase();
+    const matchesSearch =
+      item.title.toLowerCase().includes(searchTermLower) ||
+      item.description.toLowerCase().includes(searchTermLower) ||
+      item.genre.toLowerCase().includes(searchTermLower);
+
+    const matchesGenre = selectedGenre === "all" || item.genre === selectedGenre;
+
+    const currentTab = searchParams.get('tab') || 'trending';
+    let matchesTab = true;
+
+    if (currentTab === 'movies') {
+      matchesTab = item.type === 'movie';
+    } else if (currentTab === 'tv') {
+      matchesTab = item.type === 'tv series';
+    } else if (currentTab === 'ultimate') {
+      matchesTab = item.ultimate === true;
+    } else if (currentTab === 'trending') {
+      matchesTab = item.trending === true;
     }
 
-    // Fetch TV Series
-    try {
-      const tvData = await fetchWithRetry(endpoints.tv);
-      setTvSeries(Array.isArray(tvData) ? tvData : []);
-      setLoading(prev => ({ ...prev, tv: false }));
-    } catch (error) {
-      console.error("Failed to fetch TV series:", error);
-      setTvSeries([]);
-      setLoading(prev => ({ ...prev, tv: false }));
-      toast.error("Failed to load TV series data");
+    return matchesSearch && matchesGenre && matchesTab;
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (sortBy === "year") {
+      return parseInt(b.year) - parseInt(a.year);
+    } else if (sortBy === "rating") {
+      return parseFloat(b.rating) - parseFloat(a.rating);
     }
-
-    // Fetch Ultimate List
-    try {
-      const ultimateData = await fetchWithRetry(endpoints.ultimate);
-      setUltimateList(Array.isArray(ultimateData) ? ultimateData : []);
-      setLoading(prev => ({ ...prev, ultimate: false }));
-    } catch (error) {
-      console.error("Failed to fetch ultimate list:", error);
-      setUltimateList([]);
-      setLoading(prev => ({ ...prev, ultimate: false }));
-      toast.error("Failed to load ultimate list data");
-    }
-
-    // Fetch Trending
-    try {
-      const trendingData = await fetchWithRetry(endpoints.trending);
-      setTrending(Array.isArray(trendingData) ? trendingData : []);
-      setLoading(prev => ({ ...prev, trending: false }));
-    } catch (error) {
-      console.error("Failed to fetch trending:", error);
-      setTrending([]);
-      setLoading(prev => ({ ...prev, trending: false }));
-      toast.error("Failed to load trending data");
-    }
-  };
-
-  const filterContent = () => {
-    const applyFilters = (data: ContentItem[]) => {
-      return data.filter((item) => {
-        // Get the name/title safely - handle both Name and Title properties and ensure they're strings
-        const itemName = String(item.Name || item.Title || "");
-        const itemGenre = String(item.Genre || "");
-        const itemPlatform = String(item.Platform || "");
-        const itemLanguage = String(item.Language || "");
-        const itemDirector = String(item.Director || "");
-        const itemCreator = String(item.Creator || "");
-        const itemAwards = String(item.Awards || "");
-        
-        const matchesSearch = 
-          itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          itemDirector.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          itemCreator.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          itemGenre.toLowerCase().includes(searchTerm.toLowerCase());
-
-        const matchesGenre = genreFilter === "all" || itemGenre === genreFilter;
-        const matchesPlatform = platformFilter === "all" || itemPlatform === platformFilter;
-        const matchesLanguage = languageFilter === "all" || itemLanguage === languageFilter;
-        const matchesAwards = awardsFilter === "all" || (awardsFilter === "yes" && itemAwards !== "") || (awardsFilter === "no" && itemAwards === "");
-        
-        let matchesRating = true;
-        const rating = parseFloat(String(item.DKcloudRating)) || 0;
-        if (ratingFilter === "high") matchesRating = rating >= 8;
-        else if (ratingFilter === "medium") matchesRating = rating >= 6 && rating < 8;
-        else if (ratingFilter === "low") matchesRating = rating < 6;
-
-        return matchesSearch && matchesGenre && matchesPlatform && matchesLanguage && matchesRating && matchesAwards;
-      });
-    };
-
-    setFilteredMovies(applyFilters(movies));
-    setFilteredTvSeries(applyFilters(tvSeries));
-    setFilteredUltimateList(applyFilters(ultimateList));
-  };
-
-  const getActiveData = () => {
-    switch (activeTab) {
-      case "movies": return movies;
-      case "tv": return tvSeries;
-      case "ultimate": return ultimateList;
-      default: return [];
-    }
-  };
-
-  const getUniqueValues = (key: string) => {
-    const activeData = getActiveData();
-    return Array.from(new Set(activeData.map((item: any) => item[key]))).filter(Boolean);
-  };
-
-  const clearFilters = () => {
-    setSearchTerm("");
-    setGenreFilter("all");
-    setPlatformFilter("all");
-    setRatingFilter("all");
-    setLanguageFilter("all");
-    setAwardsFilter("all");
-  };
-
-  const handlePageChange = (direction: 'prev' | 'next') => {
-    const currentData = activeTab === "movies" ? filteredMovies : 
-                       activeTab === "tv" ? filteredTvSeries : filteredUltimateList;
-    const maxPages = Math.ceil(currentData.length / ITEMS_PER_PAGE);
-    const currentPageNum = currentPage[activeTab as keyof typeof currentPage];
-
-    if (direction === 'next' && currentPageNum < maxPages - 1) {
-      setCurrentPage(prev => ({ ...prev, [activeTab]: currentPageNum + 1 }));
-    } else if (direction === 'prev' && currentPageNum > 0) {
-      setCurrentPage(prev => ({ ...prev, [activeTab]: currentPageNum - 1 }));
-    }
-  };
-
-  const getCurrentPageData = (data: ContentItem[]) => {
-    const currentPageNum = currentPage[activeTab as keyof typeof currentPage];
-    const start = currentPageNum * ITEMS_PER_PAGE;
-    return data.slice(start, start + ITEMS_PER_PAGE);
-  };
-
-  const getCardGradient = (index: number) => {
-    const gradients = [
-      "from-purple-500/20 via-pink-500/20 to-red-500/20",
-      "from-blue-500/20 via-cyan-500/20 to-teal-500/20",
-      "from-green-500/20 via-emerald-500/20 to-blue-500/20",
-      "from-orange-500/20 via-red-500/20 to-pink-500/20",
-      "from-indigo-500/20 via-purple-500/20 to-pink-500/20",
-      "from-teal-500/20 via-green-500/20 to-blue-500/20"
-    ];
-    return gradients[index % gradients.length];
-  };
-
-  const renderContentCard = (item: ContentItem, index: number) => (
-    <Card key={index} className={`dkloud-card dkloud-card-interactive h-full relative overflow-hidden bg-gradient-to-br ${getCardGradient(index)} border-0 shadow-xl hover:shadow-2xl transition-all duration-500`}>
-      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95 backdrop-blur-sm" />
-      <div className="relative z-10">
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {item.Name || item.Title}
-            </CardTitle>
-            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full px-2 py-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-bold">{item.DKcloudRating}</span>
-            </div>
-          </div>
-          {(item.Director || item.Creator) && (
-            <CardDescription className="font-semibold text-primary/80">
-              {item.Director || item.Creator}
-            </CardDescription>
-          )}
-        </CardHeader>
-        
-        <CardContent className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary" className="bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground border-primary/30">
-              {item.Genre}
-            </Badge>
-            <Badge variant="outline" className="border-accent/50 text-accent">
-              {item.Platform}
-            </Badge>
-            <Badge variant="outline" className="border-muted-foreground/30">
-              {item.Language}
-            </Badge>
-            {item.Year && <Badge variant="outline" className="border-primary/30 text-primary">{item.Year}</Badge>}
-            {item.Type && <Badge variant="default" className="bg-gradient-to-r from-secondary to-accent">{item.Type}</Badge>}
-          </div>
-          
-          {item.Seasons && item.Status && (
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center space-x-1">
-                <Calendar className="h-4 w-4 text-primary" />
-                <span className="text-foreground/80">{item.Seasons} Season{item.Seasons > 1 ? 's' : ''}</span>
-              </div>
-              <Badge variant={item.Status === "Completed" ? "default" : "secondary"} className="bg-gradient-to-r from-green-500/20 to-emerald-500/20">
-                {item.Status}
-              </Badge>
-            </div>
-          )}
-          
-          <div>
-            <h4 className="font-semibold text-sm mb-2 text-primary">Why to Watch:</h4>
-            <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-              {item["Why to Watch"]}
-            </p>
-          </div>
-          
-          {item.Awards && (
-            <div className="pt-2 border-t border-border/30">
-              <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500 shadow-lg">
-                <Award className="h-3 w-3 mr-1" />
-                {item.Awards}
-              </Badge>
-            </div>
-          )}
-        </CardContent>
-      </div>
-    </Card>
-  );
-
-  const LoadingState = () => (
-    <div className="flex items-center justify-center py-12">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <span className="ml-2 text-muted-foreground">Loading content...</span>
-    </div>
-  );
+    return 0;
+  });
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative">
-      {/* Subtle background text */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 text-6xl font-bold text-muted-foreground/5 rotate-12 select-none">
-          What content should I watch?
-        </div>
-        <div className="absolute top-1/2 right-1/4 text-5xl font-bold text-muted-foreground/5 -rotate-12 select-none">
-          Best movies & series?
-        </div>
-        <div className="absolute bottom-1/4 left-1/3 text-4xl font-bold text-muted-foreground/5 rotate-6 select-none">
-          dKloud recommends
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            🎬📺 Movies & TV Series
+    <div className="container mx-auto px-4 py-8 pt-24">
+      <div className="text-center mb-12">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <Film className="h-8 w-8 text-primary" />
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Movies & TV Shows
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Curated collection of must-watch movies and binge-worthy TV series
-          </p>
+        </div>
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          Discover our curated collection of must-watch movies and TV series, from trending hits to timeless classics
+        </p>
+      </div>
+
+      <ModernTabSystem 
+        tabs={tabs} 
+        defaultTab={initialTab}
+        className="mb-8"
+      />
+
+      <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-2">
+        <div className="flex items-center space-x-2 w-full md:w-auto">
+          <Input
+            type="text"
+            placeholder="Search movies and TV shows..."
+            className="flex-1"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button variant="outline" size="icon">
+            <Search className="h-4 w-4" />
+          </Button>
         </div>
 
-        {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-8 h-auto p-1">
-            <TabsTrigger value="movies" className="text-sm lg:text-base p-3">
-              🎬 Movies ({filteredMovies.length})
-            </TabsTrigger>
-            <TabsTrigger value="tv" className="text-sm lg:text-base p-3">
-              📺 TV Series ({filteredTvSeries.length})
-            </TabsTrigger>
-            <TabsTrigger value="ultimate" className="text-sm lg:text-base p-3">
-              ⭐ Ultimate ({filteredUltimateList.length})
-            </TabsTrigger>
-            <TabsTrigger value="trending" className="text-sm lg:text-base p-3">
-              🔥 Trending ({trending.length})
-            </TabsTrigger>
-          </TabsList>
+        <div className="flex items-center space-x-4 w-full md:w-auto">
+          <div className="flex items-center space-x-2">
+            <Filter className="h-4 w-4" />
+            <label htmlFor="genre" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
+              Genre:
+            </label>
+            <select
+              id="genre"
+              className="flex h-9 w-auto rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+            >
+              <option value="all">All Genres</option>
+              <option value="action">Action</option>
+              <option value="comedy">Comedy</option>
+              <option value="drama">Drama</option>
+              <option value="sci-fi">Sci-Fi</option>
+              <option value="horror">Horror</option>
+              <option value="thriller">Thriller</option>
+              <option value="animation">Animation</option>
+              <option value="documentary">Documentary</option>
+            </select>
+          </div>
 
-          {/* Filters - Only show for Movies, TV, Ultimate tabs */}
-          {activeTab !== "trending" && (
-            <div className="bg-card rounded-xl p-6 mb-8 space-y-4 shadow-lg border border-border/20">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search content..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                
-                <Select value={genreFilter} onValueChange={setGenreFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Genres" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Genres</SelectItem>
-                    {getUniqueValues("Genre").map((genre) => (
-                      <SelectItem key={String(genre)} value={String(genre)}>
-                        {String(genre)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={platformFilter} onValueChange={setPlatformFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Platforms" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Platforms</SelectItem>
-                    {getUniqueValues("Platform").map((platform) => (
-                      <SelectItem key={String(platform)} value={String(platform)}>
-                        {String(platform)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={ratingFilter} onValueChange={setRatingFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Ratings" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Ratings</SelectItem>
-                    <SelectItem value="high">High (8+)</SelectItem>
-                    <SelectItem value="medium">Medium (6-8)</SelectItem>
-                    <SelectItem value="low">Low (&lt;6)</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select value={languageFilter} onValueChange={setLanguageFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Languages" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Languages</SelectItem>
-                    {getUniqueValues("Language").map((language) => (
-                      <SelectItem key={String(language)} value={String(language)}>
-                        {String(language)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                {activeTab === "movies" && (
-                  <Select value={awardsFilter} onValueChange={setAwardsFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Awards" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Movies</SelectItem>
-                      <SelectItem value="yes">Award Winners</SelectItem>
-                      <SelectItem value="no">No Awards</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <p className="text-sm text-muted-foreground">
-                  Showing {activeTab === "movies" ? filteredMovies.length : 
-                           activeTab === "tv" ? filteredTvSeries.length : 
-                           filteredUltimateList.length} results
-                </p>
-                <Button variant="outline" size="sm" onClick={clearFilters}>
-                  Clear Filters
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Content Tabs */}
-          <TabsContent value="movies">
-            {loading.movies ? (
-              <LoadingState />
-            ) : (
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">Movies ({filteredMovies.length})</h3>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange('prev')}
-                      disabled={currentPage.movies === 0}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="text-sm text-muted-foreground flex items-center">
-                      {currentPage.movies + 1} / {Math.ceil(filteredMovies.length / ITEMS_PER_PAGE) || 1}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange('next')}
-                      disabled={currentPage.movies >= Math.ceil(filteredMovies.length / ITEMS_PER_PAGE) - 1}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getCurrentPageData(filteredMovies).map((movie, index) => renderContentCard(movie, index))}
-                </div>
-                
-                {filteredMovies.length === 0 && (
-                  <div className="text-center py-12">
-                    <h3 className="text-2xl font-semibold mb-2">No movies found</h3>
-                    <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="tv">
-            {loading.tv ? (
-              <LoadingState />
-            ) : (
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">TV Series ({filteredTvSeries.length})</h3>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange('prev')}
-                      disabled={currentPage.tv === 0}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="text-sm text-muted-foreground flex items-center">
-                      {currentPage.tv + 1} / {Math.ceil(filteredTvSeries.length / ITEMS_PER_PAGE) || 1}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange('next')}
-                      disabled={currentPage.tv >= Math.ceil(filteredTvSeries.length / ITEMS_PER_PAGE) - 1}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getCurrentPageData(filteredTvSeries).map((show, index) => renderContentCard(show, index))}
-                </div>
-                
-                {filteredTvSeries.length === 0 && (
-                  <div className="text-center py-12">
-                    <h3 className="text-2xl font-semibold mb-2">No TV series found</h3>
-                    <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="ultimate">
-            {loading.ultimate ? (
-              <LoadingState />
-            ) : (
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">Ultimate List ({filteredUltimateList.length})</h3>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange('prev')}
-                      disabled={currentPage.ultimate === 0}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="text-sm text-muted-foreground flex items-center">
-                      {currentPage.ultimate + 1} / {Math.ceil(filteredUltimateList.length / ITEMS_PER_PAGE) || 1}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange('next')}
-                      disabled={currentPage.ultimate >= Math.ceil(filteredUltimateList.length / ITEMS_PER_PAGE) - 1}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getCurrentPageData(filteredUltimateList).map((item, index) => renderContentCard(item, index))}
-                </div>
-                
-                {filteredUltimateList.length === 0 && (
-                  <div className="text-center py-12">
-                    <h3 className="text-2xl font-semibold mb-2">No content found</h3>
-                    <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="trending">
-            {loading.trending ? (
-              <LoadingState />
-            ) : (
-              <div className="space-y-6">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
-                    <TrendingUp className="h-6 w-6 text-primary" />
-                    What's Trending Now
-                  </h3>
-                  <p className="text-muted-foreground">The hottest movies and shows everyone's talking about</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {trending.slice(0, 6).map((item, index) => (
-                    <Card key={index} className={`dkloud-card dkloud-card-interactive relative overflow-hidden group bg-gradient-to-br ${getCardGradient(index)} border-0 shadow-xl`}>
-                      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95 backdrop-blur-sm" />
-                      <div className="absolute top-4 right-4 z-10">
-                        <Badge variant="default" className="bg-gradient-to-r from-red-500 to-orange-500 animate-pulse">
-                          #{index + 1} Trending
-                        </Badge>
-                      </div>
-                      
-                      <div className="relative z-10">
-                        <CardHeader>
-                          <div className="flex justify-between items-start mb-2">
-                            <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                              {item.Name}
-                            </CardTitle>
-                            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full px-2 py-1">
-                              <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                              <span className="text-lg font-bold">{item.DKcloudRating}</span>
-                            </div>
-                          </div>
-                          {(item.Director || item.Creator) && (
-                            <CardDescription className="font-medium text-primary text-lg">
-                              {item.Director || item.Creator}
-                            </CardDescription>
-                          )}
-                        </CardHeader>
-                        
-                        <CardContent className="space-y-4">
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="secondary" className="bg-gradient-to-r from-primary/20 to-secondary/20">
-                              {item.Genre}
-                            </Badge>
-                            <Badge variant="outline" className="border-accent/50 text-accent">
-                              {item.Platform}
-                            </Badge>
-                            <Badge variant="outline">{item.Language}</Badge>
-                            {item.Type && (
-                              <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500">
-                                {item.Type}
-                              </Badge>
-                            )}
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-semibold mb-2 text-primary">🔥 Why It's Trending:</h4>
-                            <p className="text-muted-foreground leading-relaxed">
-                              {item["Why to Watch"]}
-                            </p>
-                          </div>
-                          
-                          {item.Awards && (
-                            <div className="pt-4 border-t border-border">
-                              <Badge variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500">
-                                <Award className="h-4 w-4 mr-1" />
-                                {item.Awards}
-                              </Badge>
-                            </div>
-                          )}
-                        </CardContent>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-
-                {trending.length === 0 && (
-                  <div className="text-center py-12">
-                    <h3 className="text-2xl font-semibold mb-2">No trending content available</h3>
-                    <p className="text-muted-foreground">Check back later for the latest trending content.</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+          <div className="flex items-center space-x-2">
+            <Calendar className="h-4 w-4" />
+            <label htmlFor="sort" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
+              Sort by:
+            </label>
+            <select
+              id="sort"
+              className="flex h-9 w-auto rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="year">Year</option>
+              <option value="rating">Rating</option>
+            </select>
+          </div>
+        </div>
       </div>
+
+      {loading ? (
+        <div className="text-center">Loading...</div>
+      ) : sortedData.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedData.map((movie) => (
+            <Card key={movie.id} className="bg-card/95 backdrop-blur-md border border-border/50 shadow-sm">
+              {movie.poster && (
+                <img
+                  src={movie.poster}
+                  alt={movie.title}
+                  className="w-full h-48 object-cover rounded-t-md"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+              )}
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">{movie.title}</CardTitle>
+                <CardDescription className="text-sm text-muted-foreground">
+                  {movie.genre} | {movie.year}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground line-clamp-3">{movie.description}</p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {movie.imdb_link && (
+                    <Button asChild variant="secondary" size="sm">
+                      <a href={movie.imdb_link} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        IMDb <ExternalLink className="ml-1 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )}
+                  {movie.trailer_link && (
+                    <Button asChild variant="outline" size="sm">
+                      <a href={movie.trailer_link} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        Trailer <Play className="ml-1 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center">No results found.</div>
+      )}
     </div>
   );
 };
