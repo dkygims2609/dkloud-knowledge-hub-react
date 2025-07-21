@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,12 +22,19 @@ import {
   Star,
   Clock,
   Award,
-  Sparkles
+  Sparkles,
+  Brain,
+  Wrench,
+  Lightbulb,
+  FileSpreadsheet,
+  FolderOpen,
+  Link,
+  ExternalLink
 } from "lucide-react";
 import { BackgroundQuestions } from "@/components/BackgroundQuestions";
 
 const TechCorner = () => {
-  const [activeTab, setActiveTab] = useState('courses');
+  const [activeTab, setActiveTab] = useState('free-hacks');
 
   const courses = [
     {
@@ -151,48 +159,58 @@ const TechCorner = () => {
     }
   ];
 
-  const resources = [
+  const freeHacksResources = [
     {
-      title: "Free Tech Resources",
-      description: "Curated collection of free learning materials, tools, and documentation.",
-      icon: <BookOpen className="h-5 w-5" />,
-      count: "50+ Resources"
+      title: "🔧 Fixes & SOPs",
+      description: "Troubleshooting guides, quick system/server/network SOPs for common issues.",
+      icon: <Wrench className="h-5 w-5" />,
+      count: "50+ SOPs",
+      gradient: "from-red-500 to-orange-500"
     },
     {
-      title: "Industry Best Practices",
-      description: "SOPs, guidelines, and best practices from industry experts.",
-      icon: <FileText className="h-5 w-5" />,
-      count: "25+ Guides"
+      title: "💡 Smart Tech Tips",
+      description: "Registry hacks, drive-hiding tricks, speed-up methods, and system optimization.",
+      icon: <Lightbulb className="h-5 w-5" />,
+      count: "30+ Tips",
+      gradient: "from-yellow-500 to-amber-500"
     },
     {
-      title: "Video Tutorials",
-      description: "Step-by-step video tutorials for various tech topics.",
-      icon: <Video className="h-5 w-5" />,
-      count: "100+ Videos"
+      title: "🧾 Cheat Sheets",
+      description: "PDF/Notion quick guides for AWS, Windows, VMware, Docker, and more.",
+      icon: <FileSpreadsheet className="h-5 w-5" />,
+      count: "25+ Sheets",
+      gradient: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "📂 Ready Templates",
+      description: "Change logs, trackers, deployment checklists, and project templates.",
+      icon: <FolderOpen className="h-5 w-5" />,
+      count: "20+ Templates",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      title: "🔗 Useful Tools & Links",
+      description: "Curated online tools: ping tester, YAML checker, IP info, and more utilities.",
+      icon: <Link className="h-5 w-5" />,
+      count: "100+ Tools",
+      gradient: "from-purple-500 to-pink-500"
     }
   ];
 
   const tabs = [
+    {
+      id: 'free-hacks',
+      label: '🧠 Free Hacks & Resources',
+      icon: Brain,
+      count: freeHacksResources.length,
+      gradient: 'from-indigo-500 to-purple-500'
+    },
     {
       id: 'courses',
       label: 'dKloud Courses',
       icon: GraduationCap,
       count: courses.length,
       gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      id: 'resources',
-      label: 'Free Resources',
-      icon: BookOpen,
-      count: resources.length,
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      id: 'guides',
-      label: 'SOPs & Guides',
-      icon: FileText,
-      count: 25,
-      gradient: 'from-green-500 to-emerald-500'
     },
     {
       id: 'tutorials',
@@ -203,22 +221,69 @@ const TechCorner = () => {
     }
   ];
 
-  const handleNotifyMe = (courseTitle: string) => {
-    console.log(`Notify me for ${courseTitle}`);
-    // Handle notification signup
+  const handleExploreNow = () => {
+    window.open('https://learn.dkloud.in', '_blank');
   };
+
+  const renderFreeHacks = () => (
+    <div className="space-y-8">
+      {/* Hook Description */}
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 text-center">
+        <div className="flex items-center justify-center mb-3">
+          <Brain className="h-6 w-6 text-primary mr-2" />
+          <h3 className="text-xl font-bold">🧠 Free Hacks & Resources</h3>
+        </div>
+        <p className="text-muted-foreground">
+          A fun, helpful hub packed with time-saving tips, SOPs, cheat sheets, and smart fixes.
+        </p>
+      </div>
+
+      {/* Resource Categories */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {freeHacksResources.map((resource, index) => (
+          <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:border-primary/50">
+            <CardHeader className="text-center">
+              <div className={`mx-auto w-14 h-14 rounded-full bg-gradient-to-r ${resource.gradient} flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                {resource.icon}
+              </div>
+              <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                {resource.title}
+              </CardTitle>
+              <Badge variant="outline" className="animate-pulse">{resource.count}</Badge>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-center mb-4">
+                {resource.description}
+              </CardDescription>
+              <Button className="w-full" variant="outline">
+                <Bell className="h-4 w-4 mr-2" />
+                Coming Soon
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
 
   const renderCourses = () => (
     <div className="space-y-8">
-      {/* Announcement Banner */}
+      {/* Course Hub Announcement */}
       <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 text-center">
         <div className="flex items-center justify-center mb-3">
           <Star className="h-6 w-6 text-primary mr-2" />
-          <h3 className="text-xl font-bold">🚀 Launching Soon</h3>
+          <h3 className="text-xl font-bold">📚 dKloud MicroCourses</h3>
         </div>
-        <p className="text-muted-foreground">
-          dKloud MicroCourses — Future-Ready Tech Learning, Visual & Simplified
+        <p className="text-muted-foreground mb-4">
+          Future-Ready Tech Learning, Visual & Simplified — Now Available at Our Course Hub!
         </p>
+        <Button 
+          onClick={handleExploreNow}
+          className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white font-medium"
+        >
+          <ExternalLink className="h-4 w-4 mr-2" />
+          Explore All Courses
+        </Button>
       </div>
 
       {/* Course Categories */}
@@ -226,7 +291,8 @@ const TechCorner = () => {
         {courses.map((course) => (
           <Card 
             key={course.id} 
-            className="group relative overflow-hidden bg-gradient-to-br from-background to-muted/50 border-2 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20"
+            className="group relative overflow-hidden bg-gradient-to-br from-background to-muted/50 border-2 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 cursor-pointer"
+            onClick={handleExploreNow}
           >
             {/* Animated glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-500" 
@@ -234,8 +300,8 @@ const TechCorner = () => {
             
             {/* Badge */}
             <div className="absolute top-4 right-4 z-10">
-              <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse">
-                🚀 Launching Soon
+              <Badge className="bg-green-100 text-green-700 border-green-300">
+                ✅ Available Now
               </Badge>
             </div>
 
@@ -302,10 +368,13 @@ const TechCorner = () => {
               {/* CTA Button */}
               <Button 
                 className={`w-full bg-gradient-to-r ${course.gradient} hover:opacity-90 text-white font-medium group-hover:shadow-lg transition-all duration-300`}
-                onClick={() => handleNotifyMe(course.title)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleExploreNow();
+                }}
               >
-                <Bell className="h-4 w-4 mr-2" />
-                Get Early Access
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Learn More
               </Button>
             </CardContent>
           </Card>
@@ -314,62 +383,31 @@ const TechCorner = () => {
     </div>
   );
 
-  const renderResources = () => (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {resources.map((resource, index) => (
-        <Card key={index} className="group hover:shadow-xl transition-all duration-300">
-          <CardHeader className="text-center">
-            <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white mb-4">
-              {resource.icon}
-            </div>
-            <CardTitle className="text-lg group-hover:text-primary transition-colors">
-              {resource.title}
-            </CardTitle>
-            <Badge variant="outline">{resource.count}</Badge>
-          </CardHeader>
-          <CardContent>
-            <CardDescription className="text-center">
-              {resource.description}
-            </CardDescription>
-            <Button className="w-full mt-4" variant="outline">
-              <Bell className="h-4 w-4 mr-2" />
-              Coming Soon
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
+  const renderTutorials = () => (
+    <div className="text-center py-16">
+      <div className="mb-4">
+        <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white mb-4">
+          <Video className="h-8 w-8" />
+        </div>
+      </div>
+      <h3 className="text-2xl font-bold mb-4">Video Tutorials</h3>
+      <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+        Step-by-step video tutorials for hands-on learning
+      </p>
+      <Badge className="animate-pulse">🚀 Coming Soon</Badge>
     </div>
   );
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'free-hacks':
+        return renderFreeHacks();
       case 'courses':
         return renderCourses();
-      case 'resources':
-        return renderResources();
-      case 'guides':
       case 'tutorials':
-        return (
-          <div className="text-center py-16">
-            <div className="mb-4">
-              <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white mb-4">
-                {activeTab === 'guides' ? <FileText className="h-8 w-8" /> : <Video className="h-8 w-8" />}
-              </div>
-            </div>
-            <h3 className="text-2xl font-bold mb-4">
-              {activeTab === 'guides' ? 'SOPs & Guides' : 'Video Tutorials'}
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              {activeTab === 'guides' 
-                ? 'Comprehensive standard operating procedures and industry guides'
-                : 'Step-by-step video tutorials for hands-on learning'
-              }
-            </p>
-            <Badge className="animate-pulse">🚀 Coming Soon</Badge>
-          </div>
-        );
+        return renderTutorials();
       default:
-        return renderCourses();
+        return renderFreeHacks();
     }
   };
 
