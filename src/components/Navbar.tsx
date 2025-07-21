@@ -62,10 +62,10 @@ const navigation = [
     icon: BookOpen, 
     color: "from-green-500 to-emerald-500",
     dropdownItems: [
-      { name: "Free Resources", href: "/techcorner?category=resources" },
-      { name: "dKloud Courses", href: "/techcorner?category=courses" },
-      { name: "SOPs & Guides", href: "/techcorner?category=guides" },
-      { name: "Tutorials", href: "/techcorner?category=tutorials" }
+      { name: "Free Hacks & Resources", href: "https://learn.dkloud.in", external: true },
+      { name: "Professional Courses", href: "https://learn.dkloud.in", external: true },
+      { name: "Quick Guides & SOPs", href: "https://learn.dkloud.in", external: true },
+      { name: "Tutorials", href: "/techcorner?tab=tutorials" }
     ]
   },
   { 
@@ -116,6 +116,12 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
+  const handleDropdownClick = (item: any) => {
+    if (item.external) {
+      window.open(item.href, '_blank');
+    }
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 navbar-backdrop">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -159,7 +165,7 @@ export function Navbar() {
                           "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient",
                           location.pathname === item.href
                             ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                            : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+                            : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
                         )}
                       >
                         <item.icon className="h-3 w-3" />
@@ -176,19 +182,38 @@ export function Navbar() {
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator className="bg-border/30" />
                       {item.dropdownItems.map((dropItem) => (
-                        <DropdownMenuItem key={dropItem.name} asChild className="focus:bg-primary/10 focus:text-primary">
-                          <Link 
-                            to={dropItem.href}
-                            className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1"
-                          >
-                            {dropItem.name.includes("Coming Soon") ? (
-                              <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
-                                {dropItem.name}
-                              </span>
-                            ) : (
-                              dropItem.name
-                            )}
-                          </Link>
+                        <DropdownMenuItem 
+                          key={dropItem.name} 
+                          asChild={!dropItem.external}
+                          className="focus:bg-primary/10 focus:text-primary"
+                          onClick={() => dropItem.external && handleDropdownClick(dropItem)}
+                        >
+                          {dropItem.external ? (
+                            <button 
+                              className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1 w-full text-left"
+                            >
+                              {dropItem.name.includes("Coming Soon") ? (
+                                <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
+                                  {dropItem.name}
+                                </span>
+                              ) : (
+                                dropItem.name
+                              )}
+                            </button>
+                          ) : (
+                            <Link 
+                              to={dropItem.href}
+                              className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1"
+                            >
+                              {dropItem.name.includes("Coming Soon") ? (
+                                <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
+                                  {dropItem.name}
+                                </span>
+                              ) : (
+                                dropItem.name
+                              )}
+                            </Link>
+                          )}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -200,7 +225,7 @@ export function Navbar() {
                       "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient",
                       location.pathname === item.href
                         ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                        : "text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-105"
+                        : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
                     )}
                   >
                     <item.icon className="h-3 w-3" />
@@ -251,14 +276,27 @@ export function Navbar() {
                   {item.dropdownItems && (
                     <div className="ml-6 space-y-1">
                       {item.dropdownItems.map((dropItem) => (
-                        <Link
-                          key={dropItem.name}
-                          to={dropItem.href}
-                          onClick={() => setIsOpen(false)}
-                          className="block px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {dropItem.name}
-                        </Link>
+                        dropItem.external ? (
+                          <button
+                            key={dropItem.name}
+                            onClick={() => {
+                              handleDropdownClick(dropItem);
+                              setIsOpen(false);
+                            }}
+                            className="block px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors w-full text-left"
+                          >
+                            {dropItem.name}
+                          </button>
+                        ) : (
+                          <Link
+                            key={dropItem.name}
+                            to={dropItem.href}
+                            onClick={() => setIsOpen(false)}
+                            className="block px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            {dropItem.name}
+                          </Link>
+                        )
                       ))}
                     </div>
                   )}

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -225,6 +224,10 @@ const TechCorner = () => {
     window.open('https://learn.dkloud.in', '_blank');
   };
 
+  const handleFreeHacksRedirect = () => {
+    window.open('https://learn.dkloud.in', '_blank');
+  };
+
   const renderFreeHacks = () => (
     <div className="space-y-8">
       {/* Hook Description */}
@@ -241,7 +244,11 @@ const TechCorner = () => {
       {/* Resource Categories */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {freeHacksResources.map((resource, index) => (
-          <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:border-primary/50">
+          <Card 
+            key={index} 
+            className="group hover:shadow-xl transition-all duration-300 hover:border-primary/50 cursor-pointer"
+            onClick={handleFreeHacksRedirect}
+          >
             <CardHeader className="text-center">
               <div className={`mx-auto w-14 h-14 rounded-full bg-gradient-to-r ${resource.gradient} flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
                 {resource.icon}
@@ -255,9 +262,16 @@ const TechCorner = () => {
               <CardDescription className="text-center mb-4">
                 {resource.description}
               </CardDescription>
-              <Button className="w-full" variant="outline">
-                <Bell className="h-4 w-4 mr-2" />
-                Coming Soon
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFreeHacksRedirect();
+                }}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Explore Now
               </Button>
             </CardContent>
           </Card>

@@ -615,9 +615,9 @@
   bottom: 0;
   background: linear-gradient(135deg, 
     hsl(var(--primary) / 0) 0%,
-    hsl(var(--primary) / 0.15) 25%,
-    hsl(var(--secondary) / 0.2) 50%,
-    hsl(var(--accent) / 0.15) 75%,
+    hsl(var(--primary) / 0.25) 25%,
+    hsl(var(--secondary) / 0.35) 50%,
+    hsl(var(--accent) / 0.25) 75%,
     hsl(var(--primary) / 0) 100%);
   background-size: 200% 200%;
   opacity: 0;
@@ -627,7 +627,7 @@
 }
 
 .nav-tab-gradient:hover::before {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 .active-tab-glow {
