@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,6 +79,7 @@ const MoviesTV = () => {
   const [selectedAward, setSelectedAward] = useState("all");
   const [minRating, setMinRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [dkcloudRating, setDkcloudRating] = useState([7.5]);
 
   const itemsPerPage = 6;
 
@@ -193,7 +193,11 @@ const MoviesTV = () => {
     if (activeTab === 'movies' || activeTab === 'tv') {
       matchesLanguage = selectedLanguage === "all" || (item as any).Language === selectedLanguage;
       matchesAward = selectedAward === "all" || (item as any).Awards === selectedAward;
-      matchesRating = rating >= minRating;
+      matchesRating = rating >= dkcloudRating[0];
+    }
+
+    if (activeTab === 'trending') {
+      matchesRating = rating >= dkcloudRating[0];
     }
 
     return matchesSearch && matchesGenre && matchesPlatform && matchesType && 
@@ -222,6 +226,7 @@ const MoviesTV = () => {
     setSelectedLanguage("all");
     setSelectedAward("all");
     setMinRating(0);
+    setDkcloudRating([7.5]);
   };
 
   const renderMovieCard = (item: ContentItem) => {
@@ -250,7 +255,7 @@ const MoviesTV = () => {
 
           <CardContent className="pt-0 space-y-3 relative z-10">
             <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-              {movie["Why to Watch"]}
+              <span className="text-green-500 font-medium">Why to Watch:</span> {movie["Why to Watch"]}
             </p>
             
             <div className="flex flex-wrap gap-2">
@@ -271,7 +276,7 @@ const MoviesTV = () => {
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Award className="h-3 w-3 text-amber-500" />
-                  <span className="font-medium text-foreground">Achievements:</span>
+                  <span className="font-medium text-green-500">Achievements:</span>
                 </div>
                 <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
                   {movie.Achievements}
@@ -315,7 +320,7 @@ const MoviesTV = () => {
 
           <CardContent className="pt-0 space-y-3 relative z-10">
             <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-              {tvShow["Why to Watch"]}
+              <span className="text-green-500 font-medium">Why to Watch:</span> {tvShow["Why to Watch"]}
             </p>
             
             <div className="flex flex-wrap gap-2">
@@ -336,7 +341,7 @@ const MoviesTV = () => {
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Award className="h-3 w-3 text-amber-500" />
-                  <span className="font-medium text-foreground">Achievements:</span>
+                  <span className="font-medium text-green-500">Achievements:</span>
                 </div>
                 <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
                   {tvShow.Achievements}
@@ -526,7 +531,6 @@ const MoviesTV = () => {
         />
       </div>
 
-      {/* Top Navigation */}
       {filteredData.length > itemsPerPage && (
         <div className="flex items-center justify-center gap-4 mb-8">
           <Button
@@ -648,20 +652,41 @@ const MoviesTV = () => {
               <div className="flex items-center space-x-2">
                 <Filter className="h-4 w-4 text-muted-foreground" />
                 <div className="flex-1">
-                  <Label htmlFor="minRating" className="text-sm text-muted-foreground">
-                    Min. Rating: {minRating}+
+                  <Label htmlFor="dkcloudRating" className="text-sm text-muted-foreground">
+                    DKcloud Rating: {dkcloudRating[0]}+
                   </Label>
                   <Slider
-                    id="minRating"
-                    value={[minRating]}
+                    id="dkcloudRating"
+                    value={dkcloudRating}
                     max={10}
-                    step={0.5}
-                    onValueChange={(value) => setMinRating(value[0])}
+                    min={7.5}
+                    step={0.1}
+                    onValueChange={setDkcloudRating}
                     className="mt-1"
                   />
                 </div>
               </div>
             </>
+          )}
+
+          {(activeTab === 'trending') && (
+            <div className="flex items-center space-x-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <div className="flex-1">
+                <Label htmlFor="dkcloudRating" className="text-sm text-muted-foreground">
+                  DKcloud Rating: {dkcloudRating[0]}+
+                </Label>
+                <Slider
+                  id="dkcloudRating"
+                  value={dkcloudRating}
+                  max={10}
+                  min={7.5}
+                  step={0.1}
+                  onValueChange={setDkcloudRating}
+                  className="mt-1"
+                />
+              </div>
+            </div>
           )}
         </div>
         
