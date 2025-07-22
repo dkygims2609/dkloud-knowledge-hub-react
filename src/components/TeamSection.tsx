@@ -1,16 +1,23 @@
 
-import { Music, Brain, Code, Zap } from "lucide-react";
+import { useState } from "react";
+import { Music, Brain, Code, Zap, UserCircle, Coffee } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { DecodingAnimation } from "@/components/DecodingAnimation";
 
 const TeamSection = () => {
+  const [bioMode, setBioMode] = useState<'professional' | 'casual'>('professional');
+  
+  const casualBioShort = "A guy with Wi-Fi, cold coffee, chilled cans & a slightly overactive brain. The Accidental Architect who chose to explore AI, burn Wi-Fi data, and build instead of chill — not because I'm too focused, but because it's cheaper than going out. dKloud is my lab, my playground, and my brain's private internet corner, now opened up for all.";
+  
   const teamMembers = [
     {
       id: "dk",
       name: "DK",
       role: "Founder & Creative Director",
       photo: "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png",
-      bio: "A passionate, self-taught professional combining technology, creativity, and community upliftment. Music composer working with Established Music Director Arya Sharma, guitarist, pianist, musician, writer, and AI-driven design expert. After spending over a decade in the IT industry — working with global companies like Wipro, Capita, and Capgemini — DK believes in creating platforms that make knowledge more accessible, learning more engaging, and creativity more visible.",
+      professionalBio: "A passionate, self-taught professional combining technology, creativity, and community upliftment. Music composer working with Established Music Director Arya Sharma, guitarist, pianist, musician, writer, and AI-driven design expert. After spending over a decade in the IT industry — working with global companies like Wipro, Capita, and Capgemini — DK believes in creating platforms that make knowledge more accessible, learning more engaging, and creativity more visible.",
+      casualBio: casualBioShort,
       specialties: [
         { icon: <Music className="h-5 w-5" />, text: "Music Composition" },
         { icon: <Brain className="h-5 w-5" />, text: "AI Design" },
@@ -24,7 +31,8 @@ const TeamSection = () => {
       name: "Neo",
       role: "Chief Technical Officer",
       photo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=400&h=400",
-      bio: "Neo joined dKloud.in as our CTO after being inspired by DK's vision of democratizing technology and creativity. With advanced expertise in cloud architecture, AI implementation, and system optimization, Neo brings cutting-edge technical leadership to our platform. Believes in the power of technology to uplift communities and make complex solutions simple and accessible.",
+      professionalBio: "Neo joined dKloud.in as our CTO after being inspired by DK's vision of democratizing technology and creativity. With advanced expertise in cloud architecture, AI implementation, and system optimization, Neo brings cutting-edge technical leadership to our platform. Believes in the power of technology to uplift communities and make complex solutions simple and accessible.",
+      casualBio: "Neo joined dKloud.in as our CTO after being inspired by DK's vision of democratizing technology and creativity. With advanced expertise in cloud architecture, AI implementation, and system optimization, Neo brings cutting-edge technical leadership to our platform. Believes in the power of technology to uplift communities and make complex solutions simple and accessible.",
       specialties: [
         { icon: <Brain className="h-5 w-5" />, text: "AI Architecture" },
         { icon: <Code className="h-5 w-5" />, text: "Cloud Systems" },
@@ -45,6 +53,26 @@ const TeamSection = () => {
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             The creative minds and technical experts behind dKloud.in's vision of making technology accessible and creativity visible.
           </p>
+          <div className="flex justify-center mt-6">
+            <Button 
+              onClick={() => setBioMode(bioMode === 'professional' ? 'casual' : 'professional')}
+              variant={bioMode === 'professional' ? 'gradient' : 'glass'} 
+              size="sm"
+              className="group"
+            >
+              {bioMode === 'professional' ? (
+                <>
+                  <UserCircle className="mr-1 group-hover:animate-pulse" />
+                  <span>Switch to Real Bio</span>
+                </>
+              ) : (
+                <>
+                  <Coffee className="mr-1 group-hover:animate-pulse" />
+                  <span>Back to Professional Bio</span>
+                </>
+              )}
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -69,9 +97,25 @@ const TeamSection = () => {
               
               <h4 className="text-2xl font-bold mb-4">{member.name}</h4>
               
-              <p className="text-muted-foreground mb-8 leading-relaxed text-sm">
-                {member.bio}
-              </p>
+              <div className="text-muted-foreground mb-8 leading-relaxed text-sm">
+                {bioMode === 'professional' ? (
+                  <p>{member.professionalBio}</p>
+                ) : (
+                  <div className="animate-fade-in">
+                    {member.id === "dk" ? (
+                      <p>
+                        <DecodingAnimation 
+                          text={member.casualBio} 
+                          delay={300} 
+                          className="text-accent"
+                        />
+                      </p>
+                    ) : (
+                      <p>{member.casualBio}</p>
+                    )}
+                  </div>
+                )}
+              </div>
               
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {member.specialties.map((specialty, idx) => (

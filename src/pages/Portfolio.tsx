@@ -1,14 +1,194 @@
+
 import { useState } from "react";
-import { Music, PenTool, User2, Heart, Calendar, ExternalLink, Play, Pause, Volume2 } from "lucide-react";
+import { Music, PenTool, User2, Heart, Calendar, ExternalLink, Play, Pause, Volume2, UserCircle, Coffee, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ModernTabSystem, createTabData } from "@/components/ModernTabSystem";
+import { DecodingAnimation } from "@/components/DecodingAnimation";
 import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('about');
+  const [bioMode, setBioMode] = useState<'professional' | 'casual'>('professional');
   const tabs = createTabData('portfolio');
+
+  const casualBio = {
+    title: "🧠 Just a Guy with Wi-Fi, Cold Coffee, Chilled Cans & a Slightly Overactive Brain",
+    content: `
+Hi, I'm DK.
+You can call me the Creative Director & Accidental Architect of dKloud.in.
+(Also known as the guy who chose to explore AI, burn Wi-Fi data over clubbing, and build instead of chill — not because I'm too focused or anything, but because it's cheaper than going out. Debugging felt like a decent time-pass. And honestly, that's what life is — killing time in your own style.)
+
+😅 How It All Started
+One random day, I just snapped.
+Uninstalled every social media app.
+Not because of some trending digital detox — but because I had literally reached the end of Instagram.
+Yes, the bottom of the reel blackhole.
+I actually thought my phone was stuck… then I realized — bro, you just ran out of content.
+True story.
+
+While escaping that mess, I had 2-3 weekend options left:
+
+1️⃣ Cricket — but Pune's early monsoon arrived like a boss. Cricket plans? Cancelled. (Weekdays dry, weekends drenched — Indra Dev clearly joined our WhatsApp group just to troll.)
+
+2️⃣ Hanging out — but that meant contributing to plans and dealing with autotagged people in big groups. Headache? Guaranteed.
+
+So I chose the more peaceful route:
+A date with my laptop and Wi-Fi.
+
+I sat down —
+TV playing low-volume Passenger, Kalpana Patowary, Rajan Ji Maharaj, even Pawan Singh sometimes (hey, no judging — they do what they do well).
+A few chilled 4% cans on the side (yes, I love that brand).
+Cold coffee on standby (if the cans run out).
+
+(Wasn't a movie scene — but it could've been. Just swap the aesthetic candle with a dusty desk and half-drained cold brew.)
+
+I typed the word git for the first time in my life.
+Wanted to jump into the DevOps world after finishing some cloud certs.
+Thought — "Let's make a project."
+
+No clue how to push a repo.
+Forget deployment — I was still saying hello-world.
+
+(Yeah, I was that guy with no clue and world domination dreams.)
+
+So I created this — dKloud.in.
+And the ride?
+Absolutely wild.
+
+Countless bugs, endless Google rabbit holes, broken layouts, lost sleep.
+Some days it felt like I was building a rocket using Fevicol, AI, and pure stubbornness.
+
+Even AI agents started saying:
+"Bro, take some rest."
+But if I stop midway, I get bored.
+So I don't.
+
+I'm pretty famous in my family for not finishing anything.
+But that's because I don't chase "completion" — I chase interest.
+
+If something hooks my brain, I'm all in.
+If not… meh.
+
+"I'll build something impactful. I'll build it my way. And I won't spend a bomb doing it."
+(Because spending money is mainstream. And my jugaad game was already peaking.)
+
+🤑 Budget? Just ₹483. Seriously.
+Yup — the entire thing runs on just ₹483/year.
+That's just the .in domain fee.
+
+No fancy hosting.
+No paid builder.
+No premium plugin.
+Nothing extra.
+
+483 bucks — and even that felt like overspending tbh.
+If .in domains were free, I'd have skipped that too. But hey, gotta stay legit.
+
+🤖 Do I Work on It Daily?
+Nope.
+I trained AI agents to handle the routine.
+
+The data fetches, updates, syncs, and refreshes on its own.
+Sometimes, I feel like they're smarter than me.
+
+Now, while dKloud runs in the background, I just wander around thinking,
+"What next?" (Already built some web apps and offline tools — beta versions coming soon.)
+
+(Work smart → Automate → Then work lazy. Elite founder mode: unlocked.)
+
+🧠 Why I Do It
+Because I literally can't sit idle for two minutes.
+If I try, I start shaking my leg like a Bollywood side character waiting for a dance cue.
+
+So either:
+🎸 I'm playing guitar or writing songs/poetry at 3AM
+🏏 Smashing sixes in a midnight cricket match
+🧩 Or debugging some random bug like a mini Sherlock Holmes with ADHD
+
+I look at the world with curious eyes.
+Everything broken looks like a puzzle waiting to be fixed.
+That's why dKloud happened — I just needed to park all that madness somewhere.
+
+🧃 Real Reason I Made It?
+To avoid getting 15 phone calls a week from friends and fam.
+They'd ask for tool links, movie names, recommendations...
+
+So I thought — why not just build something and send them the link?
+
+dKloud is my way of avoiding unnecessary phone calls and WhatsApp spam.
+
+(My mental peace > small talk)
+
+🌾 From Wi-Fi-less Fields to Git Commits
+I come from a place where Wi-Fi arrived after buffaloes.
+Yes, I had 3 of them and spent many years taking them for grass feeding ("Charane").
+
+Street cricket taught more logic than textbooks.
+People still judge you by:
+
+Your accent
+
+Your attire
+
+Your caste
+
+Your political views
+
+That kind of environment forces creativity.
+If something's broken — you fix it with what you've got.
+
+From khet to cloud, it wasn't a big leap — but the mindset changed everything.
+
+💼 My Work (aka: "Resume Stuff Without the Hype")
+🏢 Landed jobs at top tech companies (no name drops — but Google is free 😎)
+⚙️ Skilled in AWS, Azure, Infra, Citrix, Virtualization, Monitoring, Terraform, PowerShell
+🎯 Built dKloud.in solo — frontend, backend, data flow, logic, animations, API work — every single click
+🎧 Dropped original music compositions on YouTube
+📚 Created a fully dynamic platform using Google APIs + SheetBest — no CMS needed
+
+Got a few certs too.
+Mostly to keep recruiters happy.
+Honestly, I don't even remember when they expire.
+
+What I do isn't rocket science.
+But solving annoying, complex problems?
+That's my sweet spot.
+That's where I go full cheap Sherlock.
+
+🤝 Collaborators (For Services, Not This Site)
+While dKloud is 100% built by me, I collaborate with:
+✍️ Writers (for content/blogs)
+🎼 Musicians (for original releases/collabs)
+👨‍🔧 Engineers (for future freelance services)
+
+The logic, tech, automation — that's me.
+But to scale? You need a team.
+
+✌️ TL;DR (Too Lazy? Read This)
+❌ Didn't plan a startup
+❌ Didn't chase followers
+✅ Just built something because I couldn't sit still
+
+dKloud is my lab. My playground. My brain's private internet corner, now opened up for others.
+
+(Scalable? No clue. Fun? 1000%)
+
+👀 Final Thought
+This was a real story — but pick whatever version helps you sleep better.
+Just know this: the story may sound funny or rustic. But don't let that distract you. I know what I'm doing — and if I take something up, I go deep. Give me the tools and a real challenge, and I'll out-work, out-think, and out-create expectations.
+
+If you can engage me, count me in.
+Let's build cool stuff. 🧩
+
+This isn't a rehearsed pitch. It's an honest pen-down.No startup drama. No buzzword overload. No struggle glorified.Just real work, raw process, and a ridiculous amount of obsession with getting things right.
+
+I don't chase spotlight. I chase the spark.
+All I need are my 4 Ps: Pyar, Paisa, Parivar, Passion.
+
+Let's get building.`
+  };
 
   const renderAboutContent = () => (
     <div className="space-y-8">
@@ -24,32 +204,67 @@ const Portfolio = () => {
           </div>
           <CardTitle className="text-2xl mb-2">DK</CardTitle>
           <CardDescription className="text-lg text-accent font-medium">Founder & Creative Director</CardDescription>
+          <div className="flex justify-center mt-4">
+            <Button 
+              onClick={() => setBioMode(bioMode === 'professional' ? 'casual' : 'professional')}
+              variant={bioMode === 'professional' ? 'gradient' : 'glass'} 
+              size="lg"
+              className="group"
+            >
+              {bioMode === 'professional' ? (
+                <>
+                  <UserCircle className="mr-1 group-hover:animate-pulse" />
+                  <span>Read Real Bio</span>
+                </>
+              ) : (
+                <>
+                  <Coffee className="mr-1 group-hover:animate-pulse" />
+                  <span>Back to Professional Bio</span>
+                </>
+              )}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl p-6 border border-primary/20">
-            <h3 className="text-xl font-semibold mb-4 text-primary">Founder Note</h3>
-            <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                Hi, I'm DK — the mind and spirit behind dKloud.in.
-              </p>
-              <p>
-                After spending over a decade in the IT industry — working with global companies like <span className="text-primary font-medium">Wipro, Capita, and Capgemini</span> — I've lived through the evolution of tech firsthand. From on-prem Windows servers to complex VMware infrastructures and now the era of cloud and AI, I've worked on real-world projects that shaped how businesses run behind the scenes.
-              </p>
-              <p>
-                But tech is only one side of the story.
-              </p>
-              <p>
-                🎼 I'm also a <span className="text-accent font-medium">music composer, lyricist</span>, and someone who believes that <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">creativity is not separate from logic — it enhances it</span>. I've collaborated with music director <span className="text-accent font-medium">Arya Sharma</span>, created original compositions, and blended AI tools with human expression to craft everything from custom wedding songs to logos and story-driven visuals.
-              </p>
-              <p>
-                This duality — of <span className="text-primary font-medium">engineering systems by day and composing melodies by night</span> — inspired the creation of dKloud.in.
-              </p>
-              <p className="text-lg font-medium text-foreground">
-                A platform that isn't just built with code... <br />
-                <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">It's built with soul.</span>
-              </p>
+          {bioMode === 'professional' ? (
+            <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl p-6 border border-primary/20">
+              <h3 className="text-xl font-semibold mb-4 text-primary">Founder Note</h3>
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
+                <p>
+                  Hi, I'm DK — the mind and spirit behind dKloud.in.
+                </p>
+                <p>
+                  After spending over a decade in the IT industry — working with global companies like <span className="text-primary font-medium">Wipro, Capita, and Capgemini</span> — I've lived through the evolution of tech firsthand. From on-prem Windows servers to complex VMware infrastructures and now the era of cloud and AI, I've worked on real-world projects that shaped how businesses run behind the scenes.
+                </p>
+                <p>
+                  But tech is only one side of the story.
+                </p>
+                <p>
+                  🎼 I'm also a <span className="text-accent font-medium">music composer, lyricist</span>, and someone who believes that <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-medium">creativity is not separate from logic — it enhances it</span>. I've collaborated with music director <span className="text-accent font-medium">Arya Sharma</span>, created original compositions, and blended AI tools with human expression to craft everything from custom wedding songs to logos and story-driven visuals.
+                </p>
+                <p>
+                  This duality — of <span className="text-primary font-medium">engineering systems by day and composing melodies by night</span> — inspired the creation of dKloud.in.
+                </p>
+                <p className="text-lg font-medium text-foreground">
+                  A platform that isn't just built with code... <br />
+                  <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">It's built with soul.</span>
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-gradient-to-r from-accent/10 via-primary/10 to-accent/10 rounded-xl p-6 border border-accent/20 animate-fade-in">
+              <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                <DecodingAnimation text={casualBio.title} delay={300} />
+              </h3>
+              <div className="space-y-6 text-muted-foreground leading-relaxed whitespace-pre-line">
+                {casualBio.content.split('\n\n').map((paragraph, index) => (
+                  <p key={index} className={`transition-all duration-300 delay-${Math.min(index * 100, 800)}`}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 

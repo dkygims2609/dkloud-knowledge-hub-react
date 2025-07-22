@@ -18,10 +18,13 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
       setIsDecoding(true);
       const originalText = text;
       let iterations = 0;
-      const totalIterations = originalText.length + 3;
+      
+      // For longer text, adjust iterations to make animation still feel snappy
+      const maxIterations = Math.min(originalText.length + 3, 50);
+      const iterationStep = originalText.length > 50 ? Math.floor(originalText.length / 50) : 1;
 
       const interval = setInterval(() => {
-        const progress = iterations / totalIterations;
+        const progress = iterations / maxIterations;
 
         const newText = originalText
           .split("")
@@ -34,7 +37,8 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
             }
             
             // Progressive decoding with occasional glitches
-            if (index < iterations - 2) {
+            // For long text, we decode in chunks based on iteration steps
+            if (index < iterations * iterationStep - 2) {
               // Rare random glitch on already decoded characters
               return Math.random() < 0.05 ? 
                 characters[Math.floor(Math.random() * characters.length)] : 
@@ -42,7 +46,7 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
             }
             
             // Current decoding position gets special treatment
-            if (index === iterations - 2) {
+            if (index >= iterations * iterationStep - 2 && index <= iterations * iterationStep) {
               return Math.random() < 0.7 ? 
                 originalText[index] : 
                 characters[Math.floor(Math.random() * characters.length)];
@@ -57,22 +61,24 @@ export function DecodingAnimation({ text, className = "", delay = 0 }: DecodingA
         iterations += 1;
 
         // Stop when we've decoded all characters
-        if (iterations > totalIterations) {
+        if (iterations > maxIterations) {
           clearInterval(interval);
           setDisplayText(originalText);
           setIsDecoding(false);
         }
-      }, 80);
+      }, 50); // Slightly faster for longer text
+
     };
 
     const timer = setTimeout(() => {
       startDecoding();
     }, delay);
 
-    // Repeat every 6 seconds for regular shuffling
+    // Repeat animation less frequently for long text to avoid performance issues
     const repeatTimer = setInterval(() => {
+      if (text.length > 500) return; // Skip repeat animation for very long text
       startDecoding();
-    }, 6000);
+    }, Math.max(8000, text.length * 10));
 
     return () => {
       clearTimeout(timer);
