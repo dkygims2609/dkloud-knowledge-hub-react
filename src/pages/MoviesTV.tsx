@@ -45,13 +45,87 @@ const MoviesTV = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec");
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec", {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const result = await response.json();
         setData(result || []);
       } catch (error) {
         console.error("Error fetching data:", error);
-        toast.error("Failed to load movies and TV shows. Please try again later.");
-        setData([]);
+        toast.error("API temporarily unavailable. Using sample data.");
+        
+        // Fallback sample data when API is down
+        const sampleData = [
+          {
+            id: "1",
+            title: "The Matrix",
+            description: "A computer programmer discovers reality is actually a simulation and joins a rebellion to free humanity.",
+            genre: "sci-fi",
+            rating: "8.7",
+            year: "1999",
+            type: "movie",
+            category: "movie",
+            trending: true,
+            ultimate: true,
+            poster: "",
+            imdb_link: "https://www.imdb.com/title/tt0133093/",
+            trailer_link: "https://www.youtube.com/watch?v=vKQi3bBA1y8"
+          },
+          {
+            id: "2",
+            title: "Breaking Bad",
+            description: "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student.",
+            genre: "drama",
+            rating: "9.5",
+            year: "2008",
+            type: "tv series",
+            category: "tv",
+            trending: true,
+            ultimate: true,
+            poster: "",
+            imdb_link: "https://www.imdb.com/title/tt0903747/",
+            trailer_link: "https://www.youtube.com/watch?v=HhesaQXLuRY"
+          },
+          {
+            id: "3",
+            title: "Inception",
+            description: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task.",
+            genre: "sci-fi",
+            rating: "8.8",
+            year: "2010",
+            type: "movie",
+            category: "movie",
+            trending: false,
+            ultimate: true,
+            poster: "",
+            imdb_link: "https://www.imdb.com/title/tt1375666/",
+            trailer_link: "https://www.youtube.com/watch?v=YoHD9XEInc0"
+          },
+          {
+            id: "4",
+            title: "Stranger Things",
+            description: "When a young boy disappears, his mother and friends must confront terrifying supernatural forces.",
+            genre: "sci-fi",
+            rating: "8.7",
+            year: "2016",
+            type: "tv series",
+            category: "tv",
+            trending: true,
+            ultimate: false,
+            poster: "",
+            imdb_link: "https://www.imdb.com/title/tt4574334/",
+            trailer_link: "https://www.youtube.com/watch?v=b9EkMc79ZSU"
+          }
+        ];
+        setData(sampleData);
       } finally {
         setLoading(false);
       }

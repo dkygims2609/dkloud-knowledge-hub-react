@@ -47,8 +47,8 @@ const AITools = () => {
   }, []);
 
   const filteredTools = data.filter(tool => {
-    const searchMatch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        tool.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchMatch = (tool.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool.description?.toLowerCase() || '').includes(searchTerm.toLowerCase());
     const categoryMatch = selectedCategory === "all" || tool.category === selectedCategory;
     const ratingMatch = tool.rating === undefined || tool.rating >= minRating;
 
