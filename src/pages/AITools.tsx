@@ -4,21 +4,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Calendar, Star, ExternalLink, Play, Brain, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, Star, ExternalLink, Play, Brain, ChevronLeft, ChevronRight, Globe, Zap, Target } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 interface AITool {
   id?: string;
+  "Tool Name"?: string;
   name?: string;
+  Description?: string;
   description?: string;
+  Category?: string;
   category?: string;
+  Pricing?: string;
   pricing?: string;
+  DKcloudRating?: string | number;
   rating?: number;
+  Features?: string;
   features?: string[];
+  Website?: string;
   website?: string;
+  "Demo Link"?: string;
   demo_link?: string;
+  Logo?: string;
   logo?: string;
 }
 
@@ -27,23 +37,62 @@ const AITools = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedPricing, setSelectedPricing] = useState("all");
   const [minRating, setMinRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   
-  const toolsPerPage = 6; // 2 rows × 3 cards
+  const toolsPerPage = 6;
+
+  const normalizeData = (tool: any): AITool => {
+    // Handle features field - could be string or array
+    let features: string[] = [];
+    if (tool.Features) {
+      if (typeof tool.Features === 'string') {
+        features = tool.Features.split(',').map((f: string) => f.trim()).filter(Boolean);
+      } else if (Array.isArray(tool.Features)) {
+        features = tool.Features;
+      }
+    }
+
+    return {
+      id: tool.id || tool["Tool Name"] || tool.name || `tool-${Math.random()}`,
+      name: tool["Tool Name"] || tool.name,
+      description: tool.Description || tool.description,
+      category: tool.Category || tool.category,
+      pricing: tool.Pricing || tool.pricing,
+      rating: parseFloat(String(tool.DKcloudRating || tool.rating || '0')),
+      features: features,
+      website: tool.Website || tool.website,
+      demo_link: tool["Demo Link"] || tool.demo_link,
+      logo: tool.Logo || tool.logo
+    };
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec");
-        const jsonData: AITool[] = await response.json();
-        const processedData = (jsonData || []).map((tool, index) => ({
-          ...tool,
-          id: tool.id || `tool-${index}`,
-        }));
+        console.log("Fetching AI Tools data...");
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec", {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const jsonData = await response.json();
+        console.log("AI Tools API response:", jsonData);
+        
+        const processedData = (Array.isArray(jsonData) ? jsonData : []).map(normalizeData);
+        console.log("Processed AI Tools data:", processedData);
         setData(processedData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching AI Tools data:", error);
+        toast.error("Failed to load AI tools. Please try again later.");
+        setData([]);
       } finally {
         setLoading(false);
       }
@@ -52,13 +101,19 @@ const AITools = () => {
     fetchData();
   }, []);
 
+  const getUniqueValues = (key: keyof AITool) => {
+    return [...new Set(data.map(tool => tool[key]).filter(Boolean))].sort();
+  };
+
   const filteredTools = data.filter(tool => {
     const searchMatch = (tool.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                        (tool.description?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+                        (tool.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool.category?.toLowerCase() || '').includes(searchTerm.toLowerCase());
     const categoryMatch = selectedCategory === "all" || tool.category === selectedCategory;
+    const pricingMatch = selectedPricing === "all" || tool.pricing === selectedPricing;
     const ratingMatch = tool.rating === undefined || tool.rating >= minRating;
 
-    return searchMatch && categoryMatch && ratingMatch;
+    return searchMatch && categoryMatch && pricingMatch && ratingMatch;
   });
 
   const sortedTools = [...filteredTools].sort((a, b) => {
@@ -81,44 +136,61 @@ const AITools = () => {
     }
   };
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("all");
+    setSelectedPricing("all");
+    setMinRating(0);
+  };
+
   const renderAIToolCard = (tool: AITool) => (
-    <Card key={tool.id} className="ai-tools-card-enhanced group cursor-pointer transition-all duration-300 hover:scale-[1.02] h-full">
-      <CardHeader className="pb-3">
+    <Card key={tool.id} className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] h-full">
+      {/* Gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      
+      <CardHeader className="pb-3 relative z-10">
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1">
             {tool.logo ? (
-              <img 
-                src={tool.logo} 
-                alt={`${tool.name} logo`}
-                className="w-12 h-12 rounded-lg object-cover border border-border/50"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
-              />
+              <div className="relative overflow-hidden">
+                <img 
+                  src={tool.logo} 
+                  alt={`${tool.name} logo`}
+                  className="w-12 h-12 rounded-lg object-cover border border-border/50 transition-transform duration-500 group-hover:scale-110"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+              </div>
             ) : (
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50">
-                <Brain className="h-6 w-6 text-primary" />
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
+                <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
             )}
-            <div>
-              <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+            <div className="flex-1">
+              <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
                 {tool.name}
               </CardTitle>
-              <div className="flex items-center gap-2 mt-1">
-                <Badge variant={tool.pricing === 'Free' ? 'default' : 'secondary'} className="text-xs">
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <Badge 
+                  variant={tool.pricing === 'Free' ? 'default' : 'secondary'} 
+                  className={`text-xs ${tool.pricing === 'Free' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300' : ''}`}
+                >
+                  <Zap className="h-3 w-3 mr-1" />
                   {tool.pricing}
                 </Badge>
                 {tool.category && (
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                    <Target className="h-3 w-3 mr-1" />
                     {tool.category}
                   </Badge>
                 )}
               </div>
             </div>
           </div>
-          {tool.rating && (
-            <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full">
+          {tool.rating && tool.rating > 0 && (
+            <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
               <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">
                 {tool.rating}
@@ -128,43 +200,47 @@ const AITools = () => {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-0">
-        <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors">
+      <CardContent className="pt-0 relative z-10">
+        <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
           {tool.description}
         </CardDescription>
 
         {tool.features && tool.features.length > 0 && (
           <div className="mb-4">
+            <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center">
+              <Star className="h-3 w-3 mr-1 text-primary" />
+              Key Features:
+            </h4>
             <div className="flex flex-wrap gap-1">
-              {tool.features.slice(0, 3).map((feature, index) => (
+              {tool.features.slice(0, 4).map((feature, index) => (
                 <Badge key={index} variant="secondary" className="text-xs bg-muted/50 hover:bg-muted transition-colors">
                   {feature}
                 </Badge>
               ))}
-              {tool.features.length > 3 && (
+              {tool.features.length > 4 && (
                 <Badge variant="secondary" className="text-xs bg-muted/50">
-                  +{tool.features.length - 3} more
+                  +{tool.features.length - 4} more
                 </Badge>
               )}
             </div>
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 mt-4">
           {tool.website && (
             <Button 
               asChild 
               size="sm" 
-              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
+              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-white font-medium"
             >
               <a href={tool.website} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="h-4 w-4 mr-2" />
+                <Globe className="h-4 w-4 mr-2" />
                 Visit Site
               </a>
             </Button>
           )}
           {tool.demo_link && (
-            <Button asChild variant="outline" size="sm" className="flex-1">
+            <Button asChild variant="outline" size="sm" className="flex-1 hover:bg-primary/10 transition-colors duration-300">
               <a href={tool.demo_link} target="_blank" rel="noopener noreferrer">
                 <Play className="h-4 w-4 mr-2" />
                 Demo
@@ -175,8 +251,6 @@ const AITools = () => {
       </CardContent>
     </Card>
   );
-
-  const categoryOptions = [...new Set(data.map(tool => tool.category))].filter(Boolean);
 
   return (
     <div className="container mx-auto px-4 py-8 pt-32">
@@ -192,50 +266,74 @@ const AITools = () => {
         </p>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-        <div className="flex items-center space-x-2 w-full md:w-auto">
-          <Search className="h-5 w-5 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search AI tools..."
-            className="bg-background/90 backdrop-blur-sm border-none focus:ring-primary text-sm"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      {/* Enhanced Filters */}
+      <div className="bg-card/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-border/30">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search AI tools..."
+              className="pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
-        <div className="flex items-center space-x-4 w-full md:w-auto">
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-[180px] md:w-[150px] lg:w-[200px] text-sm">
-              <SelectValue placeholder="All Categories" />
+            <SelectTrigger>
+              <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {categoryOptions.map(category => (
-                <SelectItem key={category} value={category}>
-                  {category}
+              {getUniqueValues('category').map(category => (
+                <SelectItem key={String(category)} value={String(category)}>
+                  {String(category)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={selectedPricing} onValueChange={setSelectedPricing}>
+            <SelectTrigger>
+              <SelectValue placeholder="Pricing" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Pricing</SelectItem>
+              {getUniqueValues('pricing').map(pricing => (
+                <SelectItem key={String(pricing)} value={String(pricing)}>
+                  {String(pricing)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
           <div className="flex items-center space-x-2">
-            <Filter className="h-5 w-5 text-muted-foreground" />
-            <div className="w-[150px]">
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <div className="flex-1">
               <Label htmlFor="minRating" className="text-sm text-muted-foreground">
-                Min. Rating
+                Min. Rating: {minRating}+
               </Label>
               <Slider
                 id="minRating"
-                defaultValue={[0]}
+                value={[minRating]}
                 max={5}
                 step={0.5}
-                aria-label="Minimum Rating"
                 onValueChange={(value) => setMinRating(value[0])}
+                className="mt-1"
               />
-              <p className="text-sm text-muted-foreground text-right">{minRating}+</p>
             </div>
           </div>
+        </div>
+        
+        <div className="flex justify-between items-center">
+          <p className="text-sm text-muted-foreground">
+            Showing {currentItems.length} of {sortedTools.length} AI tools
+          </p>
+          <Button variant="outline" size="sm" onClick={clearFilters}>
+            <Filter className="h-4 w-4 mr-2" />
+            Clear Filters
+          </Button>
         </div>
       </div>
       
@@ -257,7 +355,7 @@ const AITools = () => {
                 size="icon"
                 onClick={prevSlide}
                 disabled={currentPage === 0}
-                className="rounded-full"
+                className="rounded-full hover:bg-primary/10"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -273,7 +371,7 @@ const AITools = () => {
                 size="icon"
                 onClick={nextSlide}
                 disabled={currentPage >= Math.ceil(sortedTools.length / toolsPerPage) - 1}
-                className="rounded-full"
+                className="rounded-full hover:bg-primary/10"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -284,6 +382,9 @@ const AITools = () => {
         <div className="text-center py-12">
           <h3 className="text-2xl font-semibold mb-2">No AI tools found</h3>
           <p className="text-muted-foreground">Try adjusting your search terms or filters.</p>
+          <Button variant="outline" className="mt-4" onClick={clearFilters}>
+            Clear Filters
+          </Button>
         </div>
       )}
     </div>
