@@ -112,7 +112,7 @@ const AITools = () => {
               </div>
               <div className="flex-1">
                 <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                  {tool["Toolname"]}
+                  <span className="text-green-500 font-bold">{tool["Toolname"]}</span>
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   {tool["Category"] && (
@@ -129,7 +129,7 @@ const AITools = () => {
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
           <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
-            {tool["Purpose"]}
+            <span className="text-green-500 font-semibold">Purpose:</span> {tool["Purpose"]}
           </CardDescription>
 
           <div className="space-y-3 mt-auto">
