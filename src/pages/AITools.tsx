@@ -11,25 +11,15 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 interface AITool {
-  id?: string;
   "Tool Name"?: string;
-  name?: string;
   Description?: string;
-  description?: string;
   Category?: string;
-  category?: string;
   Pricing?: string;
-  pricing?: string;
   DKcloudRating?: string | number;
-  rating?: number;
   Features?: string;
-  features?: string[];
   Website?: string;
-  website?: string;
   "Demo Link"?: string;
-  demo_link?: string;
   Logo?: string;
-  logo?: string;
 }
 
 const AITools = () => {
@@ -42,31 +32,6 @@ const AITools = () => {
   const [currentPage, setCurrentPage] = useState(0);
   
   const toolsPerPage = 6;
-
-  const normalizeData = (tool: any): AITool => {
-    // Handle features field - could be string or array
-    let features: string[] = [];
-    if (tool.Features) {
-      if (typeof tool.Features === 'string') {
-        features = tool.Features.split(',').map((f: string) => f.trim()).filter(Boolean);
-      } else if (Array.isArray(tool.Features)) {
-        features = tool.Features;
-      }
-    }
-
-    return {
-      id: tool.id || tool["Tool Name"] || tool.name || `tool-${Math.random()}`,
-      name: tool["Tool Name"] || tool.name,
-      description: tool.Description || tool.description,
-      category: tool.Category || tool.category,
-      pricing: tool.Pricing || tool.pricing,
-      rating: parseFloat(String(tool.DKcloudRating || tool.rating || '0')),
-      features: features,
-      website: tool.Website || tool.website,
-      demo_link: tool["Demo Link"] || tool.demo_link,
-      logo: tool.Logo || tool.logo
-    };
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,9 +51,8 @@ const AITools = () => {
         const jsonData = await response.json();
         console.log("AI Tools API response:", jsonData);
         
-        const processedData = (Array.isArray(jsonData) ? jsonData : []).map(normalizeData);
-        console.log("Processed AI Tools data:", processedData);
-        setData(processedData);
+        // Use data as-is from API since column names should match
+        setData(Array.isArray(jsonData) ? jsonData : []);
       } catch (error) {
         console.error("Error fetching AI Tools data:", error);
         toast.error("Failed to load AI tools. Please try again later.");
@@ -106,19 +70,22 @@ const AITools = () => {
   };
 
   const filteredTools = data.filter(tool => {
-    const searchMatch = (tool.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                        (tool.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                        (tool.category?.toLowerCase() || '').includes(searchTerm.toLowerCase());
-    const categoryMatch = selectedCategory === "all" || tool.category === selectedCategory;
-    const pricingMatch = selectedPricing === "all" || tool.pricing === selectedPricing;
-    const ratingMatch = tool.rating === undefined || tool.rating >= minRating;
+    const searchMatch = (tool["Tool Name"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool.Description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool.Category?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    
+    const categoryMatch = selectedCategory === "all" || tool.Category === selectedCategory;
+    const pricingMatch = selectedPricing === "all" || tool.Pricing === selectedPricing;
+    
+    const rating = parseFloat(String(tool.DKcloudRating || '0'));
+    const ratingMatch = rating >= minRating;
 
     return searchMatch && categoryMatch && pricingMatch && ratingMatch;
   });
 
   const sortedTools = [...filteredTools].sort((a, b) => {
-    const ratingA = a.rating === undefined ? 0 : a.rating;
-    const ratingB = b.rating === undefined ? 0 : b.rating;
+    const ratingA = parseFloat(String(a.DKcloudRating || '0'));
+    const ratingB = parseFloat(String(b.DKcloudRating || '0'));
     return ratingB - ratingA;
   });
 
@@ -143,114 +110,124 @@ const AITools = () => {
     setMinRating(0);
   };
 
-  const renderAIToolCard = (tool: AITool) => (
-    <Card key={tool.id} className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] h-full">
-      {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-      
-      <CardHeader className="pb-3 relative z-10">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3 flex-1">
-            {tool.logo ? (
-              <div className="relative overflow-hidden">
-                <img 
-                  src={tool.logo} 
-                  alt={`${tool.name} logo`}
-                  className="w-12 h-12 rounded-lg object-cover border border-border/50 transition-transform duration-500 group-hover:scale-110"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+  const renderAIToolCard = (tool: AITool) => {
+    // Parse features if they are in string format
+    let features: string[] = [];
+    if (tool.Features) {
+      if (typeof tool.Features === 'string') {
+        features = tool.Features.split(',').map((f: string) => f.trim()).filter(Boolean);
+      }
+    }
+
+    return (
+      <Card key={tool["Tool Name"]} className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] h-full">
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        
+        <CardHeader className="pb-3 relative z-10">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3 flex-1">
+              {tool.Logo ? (
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={tool.Logo} 
+                    alt={`${tool["Tool Name"]} logo`}
+                    className="w-12 h-12 rounded-lg object-cover border border-border/50 transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
+                  <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                </div>
+              )}
+              <div className="flex-1">
+                <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                  {tool["Tool Name"]}
+                </CardTitle>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <Badge 
+                    variant={tool.Pricing === 'Free' ? 'default' : 'secondary'} 
+                    className={`text-xs ${tool.Pricing === 'Free' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300' : ''}`}
+                  >
+                    <Zap className="h-3 w-3 mr-1" />
+                    {tool.Pricing}
+                  </Badge>
+                  {tool.Category && (
+                    <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                      <Target className="h-3 w-3 mr-1" />
+                      {tool.Category}
+                    </Badge>
+                  )}
+                </div>
               </div>
-            ) : (
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
-                <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+            </div>
+            {tool.DKcloudRating && parseFloat(String(tool.DKcloudRating)) > 0 && (
+              <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
+                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">
+                  {tool.DKcloudRating}
+                </span>
               </div>
             )}
-            <div className="flex-1">
-              <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                {tool.name}
-              </CardTitle>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <Badge 
-                  variant={tool.pricing === 'Free' ? 'default' : 'secondary'} 
-                  className={`text-xs ${tool.pricing === 'Free' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300' : ''}`}
-                >
-                  <Zap className="h-3 w-3 mr-1" />
-                  {tool.pricing}
-                </Badge>
-                {tool.category && (
-                  <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-                    <Target className="h-3 w-3 mr-1" />
-                    {tool.category}
+          </div>
+        </CardHeader>
+
+        <CardContent className="pt-0 relative z-10">
+          <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
+            {tool.Description}
+          </CardDescription>
+
+          {features.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center">
+                <Star className="h-3 w-3 mr-1 text-primary" />
+                Key Features:
+              </h4>
+              <div className="flex flex-wrap gap-1">
+                {features.slice(0, 4).map((feature, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs bg-muted/50 hover:bg-muted transition-colors">
+                    {feature}
+                  </Badge>
+                ))}
+                {features.length > 4 && (
+                  <Badge variant="secondary" className="text-xs bg-muted/50">
+                    +{features.length - 4} more
                   </Badge>
                 )}
               </div>
             </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-2 mt-4">
+            {tool.Website && (
+              <Button 
+                asChild 
+                size="sm" 
+                className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-white font-medium"
+              >
+                <a href={tool.Website} target="_blank" rel="noopener noreferrer">
+                  <Globe className="h-4 w-4 mr-2" />
+                  Visit Site
+                </a>
+              </Button>
+            )}
+            {tool["Demo Link"] && (
+              <Button asChild variant="outline" size="sm" className="flex-1 hover:bg-primary/10 transition-colors duration-300">
+                <a href={tool["Demo Link"]} target="_blank" rel="noopener noreferrer">
+                  <Play className="h-4 w-4 mr-2" />
+                  Demo
+                </a>
+              </Button>
+            )}
           </div>
-          {tool.rating && tool.rating > 0 && (
-            <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-              <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">
-                {tool.rating}
-              </span>
-            </div>
-          )}
-        </div>
-      </CardHeader>
-
-      <CardContent className="pt-0 relative z-10">
-        <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-          {tool.description}
-        </CardDescription>
-
-        {tool.features && tool.features.length > 0 && (
-          <div className="mb-4">
-            <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center">
-              <Star className="h-3 w-3 mr-1 text-primary" />
-              Key Features:
-            </h4>
-            <div className="flex flex-wrap gap-1">
-              {tool.features.slice(0, 4).map((feature, index) => (
-                <Badge key={index} variant="secondary" className="text-xs bg-muted/50 hover:bg-muted transition-colors">
-                  {feature}
-                </Badge>
-              ))}
-              {tool.features.length > 4 && (
-                <Badge variant="secondary" className="text-xs bg-muted/50">
-                  +{tool.features.length - 4} more
-                </Badge>
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="flex flex-col sm:flex-row gap-2 mt-4">
-          {tool.website && (
-            <Button 
-              asChild 
-              size="sm" 
-              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-white font-medium"
-            >
-              <a href={tool.website} target="_blank" rel="noopener noreferrer">
-                <Globe className="h-4 w-4 mr-2" />
-                Visit Site
-              </a>
-            </Button>
-          )}
-          {tool.demo_link && (
-            <Button asChild variant="outline" size="sm" className="flex-1 hover:bg-primary/10 transition-colors duration-300">
-              <a href={tool.demo_link} target="_blank" rel="noopener noreferrer">
-                <Play className="h-4 w-4 mr-2" />
-                Demo
-              </a>
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 pt-32">
@@ -286,7 +263,7 @@ const AITools = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {getUniqueValues('category').map(category => (
+              {getUniqueValues('Category').map(category => (
                 <SelectItem key={String(category)} value={String(category)}>
                   {String(category)}
                 </SelectItem>
@@ -300,7 +277,7 @@ const AITools = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Pricing</SelectItem>
-              {getUniqueValues('pricing').map(pricing => (
+              {getUniqueValues('Pricing').map(pricing => (
                 <SelectItem key={String(pricing)} value={String(pricing)}>
                   {String(pricing)}
                 </SelectItem>
