@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, ExternalLink, Brain, ChevronLeft, ChevronRight, Globe, Zap, Target, DollarSign, RefreshCw } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { ModernLoader, SkeletonCard } from "@/components/ui/modern-loader";
 
 interface AITool {
   "Toolname"?: string;
@@ -294,9 +295,17 @@ const AITools = () => {
       </div>
       
       {loading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading AI tools...</p>
+        <div className="flex flex-col items-center justify-center min-h-[400px] space-y-8">
+          <ModernLoader 
+            text="Loading AI Tools..." 
+            variant="gradient" 
+            size="lg"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-50">
+            {[...Array(6)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
