@@ -78,7 +78,7 @@ const MoviesTV = () => {
   const [selectedType, setSelectedType] = useState("all");
   const [selectedLanguage, setSelectedLanguage] = useState("all");
   const [selectedAward, setSelectedAward] = useState("all");
-  const [minRating, setMinRating] = useState(0);
+  const [minRating, setMinRating] = useState(7.5); // Changed default to 7.5
   const [currentPage, setCurrentPage] = useState(0);
 
   const itemsPerPage = 6;
@@ -221,7 +221,7 @@ const MoviesTV = () => {
     setSelectedType("all");
     setSelectedLanguage("all");
     setSelectedAward("all");
-    setMinRating(0);
+    setMinRating(7.5); // Reset to 7.5
   };
 
   const renderMovieCard = (item: ContentItem) => {
@@ -249,7 +249,7 @@ const MoviesTV = () => {
           </CardHeader>
 
           <CardContent className="pt-0 space-y-3 relative z-10">
-            <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
+            <p className="text-sm text-green-600 dark:text-green-400 line-clamp-3 group-hover:text-green-500 transition-colors duration-300 font-medium">
               {movie["Why to Watch"]}
             </p>
             
@@ -273,7 +273,7 @@ const MoviesTV = () => {
                   <Award className="h-3 w-3 text-amber-500" />
                   <span className="font-medium text-foreground">Achievements:</span>
                 </div>
-                <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
+                <p className="text-green-600 dark:text-green-400 text-xs group-hover:text-green-500 transition-colors duration-300 font-medium">
                   {movie.Achievements}
                 </p>
               </div>
@@ -314,7 +314,7 @@ const MoviesTV = () => {
           </CardHeader>
 
           <CardContent className="pt-0 space-y-3 relative z-10">
-            <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
+            <p className="text-sm text-green-600 dark:text-green-400 line-clamp-3 group-hover:text-green-500 transition-colors duration-300 font-medium">
               {tvShow["Why to Watch"]}
             </p>
             
@@ -338,7 +338,7 @@ const MoviesTV = () => {
                   <Award className="h-3 w-3 text-amber-500" />
                   <span className="font-medium text-foreground">Achievements:</span>
                 </div>
-                <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
+                <p className="text-green-600 dark:text-green-400 text-xs group-hover:text-green-500 transition-colors duration-300 font-medium">
                   {tvShow.Achievements}
                 </p>
               </div>
@@ -526,36 +526,61 @@ const MoviesTV = () => {
         />
       </div>
 
-      {/* Top Navigation */}
-      {filteredData.length > itemsPerPage && (
-        <div className="flex items-center justify-center gap-4 mb-8">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={prevSlide}
-            disabled={currentPage === 0}
-            className="rounded-full hover:bg-primary/10"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">
-              Page {currentPage + 1} of {Math.ceil(filteredData.length / itemsPerPage)}
-            </span>
-          </div>
-          
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={nextSlide}
-            disabled={currentPage >= Math.ceil(filteredData.length / itemsPerPage) - 1}
-            className="rounded-full hover:bg-primary/10"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+      {/* Top Navigation with Slider */}
+      <div className="flex items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-4">
+          {filteredData.length > itemsPerPage && (
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevSlide}
+                disabled={currentPage === 0}
+                className="rounded-full hover:bg-primary/10 touch-manipulation"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">
+                  Page {currentPage + 1} of {Math.ceil(filteredData.length / itemsPerPage)}
+                </span>
+              </div>
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextSlide}
+                disabled={currentPage >= Math.ceil(filteredData.length / itemsPerPage) - 1}
+                className="rounded-full hover:bg-primary/10 touch-manipulation"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </>
+          )}
         </div>
-      )}
+        
+        {/* DKcloudRating Slider - positioned prominently at top right */}
+        {(activeTab === 'movies' || activeTab === 'tv') && (
+          <div className="flex items-center space-x-3 bg-card/50 backdrop-blur-sm rounded-lg p-3 border border-border/30 min-w-[200px]">
+            <Filter className="h-4 w-4 text-muted-foreground shrink-0" />
+            <div className="flex-1">
+              <Label htmlFor="dkRating" className="text-sm text-muted-foreground block mb-1">
+                DKcloud Rating: {minRating}+
+              </Label>
+              <Slider
+                id="dkRating"
+                value={[minRating]}
+                min={7.5}
+                max={10}
+                step={0.1}
+                onValueChange={(value) => setMinRating(value[0])}
+                className="w-full touch-manipulation"
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Enhanced Filters */}
       <div className="bg-card/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-border/30">
@@ -644,23 +669,6 @@ const MoviesTV = () => {
                   ))}
                 </SelectContent>
               </Select>
-
-              <div className="flex items-center space-x-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                <div className="flex-1">
-                  <Label htmlFor="minRating" className="text-sm text-muted-foreground">
-                    Min. Rating: {minRating}+
-                  </Label>
-                  <Slider
-                    id="minRating"
-                    value={[minRating]}
-                    max={10}
-                    step={0.5}
-                    onValueChange={(value) => setMinRating(value[0])}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
             </>
           )}
         </div>

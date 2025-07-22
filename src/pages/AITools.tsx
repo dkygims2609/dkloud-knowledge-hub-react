@@ -111,7 +111,7 @@ const AITools = () => {
                 <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div className="flex-1">
-                <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                <CardTitle className="text-lg font-bold text-green-600 dark:text-green-400 group-hover:text-green-500 transition-colors duration-300 line-clamp-2">
                   {tool["Toolname"]}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -128,7 +128,7 @@ const AITools = () => {
         </CardHeader>
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
-          <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
+          <CardDescription className="text-sm text-green-600 dark:text-green-400 leading-relaxed mb-4 line-clamp-3 group-hover:text-green-500 transition-colors duration-300 flex-1 font-medium">
             {tool["Purpose"]}
           </CardDescription>
 
@@ -184,7 +184,7 @@ const AITools = () => {
         </p>
       </div>
 
-      {/* Top Navigation */}
+      {/* Top Navigation with touch-friendly controls */}
       {filteredTools.length > toolsPerPage && (
         <div className="flex items-center justify-center gap-4 mb-8">
           <Button
@@ -192,7 +192,7 @@ const AITools = () => {
             size="icon"
             onClick={prevSlide}
             disabled={currentPage === 0}
-            className="rounded-full hover:bg-primary/10"
+            className="rounded-full hover:bg-primary/10 touch-manipulation"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -208,7 +208,7 @@ const AITools = () => {
             size="icon"
             onClick={nextSlide}
             disabled={currentPage >= Math.ceil(filteredTools.length / toolsPerPage) - 1}
-            className="rounded-full hover:bg-primary/10"
+            className="rounded-full hover:bg-primary/10 touch-manipulation"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
