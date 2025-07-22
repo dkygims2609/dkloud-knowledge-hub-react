@@ -158,10 +158,10 @@ const MoviesTV = () => {
 
   const filteredData = data.filter(item => {
     const searchTermLower = searchTerm.toLowerCase();
-    const title = item.title || '';
-    const description = item.description || '';
-    const director = item.director || '';
-    const creator = item.creator || '';
+    const title = String(item.title || '');
+    const description = String(item.description || '');
+    const director = String(item.director || '');
+    const creator = String(item.creator || '');
     
     const matchesSearch = title.toLowerCase().includes(searchTermLower) ||
                          description.toLowerCase().includes(searchTermLower) ||
