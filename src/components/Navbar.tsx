@@ -123,28 +123,28 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 navbar-backdrop">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="fixed top-16 w-full z-40 navbar-backdrop">
+      <div className="max-w-full mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-2 group flex-shrink-0">
             <div className="relative">
               {/* Dark theme logo */}
               <img 
                 src="/lovable-uploads/4381e2bd-8639-4d6d-a9ed-f7edd39f22d9.png" 
                 alt="dKloud Logo" 
-                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110 dark:block hidden"
+                className="h-8 w-8 transition-transform duration-300 group-hover:scale-110 dark:block hidden"
               />
               {/* Light theme logo */}
               <img 
                 src="/lovable-uploads/108e6b6e-0af2-40ea-830a-23c86caa44d5.png" 
                 alt="dKloud Logo" 
-                className="h-10 w-10 transition-transform duration-300 group-hover:scale-110 dark:hidden block"
+                className="h-8 w-8 transition-transform duration-300 group-hover:scale-110 dark:hidden block"
               />
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-xl opacity-20 blur-md group-hover:opacity-40 transition-opacity duration-700 animate-pulse" style={{animationDuration: "4s"}}></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-xl opacity-20 blur-sm group-hover:opacity-40 transition-opacity duration-700 animate-pulse" style={{animationDuration: "4s"}}></div>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-foreground leading-tight group-hover:text-primary transition-colors duration-300">
+            <div className="hidden sm:flex flex-col">
+              <span className="font-bold text-sm text-foreground leading-tight group-hover:text-primary transition-colors duration-300">
                 dKloud
               </span>
               <span className="text-xs text-muted-foreground leading-tight">
@@ -153,94 +153,96 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg">
-            {navigation.map((item) => (
-              <div key={item.name} className="relative">
-                {item.dropdownItems ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className={cn(
-                          "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient",
-                          location.pathname === item.href
-                            ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                            : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
-                        )}
-                      >
-                        <item.icon className="h-3 w-3" />
-                        <span className="hidden xl:inline text-xs">{item.name}</span>
-                        <span className="xl:hidden text-[10px] font-semibold">
-                          {item.name.split(' ')[0]}
-                        </span>
-                        <ChevronDown className="h-3 w-3 ml-1" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-background/95 backdrop-blur-lg border border-border/50 shadow-2xl min-w-[220px] z-[100]">
-                      <DropdownMenuLabel className="text-sm font-semibold text-foreground bg-gradient-to-r from-primary/10 to-secondary/10 rounded-md mx-1 px-2 py-1">
-                        {item.name}
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator className="bg-border/30" />
-                      {item.dropdownItems.map((dropItem) => (
-                        <DropdownMenuItem 
-                          key={dropItem.name} 
-                          asChild={!dropItem.external}
-                          className="focus:bg-primary/10 focus:text-primary"
-                          onClick={() => dropItem.external && handleDropdownClick(dropItem)}
-                        >
-                          {dropItem.external ? (
-                            <button 
-                              className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1 w-full text-left"
-                            >
-                              {dropItem.name.includes("Coming Soon") ? (
-                                <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
-                                  {dropItem.name}
-                                </span>
-                              ) : (
-                                dropItem.name
-                              )}
-                            </button>
-                          ) : (
-                            <Link 
-                              to={dropItem.href}
-                              className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1"
-                            >
-                              {dropItem.name.includes("Coming Soon") ? (
-                                <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
-                                  {dropItem.name}
-                                </span>
-                              ) : (
-                                dropItem.name
-                              )}
-                            </Link>
+          {/* Desktop Navigation - Single Line with Scroll */}
+          <div className="hidden lg:flex items-center flex-1 justify-center mx-4">
+            <div className="flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg overflow-x-auto max-w-5xl">
+              {navigation.map((item) => (
+                <div key={item.name} className="relative flex-shrink-0">
+                  {item.dropdownItems ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          className={cn(
+                            "relative flex items-center space-x-1 px-2 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap",
+                            location.pathname === item.href
+                              ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
+                              : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
                           )}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Link
-                    to={item.href}
-                    className={cn(
-                      "relative flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient",
-                      location.pathname === item.href
-                        ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                        : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
-                    )}
-                  >
-                    <item.icon className="h-3 w-3" />
-                    <span className="hidden xl:inline text-xs">{item.name}</span>
-                    <span className="xl:hidden text-[10px] font-semibold">
-                      {item.name.split(' ')[0]}
-                    </span>
-                  </Link>
-                )}
-              </div>
-            ))}
+                        >
+                          <item.icon className="h-3 w-3" />
+                          <span className="hidden xl:inline text-xs">{item.name}</span>
+                          <span className="xl:hidden text-[10px] font-semibold">
+                            {item.name.split(' ')[0]}
+                          </span>
+                          <ChevronDown className="h-3 w-3" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="bg-background/95 backdrop-blur-lg border border-border/50 shadow-2xl min-w-[220px] z-[100]">
+                        <DropdownMenuLabel className="text-sm font-semibold text-foreground bg-gradient-to-r from-primary/10 to-secondary/10 rounded-md mx-1 px-2 py-1">
+                          {item.name}
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator className="bg-border/30" />
+                        {item.dropdownItems.map((dropItem) => (
+                          <DropdownMenuItem 
+                            key={dropItem.name} 
+                            asChild={!dropItem.external}
+                            className="focus:bg-primary/10 focus:text-primary"
+                            onClick={() => dropItem.external && handleDropdownClick(dropItem)}
+                          >
+                            {dropItem.external ? (
+                              <button 
+                                className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1 w-full text-left"
+                              >
+                                {dropItem.name.includes("Coming Soon") ? (
+                                  <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
+                                    {dropItem.name}
+                                  </span>
+                                ) : (
+                                  dropItem.name
+                                )}
+                              </button>
+                            ) : (
+                              <Link 
+                                to={dropItem.href}
+                                className="flex items-center px-3 py-2 text-sm hover:bg-muted/50 transition-colors duration-200 rounded-md mx-1"
+                              >
+                                {dropItem.name.includes("Coming Soon") ? (
+                                  <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-semibold">
+                                    {dropItem.name}
+                                  </span>
+                                ) : (
+                                  dropItem.name
+                                )}
+                              </Link>
+                            )}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      className={cn(
+                        "relative flex items-center space-x-1 px-2 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap",
+                        location.pathname === item.href
+                          ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
+                          : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
+                      )}
+                    >
+                      <item.icon className="h-3 w-3" />
+                      <span className="hidden xl:inline text-xs">{item.name}</span>
+                      <span className="xl:hidden text-[10px] font-semibold">
+                        {item.name.split(' ')[0]}
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Theme Toggle & Mobile Menu Button */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -257,7 +259,7 @@ export function Navbar() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-lg">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-2 pt-2 pb-3 space-y-1 max-h-96 overflow-y-auto">
               {navigation.map((item) => (
                 <div key={item.name} className="space-y-1">
                   <Link

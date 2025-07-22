@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,7 @@ export function RunningBanner() {
   const bannerText = "This website is built with lots of effort, time, and passion — almost no cost! 💻 Open Source • 🌟 Community Driven • 🎨 Creative Tech Space • 🤖 AI Powered • ☁️ Cloud Native • 📚 Knowledge Hub • 🎵 Music & Tech • 🔧 Developer Tools • Join our community of tech enthusiasm";
 
   return (
-    <div className="running-banner relative">
+    <div className="fixed top-0 left-0 right-0 z-50 running-banner">
       <div className="banner-text">
         {bannerText}
       </div>

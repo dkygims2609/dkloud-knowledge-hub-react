@@ -1,28 +1,46 @@
+
 import { useState, useEffect } from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Calendar, Star, TrendingUp, Film, Tv, Trophy, ExternalLink, Play } from "lucide-react";
+import { Search, Filter, Calendar, Star, TrendingUp, Film, Tv, Trophy, ExternalLink, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { ModernTabSystem } from "@/components/ModernTabSystem";
 
 interface Movie {
-  id: string;
-  title: string;
-  description: string;
-  genre: string;
-  rating: string;
-  year: string;
-  type: string;
-  category: string;
+  id?: string;
+  title?: string;
+  name?: string;
+  description?: string;
+  genre?: string;
+  rating?: string;
+  year?: string;
+  type?: string;
+  category?: string;
   trending?: boolean;
   ultimate?: boolean;
   poster?: string;
   imdb_link?: string;
   trailer_link?: string;
+  platform?: string;
+  language?: string;
+  director?: string;
+  creator?: string;
+  seasons?: number;
+  status?: string;
+  "why-to-watch"?: string;
+  achievements?: string;
+  awards?: string;
 }
+
+const API_ENDPOINTS = {
+  movies: "https://script.google.com/macros/s/AKfycbzO53FfgLV-2Kq5pP0fYF7yjFw1CQlZkZoc5TEIn3rDcPSxv8MB8koOasYlf6BuXXCQ/exec",
+  tv: "https://script.google.com/macros/s/AKfycbxr64a2W4VL2ymbigPXUB3EQmMULCmUhMuDDwvhGNaG4lSwgqAQitXO_hTY2lhh3n1f/exec",
+  ultimate: "https://script.google.com/macros/s/AKfycbwA8KIHelLQllAKNIgIYtfo3dyvBCef7kOfuYuEfM4SEF4y1ivyTHFddVUO1VrWyA4c-Q/exec",
+  trending: "https://script.google.com/macros/s/AKfycbyCeRakH_SOeSQO3PGFMtphknTGIe3mzcFRZcCmjQdAEkOtiK8-3m2WSL1tJ8dOXy8/exec"
+};
 
 const MoviesTV = () => {
   const navigate = useNavigate();
@@ -35,104 +53,71 @@ const MoviesTV = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [sortBy, setSortBy] = useState("year");
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const itemsPerPage = 6; // 2 rows × 3 cards
+  const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
+    setCurrentPage(0);
     navigate(`/movies-tv?tab=${tabId}`, { replace: true });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec", {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        setData(result || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("API temporarily unavailable. Using sample data.");
-        
-        // Fallback sample data when API is down
-        const sampleData = [
-          {
-            id: "1",
-            title: "The Matrix",
-            description: "A computer programmer discovers reality is actually a simulation and joins a rebellion to free humanity.",
-            genre: "sci-fi",
-            rating: "8.7",
-            year: "1999",
-            type: "movie",
-            category: "movie",
-            trending: true,
-            ultimate: true,
-            poster: "",
-            imdb_link: "https://www.imdb.com/title/tt0133093/",
-            trailer_link: "https://www.youtube.com/watch?v=vKQi3bBA1y8"
-          },
-          {
-            id: "2",
-            title: "Breaking Bad",
-            description: "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student.",
-            genre: "drama",
-            rating: "9.5",
-            year: "2008",
-            type: "tv series",
-            category: "tv",
-            trending: true,
-            ultimate: true,
-            poster: "",
-            imdb_link: "https://www.imdb.com/title/tt0903747/",
-            trailer_link: "https://www.youtube.com/watch?v=HhesaQXLuRY"
-          },
-          {
-            id: "3",
-            title: "Inception",
-            description: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task.",
-            genre: "sci-fi",
-            rating: "8.8",
-            year: "2010",
-            type: "movie",
-            category: "movie",
-            trending: false,
-            ultimate: true,
-            poster: "",
-            imdb_link: "https://www.imdb.com/title/tt1375666/",
-            trailer_link: "https://www.youtube.com/watch?v=YoHD9XEInc0"
-          },
-          {
-            id: "4",
-            title: "Stranger Things",
-            description: "When a young boy disappears, his mother and friends must confront terrifying supernatural forces.",
-            genre: "sci-fi",
-            rating: "8.7",
-            year: "2016",
-            type: "tv series",
-            category: "tv",
-            trending: true,
-            ultimate: false,
-            poster: "",
-            imdb_link: "https://www.imdb.com/title/tt4574334/",
-            trailer_link: "https://www.youtube.com/watch?v=b9EkMc79ZSU"
-          }
-        ];
-        setData(sampleData);
-      } finally {
-        setLoading(false);
+  const fetchDataForTab = async (tab: string) => {
+    setLoading(true);
+    try {
+      let endpoint = "";
+      
+      switch (tab) {
+        case 'movies':
+          endpoint = API_ENDPOINTS.movies;
+          break;
+        case 'tv':
+          endpoint = API_ENDPOINTS.tv;
+          break;
+        case 'ultimate':
+          endpoint = API_ENDPOINTS.ultimate;
+          break;
+        case 'trending':
+          endpoint = API_ENDPOINTS.trending;
+          break;
+        default:
+          endpoint = API_ENDPOINTS.trending;
       }
-    };
 
-    fetchData();
-  }, []);
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      const processedData = (result || []).map((item: any, index: number) => ({
+        ...item,
+        id: item.id || `${tab}-${index}`,
+        title: item.title || item.name,
+        type: tab === 'tv' ? 'tv series' : (tab === 'movies' ? 'movie' : item.type),
+      }));
+      
+      setData(processedData);
+    } catch (error) {
+      console.error(`Error fetching ${tab} data:`, error);
+      toast.error(`Failed to load ${tab} data. Please try again later.`);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataForTab(activeTab);
+  }, [activeTab]);
 
   const tabs = [
     {
@@ -167,40 +152,138 @@ const MoviesTV = () => {
 
   const filteredData = data.filter(item => {
     const searchTermLower = searchTerm.toLowerCase();
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchTermLower) ||
-      item.description.toLowerCase().includes(searchTermLower) ||
-      item.genre.toLowerCase().includes(searchTermLower);
+    const title = item.title || item.name || '';
+    const description = item.description || '';
+    const genre = item.genre || '';
+    
+    const matchesSearch = title.toLowerCase().includes(searchTermLower) ||
+                         description.toLowerCase().includes(searchTermLower) ||
+                         genre.toLowerCase().includes(searchTermLower);
 
     const matchesGenre = selectedGenre === "all" || item.genre === selectedGenre;
 
-    let matchesTab = true;
-
-    if (activeTab === 'movies') {
-      matchesTab = item.type === 'movie';
-    } else if (activeTab === 'tv') {
-      matchesTab = item.type === 'tv series';
-    } else if (activeTab === 'ultimate') {
-      matchesTab = item.ultimate === true;
-    } else if (activeTab === 'trending') {
-      matchesTab = item.trending === true;
-    }
-
-    return matchesSearch && matchesGenre && matchesTab;
+    return matchesSearch && matchesGenre;
   });
 
   const sortedData = [...filteredData].sort((a, b) => {
     if (sortBy === "year") {
-      return parseInt(b.year) - parseInt(a.year);
+      const yearA = parseInt(a.year || '0');
+      const yearB = parseInt(b.year || '0');
+      return yearB - yearA;
     } else if (sortBy === "rating") {
-      return parseFloat(b.rating) - parseFloat(a.rating);
+      const ratingA = parseFloat(a.rating || '0');
+      const ratingB = parseFloat(b.rating || '0');
+      return ratingB - ratingA;
     }
     return 0;
   });
 
+  const currentItems = sortedData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+  const nextSlide = () => {
+    if (currentPage < Math.ceil(sortedData.length / itemsPerPage) - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const renderMovieCard = (item: Movie) => {
+    const title = item.title || item.name || 'Untitled';
+    const rating = item.rating || '0';
+    const year = item.year || 'N/A';
+    const genre = item.genre || 'Unknown';
+    const description = item.description || item["why-to-watch"] || 'No description available';
+
+    return (
+      <Card key={item.id} className="bg-card/95 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] h-full">
+        {item.poster && (
+          <img
+            src={item.poster}
+            alt={title}
+            className="w-full h-32 object-cover rounded-t-md"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
+          />
+        )}
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-base font-bold line-clamp-2">{title}</CardTitle>
+            {rating !== '0' && (
+              <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full">
+                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                <span className="text-xs font-medium">{rating}</span>
+              </div>
+            )}
+          </div>
+          <CardDescription className="text-xs">
+            {genre} • {year}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0 space-y-3">
+          <p className="text-xs text-muted-foreground line-clamp-3">{description}</p>
+          
+          <div className="flex flex-wrap gap-1">
+            {item.platform && <Badge variant="outline" className="text-xs">{item.platform}</Badge>}
+            {item.language && <Badge variant="secondary" className="text-xs">{item.language}</Badge>}
+            {item.status && <Badge variant="default" className="text-xs">{item.status}</Badge>}
+            {item.seasons && <Badge variant="outline" className="text-xs">{item.seasons} Season{item.seasons > 1 ? 's' : ''}</Badge>}
+          </div>
+
+          {item.director && (
+            <div className="text-xs">
+              <span className="font-medium">Director:</span> {item.director}
+            </div>
+          )}
+
+          {item.creator && (
+            <div className="text-xs">
+              <span className="font-medium">Creator:</span> {item.creator}
+            </div>
+          )}
+
+          {item.achievements && (
+            <div className="text-xs">
+              <span className="font-medium">Achievements:</span> {item.achievements}
+            </div>
+          )}
+
+          {item.awards && (
+            <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-pink-500 text-xs">
+              {item.awards}
+            </Badge>
+          )}
+
+          <div className="flex gap-2 pt-2">
+            {item.imdb_link && (
+              <Button asChild variant="secondary" size="sm" className="text-xs h-7">
+                <a href={item.imdb_link} target="_blank" rel="noopener noreferrer">
+                  IMDb <ExternalLink className="ml-1 h-3 w-3" />
+                </a>
+              </Button>
+            )}
+            {item.trailer_link && (
+              <Button asChild variant="outline" size="sm" className="text-xs h-7">
+                <a href={item.trailer_link} target="_blank" rel="noopener noreferrer">
+                  Trailer <Play className="ml-1 h-3 w-3" />
+                </a>
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8 pt-24">
-      <div className="text-center mb-12">
+    <div className="container mx-auto px-4 py-8 pt-32">
+      <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 mb-4">
           <Film className="h-8 w-8 text-primary" />
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -212,14 +295,16 @@ const MoviesTV = () => {
         </p>
       </div>
 
-      <ModernTabSystem 
-        tabs={tabs} 
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        className="mb-8"
-      />
+      <div className="mb-8">
+        <ModernTabSystem 
+          tabs={tabs} 
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          className="w-full"
+        />
+      </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-2">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
         <div className="flex items-center space-x-2 w-full md:w-auto">
           <Input
             type="text"
@@ -236,12 +321,8 @@ const MoviesTV = () => {
         <div className="flex items-center space-x-4 w-full md:w-auto">
           <div className="flex items-center space-x-2">
             <Filter className="h-4 w-4" />
-            <label htmlFor="genre" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
-              Genre:
-            </label>
             <select
-              id="genre"
-              className="flex h-9 w-auto rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+              className="flex h-9 w-auto rounded-md border border-input bg-background px-3 py-1 text-sm"
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
             >
@@ -252,19 +333,13 @@ const MoviesTV = () => {
               <option value="sci-fi">Sci-Fi</option>
               <option value="horror">Horror</option>
               <option value="thriller">Thriller</option>
-              <option value="animation">Animation</option>
-              <option value="documentary">Documentary</option>
             </select>
           </div>
 
           <div className="flex items-center space-x-2">
             <Calendar className="h-4 w-4" />
-            <label htmlFor="sort" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
-              Sort by:
-            </label>
             <select
-              id="sort"
-              className="flex h-9 w-auto rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+              className="flex h-9 w-auto rounded-md border border-input bg-background px-3 py-1 text-sm"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -276,52 +351,51 @@ const MoviesTV = () => {
       </div>
 
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading {activeTab}...</p>
+        </div>
       ) : sortedData.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedData.map((movie) => (
-            <Card key={movie.id} className="bg-card/95 backdrop-blur-md border border-border/50 shadow-sm">
-              {movie.poster && (
-                <img
-                  src={movie.poster}
-                  alt={movie.title}
-                  className="w-full h-48 object-cover rounded-t-md"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
-              )}
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">{movie.title}</CardTitle>
-                <CardDescription className="text-sm text-muted-foreground">
-                  {movie.genre} | {movie.year}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-3">{movie.description}</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {movie.imdb_link && (
-                    <Button asChild variant="secondary" size="sm">
-                      <a href={movie.imdb_link} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                        IMDb <ExternalLink className="ml-1 h-4 w-4" />
-                      </a>
-                    </Button>
-                  )}
-                  {movie.trailer_link && (
-                    <Button asChild variant="outline" size="sm">
-                      <a href={movie.trailer_link} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                        Trailer <Play className="ml-1 h-4 w-4" />
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            {currentItems.map(renderMovieCard)}
+          </div>
+          
+          {sortedData.length > itemsPerPage && (
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevSlide}
+                disabled={currentPage === 0}
+                className="rounded-full"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">
+                  Page {currentPage + 1} of {Math.ceil(sortedData.length / itemsPerPage)}
+                </span>
+              </div>
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextSlide}
+                disabled={currentPage >= Math.ceil(sortedData.length / itemsPerPage) - 1}
+                className="rounded-full"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="text-center">No results found.</div>
+        <div className="text-center py-12">
+          <h3 className="text-2xl font-semibold mb-2">No results found</h3>
+          <p className="text-muted-foreground">Try adjusting your search terms or filters.</p>
+        </div>
       )}
     </div>
   );

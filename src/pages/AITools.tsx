@@ -1,19 +1,20 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Calendar, Star, ExternalLink, Play, Brain } from "lucide-react";
+import { Search, Filter, Calendar, Star, ExternalLink, Play, Brain, ChevronLeft, ChevronRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 
 interface AITool {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  pricing: string;
+  id?: string;
+  name?: string;
+  description?: string;
+  category?: string;
+  pricing?: string;
   rating?: number;
   features?: string[];
   website?: string;
@@ -27,15 +28,20 @@ const AITools = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [minRating, setMinRating] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const toolsPerPage = 9;
+  const [currentPage, setCurrentPage] = useState(0);
+  
+  const toolsPerPage = 6; // 2 rows × 3 cards
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec");
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec");
         const jsonData: AITool[] = await response.json();
-        setData(jsonData);
+        const processedData = (jsonData || []).map((tool, index) => ({
+          ...tool,
+          id: tool.id || `tool-${index}`,
+        }));
+        setData(processedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -61,18 +67,22 @@ const AITools = () => {
     return ratingB - ratingA;
   });
 
-  const indexOfLastTool = currentPage * toolsPerPage;
-  const indexOfFirstTool = indexOfLastTool - toolsPerPage;
-  const currentTools = sortedTools.slice(indexOfFirstTool, indexOfLastTool);
+  const currentItems = sortedTools.slice(currentPage * toolsPerPage, (currentPage + 1) * toolsPerPage);
 
-  const totalPages = Math.ceil(sortedTools.length / toolsPerPage);
+  const nextSlide = () => {
+    if (currentPage < Math.ceil(sortedTools.length / toolsPerPage) - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const prevSlide = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const renderAIToolCard = (tool: AITool) => (
-    <Card key={tool.id} className="ai-tools-card-enhanced group cursor-pointer transition-all duration-300 hover:scale-102">
+    <Card key={tool.id} className="ai-tools-card-enhanced group cursor-pointer transition-all duration-300 hover:scale-[1.02] h-full">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -166,12 +176,10 @@ const AITools = () => {
     </Card>
   );
 
-  const categoryOptions = [...new Set(data.map(tool => tool.category))];
-
-  const filteredAndSortedTools = currentTools;
+  const categoryOptions = [...new Set(data.map(tool => tool.category))].filter(Boolean);
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-24">
+    <div className="container mx-auto px-4 py-8 pt-32">
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-3 mb-4">
           <Brain className="h-8 w-8 text-primary" />
@@ -231,22 +239,53 @@ const AITools = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredAndSortedTools.map(renderAIToolCard)}
-      </div>
-
-      <div className="flex justify-center mt-8 space-x-2">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-          <Button
-            key={pageNumber}
-            variant={currentPage === pageNumber ? "default" : "outline"}
-            onClick={() => handlePageChange(pageNumber)}
-            className="rounded-full h-10 w-10"
-          >
-            {pageNumber}
-          </Button>
-        ))}
-      </div>
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading AI tools...</p>
+        </div>
+      ) : sortedTools.length > 0 ? (
+        <div className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            {currentItems.map(renderAIToolCard)}
+          </div>
+          
+          {sortedTools.length > toolsPerPage && (
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevSlide}
+                disabled={currentPage === 0}
+                className="rounded-full"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">
+                  Page {currentPage + 1} of {Math.ceil(sortedTools.length / toolsPerPage)}
+                </span>
+              </div>
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextSlide}
+                disabled={currentPage >= Math.ceil(sortedTools.length / toolsPerPage) - 1}
+                className="rounded-full"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <h3 className="text-2xl font-semibold mb-2">No AI tools found</h3>
+          <p className="text-muted-foreground">Try adjusting your search terms or filters.</p>
+        </div>
+      )}
     </div>
   );
 };
