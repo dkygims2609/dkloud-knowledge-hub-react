@@ -4,22 +4,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Star, ExternalLink, Play, Brain, ChevronLeft, ChevronRight, Globe, Zap, Target } from "lucide-react";
+import { Search, Filter, Star, ExternalLink, Brain, ChevronLeft, ChevronRight, Globe, Zap, Target, DollarSign } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 interface AITool {
-  "Tool Name"?: string;
-  Description?: string;
-  Category?: string;
-  Pricing?: string;
-  DKcloudRating?: string | number;
-  Features?: string;
-  Website?: string;
-  "Demo Link"?: string;
-  Logo?: string;
+  "Toolname"?: string;
+  "Category"?: string;
+  "Purpose"?: string;
+  "Pricingmodel"?: string;
+  "EstimatedCost (per month)"?: string;
+  "Tools Link"?: string;
 }
 
 const AITools = () => {
@@ -28,7 +25,6 @@ const AITools = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPricing, setSelectedPricing] = useState("all");
-  const [minRating, setMinRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   
   const toolsPerPage = 6;
@@ -51,7 +47,6 @@ const AITools = () => {
         const jsonData = await response.json();
         console.log("AI Tools API response:", jsonData);
         
-        // Use data as-is from API since column names should match
         setData(Array.isArray(jsonData) ? jsonData : []);
       } catch (error) {
         console.error("Error fetching AI Tools data:", error);
@@ -70,29 +65,21 @@ const AITools = () => {
   };
 
   const filteredTools = data.filter(tool => {
-    const searchMatch = (tool["Tool Name"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                        (tool.Description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                        (tool.Category?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    const searchMatch = (tool["Toolname"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool["Category"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool["Purpose"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                        (tool["Pricingmodel"]?.toLowerCase() || '').includes(searchTerm.toLowerCase());
     
-    const categoryMatch = selectedCategory === "all" || tool.Category === selectedCategory;
-    const pricingMatch = selectedPricing === "all" || tool.Pricing === selectedPricing;
-    
-    const rating = parseFloat(String(tool.DKcloudRating || '0'));
-    const ratingMatch = rating >= minRating;
+    const categoryMatch = selectedCategory === "all" || tool["Category"] === selectedCategory;
+    const pricingMatch = selectedPricing === "all" || tool["Pricingmodel"] === selectedPricing;
 
-    return searchMatch && categoryMatch && pricingMatch && ratingMatch;
+    return searchMatch && categoryMatch && pricingMatch;
   });
 
-  const sortedTools = [...filteredTools].sort((a, b) => {
-    const ratingA = parseFloat(String(a.DKcloudRating || '0'));
-    const ratingB = parseFloat(String(b.DKcloudRating || '0'));
-    return ratingB - ratingA;
-  });
-
-  const currentItems = sortedTools.slice(currentPage * toolsPerPage, (currentPage + 1) * toolsPerPage);
+  const currentItems = filteredTools.slice(currentPage * toolsPerPage, (currentPage + 1) * toolsPerPage);
 
   const nextSlide = () => {
-    if (currentPage < Math.ceil(sortedTools.length / toolsPerPage) - 1) {
+    if (currentPage < Math.ceil(filteredTools.length / toolsPerPage) - 1) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -107,119 +94,73 @@ const AITools = () => {
     setSearchTerm("");
     setSelectedCategory("all");
     setSelectedPricing("all");
-    setMinRating(0);
   };
 
   const renderAIToolCard = (tool: AITool) => {
-    // Parse features if they are in string format
-    let features: string[] = [];
-    if (tool.Features) {
-      if (typeof tool.Features === 'string') {
-        features = tool.Features.split(',').map((f: string) => f.trim()).filter(Boolean);
-      }
-    }
-
     return (
-      <Card key={tool["Tool Name"]} className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] h-full">
-        {/* Gradient overlay on hover */}
+      <Card 
+        key={tool["Toolname"]} 
+        className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] aspect-square flex flex-col"
+      >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         
-        <CardHeader className="pb-3 relative z-10">
+        <CardHeader className="pb-3 relative z-10 flex-shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3 flex-1">
-              {tool.Logo ? (
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={tool.Logo} 
-                    alt={`${tool["Tool Name"]} logo`}
-                    className="w-12 h-12 rounded-lg object-cover border border-border/50 transition-transform duration-500 group-hover:scale-110"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                    }}
-                  />
-                </div>
-              ) : (
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
-                  <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
-                </div>
-              )}
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
+                <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+              </div>
               <div className="flex-1">
                 <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                  {tool["Tool Name"]}
+                  {tool["Toolname"]}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <Badge 
-                    variant={tool.Pricing === 'Free' ? 'default' : 'secondary'} 
-                    className={`text-xs ${tool.Pricing === 'Free' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300' : ''}`}
-                  >
-                    <Zap className="h-3 w-3 mr-1" />
-                    {tool.Pricing}
-                  </Badge>
-                  {tool.Category && (
+                  {tool["Category"] && (
                     <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
                       <Target className="h-3 w-3 mr-1" />
-                      {tool.Category}
+                      {tool["Category"]}
                     </Badge>
                   )}
                 </div>
               </div>
             </div>
-            {tool.DKcloudRating && parseFloat(String(tool.DKcloudRating)) > 0 && (
-              <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">
-                  {tool.DKcloudRating}
-                </span>
-              </div>
-            )}
           </div>
         </CardHeader>
 
-        <CardContent className="pt-0 relative z-10">
-          <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-            {tool.Description}
+        <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
+          <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
+            {tool["Purpose"]}
           </CardDescription>
 
-          {features.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center">
-                <Star className="h-3 w-3 mr-1 text-primary" />
-                Key Features:
-              </h4>
-              <div className="flex flex-wrap gap-1">
-                {features.slice(0, 4).map((feature, index) => (
-                  <Badge key={index} variant="secondary" className="text-xs bg-muted/50 hover:bg-muted transition-colors">
-                    {feature}
-                  </Badge>
-                ))}
-                {features.length > 4 && (
-                  <Badge variant="secondary" className="text-xs bg-muted/50">
-                    +{features.length - 4} more
-                  </Badge>
-                )}
-              </div>
+          <div className="space-y-3 mt-auto">
+            <div className="flex flex-wrap gap-2">
+              {tool["Pricingmodel"] && (
+                <Badge 
+                  variant={tool["Pricingmodel"].toLowerCase().includes('free') ? 'default' : 'secondary'} 
+                  className={`text-xs ${tool["Pricingmodel"].toLowerCase().includes('free') ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300' : ''}`}
+                >
+                  <Zap className="h-3 w-3 mr-1" />
+                  {tool["Pricingmodel"]}
+                </Badge>
+              )}
+              {tool["EstimatedCost (per month)"] && (
+                <Badge variant="outline" className="text-xs bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+                  <DollarSign className="h-3 w-3 mr-1" />
+                  {tool["EstimatedCost (per month)"]}
+                </Badge>
+              )}
             </div>
-          )}
 
-          <div className="flex flex-col sm:flex-row gap-2 mt-4">
-            {tool.Website && (
+            {tool["Tools Link"] && (
               <Button 
                 asChild 
                 size="sm" 
-                className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-white font-medium"
+                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-white font-medium"
               >
-                <a href={tool.Website} target="_blank" rel="noopener noreferrer">
+                <a href={tool["Tools Link"]} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-4 w-4 mr-2" />
-                  Visit Site
-                </a>
-              </Button>
-            )}
-            {tool["Demo Link"] && (
-              <Button asChild variant="outline" size="sm" className="flex-1 hover:bg-primary/10 transition-colors duration-300">
-                <a href={tool["Demo Link"]} target="_blank" rel="noopener noreferrer">
-                  <Play className="h-4 w-4 mr-2" />
-                  Demo
+                  Visit Tool
+                  <ExternalLink className="h-3 w-3 ml-2" />
                 </a>
               </Button>
             )}
@@ -243,9 +184,40 @@ const AITools = () => {
         </p>
       </div>
 
+      {/* Top Navigation */}
+      {filteredTools.length > toolsPerPage && (
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={prevSlide}
+            disabled={currentPage === 0}
+            className="rounded-full hover:bg-primary/10"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-muted-foreground">
+              Page {currentPage + 1} of {Math.ceil(filteredTools.length / toolsPerPage)}
+            </span>
+          </div>
+          
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={nextSlide}
+            disabled={currentPage >= Math.ceil(filteredTools.length / toolsPerPage) - 1}
+            className="rounded-full hover:bg-primary/10"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
       {/* Enhanced Filters */}
       <div className="bg-card/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-border/30">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
@@ -273,39 +245,22 @@ const AITools = () => {
 
           <Select value={selectedPricing} onValueChange={setSelectedPricing}>
             <SelectTrigger>
-              <SelectValue placeholder="Pricing" />
+              <SelectValue placeholder="Pricing Model" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Pricing</SelectItem>
-              {getUniqueValues('Pricing').map(pricing => (
+              {getUniqueValues('Pricingmodel').map(pricing => (
                 <SelectItem key={String(pricing)} value={String(pricing)}>
                   {String(pricing)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-
-          <div className="flex items-center space-x-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
-            <div className="flex-1">
-              <Label htmlFor="minRating" className="text-sm text-muted-foreground">
-                Min. Rating: {minRating}+
-              </Label>
-              <Slider
-                id="minRating"
-                value={[minRating]}
-                max={5}
-                step={0.5}
-                onValueChange={(value) => setMinRating(value[0])}
-                className="mt-1"
-              />
-            </div>
-          </div>
         </div>
         
         <div className="flex justify-between items-center">
           <p className="text-sm text-muted-foreground">
-            Showing {currentItems.length} of {sortedTools.length} AI tools
+            Showing {currentItems.length} of {filteredTools.length} AI tools
           </p>
           <Button variant="outline" size="sm" onClick={clearFilters}>
             <Filter className="h-4 w-4 mr-2" />
@@ -319,41 +274,9 @@ const AITools = () => {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-muted-foreground">Loading AI tools...</p>
         </div>
-      ) : sortedTools.length > 0 ? (
-        <div className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            {currentItems.map(renderAIToolCard)}
-          </div>
-          
-          {sortedTools.length > toolsPerPage && (
-            <div className="flex items-center justify-between">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={prevSlide}
-                disabled={currentPage === 0}
-                className="rounded-full hover:bg-primary/10"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">
-                  Page {currentPage + 1} of {Math.ceil(sortedTools.length / toolsPerPage)}
-                </span>
-              </div>
-              
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={nextSlide}
-                disabled={currentPage >= Math.ceil(sortedTools.length / toolsPerPage) - 1}
-                className="rounded-full hover:bg-primary/10"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
+      ) : filteredTools.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          {currentItems.map(renderAIToolCard)}
         </div>
       ) : (
         <div className="text-center py-12">
