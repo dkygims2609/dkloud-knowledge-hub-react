@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -78,7 +77,7 @@ const MoviesTV = () => {
   const [selectedType, setSelectedType] = useState("all");
   const [selectedLanguage, setSelectedLanguage] = useState("all");
   const [selectedAward, setSelectedAward] = useState("all");
-  const [minRating, setMinRating] = useState(0);
+  const [minRating, setMinRating] = useState(7.5);
   const [currentPage, setCurrentPage] = useState(0);
 
   const itemsPerPage = 6;
@@ -194,6 +193,8 @@ const MoviesTV = () => {
       matchesLanguage = selectedLanguage === "all" || (item as any).Language === selectedLanguage;
       matchesAward = selectedAward === "all" || (item as any).Awards === selectedAward;
       matchesRating = rating >= minRating;
+    } else if (activeTab === 'trending') {
+      matchesRating = rating >= minRating;
     }
 
     return matchesSearch && matchesGenre && matchesPlatform && matchesType && 
@@ -221,7 +222,7 @@ const MoviesTV = () => {
     setSelectedType("all");
     setSelectedLanguage("all");
     setSelectedAward("all");
-    setMinRating(0);
+    setMinRating(7.5);
   };
 
   const renderMovieCard = (item: ContentItem) => {
@@ -249,9 +250,10 @@ const MoviesTV = () => {
           </CardHeader>
 
           <CardContent className="pt-0 space-y-3 relative z-10">
-            <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-              {movie["Why to Watch"]}
-            </p>
+            <div className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
+              <span className="text-green-400 font-semibold">Why to Watch: </span>
+              <span>{movie["Why to Watch"]}</span>
+            </div>
             
             <div className="flex flex-wrap gap-2">
               {movie.Platform && (
@@ -271,7 +273,7 @@ const MoviesTV = () => {
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Award className="h-3 w-3 text-amber-500" />
-                  <span className="font-medium text-foreground">Achievements:</span>
+                  <span className="font-medium text-green-400">Achievements:</span>
                 </div>
                 <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
                   {movie.Achievements}
@@ -314,9 +316,10 @@ const MoviesTV = () => {
           </CardHeader>
 
           <CardContent className="pt-0 space-y-3 relative z-10">
-            <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-              {tvShow["Why to Watch"]}
-            </p>
+            <div className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
+              <span className="text-green-400 font-semibold">Why to Watch: </span>
+              <span>{tvShow["Why to Watch"]}</span>
+            </div>
             
             <div className="flex flex-wrap gap-2">
               {tvShow.Platform && (
@@ -336,7 +339,7 @@ const MoviesTV = () => {
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Award className="h-3 w-3 text-amber-500" />
-                  <span className="font-medium text-foreground">Achievements:</span>
+                  <span className="font-medium text-green-400">Achievements:</span>
                 </div>
                 <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
                   {tvShow.Achievements}
@@ -615,35 +618,39 @@ const MoviesTV = () => {
             </Select>
           )}
 
-          {(activeTab === 'movies' || activeTab === 'tv') && (
+          {(activeTab === 'movies' || activeTab === 'tv' || activeTab === 'trending') && (
             <>
-              <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Languages</SelectItem>
-                  {getUniqueValues('Language').map((language) => (
-                    <SelectItem key={String(language)} value={String(language)}>
-                      {String(language)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {(activeTab === 'movies' || activeTab === 'tv') && (
+                <>
+                  <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Languages</SelectItem>
+                      {getUniqueValues('Language').map((language) => (
+                        <SelectItem key={String(language)} value={String(language)}>
+                          {String(language)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-              <Select value={selectedAward} onValueChange={setSelectedAward}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Awards" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Awards</SelectItem>
-                  {getUniqueValues('Awards').map((award) => (
-                    <SelectItem key={String(award)} value={String(award)}>
-                      {String(award)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <Select value={selectedAward} onValueChange={setSelectedAward}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Awards" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Awards</SelectItem>
+                      {getUniqueValues('Awards').map((award) => (
+                        <SelectItem key={String(award)} value={String(award)}>
+                          {String(award)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </>
+              )}
 
               <div className="flex items-center space-x-2">
                 <Filter className="h-4 w-4 text-muted-foreground" />
@@ -654,8 +661,9 @@ const MoviesTV = () => {
                   <Slider
                     id="minRating"
                     value={[minRating]}
+                    min={7.5}
                     max={10}
-                    step={0.5}
+                    step={0.1}
                     onValueChange={(value) => setMinRating(value[0])}
                     className="mt-1"
                   />
