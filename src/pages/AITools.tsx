@@ -111,8 +111,8 @@ const AITools = () => {
                 <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div className="flex-1">
-                <CardTitle className="text-lg font-bold text-green-600 dark:text-green-400 group-hover:text-green-500 dark:group-hover:text-green-300 transition-colors duration-300 line-clamp-2">
-                  {tool["Toolname"] || "AI Tool"}
+                <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                  {tool["Toolname"]}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   {tool["Category"] && (
@@ -129,7 +129,7 @@ const AITools = () => {
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
           <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
-            {tool["Purpose"] || "AI-powered tool for enhanced productivity"}
+            {tool["Purpose"]}
           </CardDescription>
 
           <div className="space-y-3 mt-auto">
