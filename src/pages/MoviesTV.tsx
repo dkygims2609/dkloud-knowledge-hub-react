@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,15 +25,21 @@ interface Movie {
 }
 
 const MoviesTV = () => {
-  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'trending';
-
+  
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [data, setData] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [sortBy, setSortBy] = useState("year");
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    navigate(`/movies-tv?tab=${tabId}`, { replace: true });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,29 +65,29 @@ const MoviesTV = () => {
       id: "trending",
       label: "🔥 Trending",
       icon: TrendingUp,
-      color: "from-red-500 to-orange-600",
-      content: <div>Trending content will be displayed here</div>
+      gradient: "from-red-500 to-orange-600",
+      description: "Popular and trending content"
     },
     {
       id: "movies",
       label: "🎬 Movies",
       icon: Film,
-      color: "from-blue-500 to-purple-600",
-      content: <div>Movies content will be displayed here</div>
+      gradient: "from-blue-500 to-purple-600",
+      description: "Movie collection"
     },
     {
       id: "tv",
       label: "📺 TV Series",
       icon: Tv,
-      color: "from-green-500 to-teal-600",
-      content: <div>TV Series content will be displayed here</div>
+      gradient: "from-green-500 to-teal-600",
+      description: "TV series collection"
     },
     {
       id: "ultimate",
       label: "⭐ Ultimate",
       icon: Trophy,
-      color: "from-yellow-500 to-amber-600",
-      content: <div>Ultimate collection content will be displayed here</div>
+      gradient: "from-yellow-500 to-amber-600",
+      description: "Ultimate collection"
     }
   ];
 
@@ -94,16 +100,15 @@ const MoviesTV = () => {
 
     const matchesGenre = selectedGenre === "all" || item.genre === selectedGenre;
 
-    const currentTab = searchParams.get('tab') || 'trending';
     let matchesTab = true;
 
-    if (currentTab === 'movies') {
+    if (activeTab === 'movies') {
       matchesTab = item.type === 'movie';
-    } else if (currentTab === 'tv') {
+    } else if (activeTab === 'tv') {
       matchesTab = item.type === 'tv series';
-    } else if (currentTab === 'ultimate') {
+    } else if (activeTab === 'ultimate') {
       matchesTab = item.ultimate === true;
-    } else if (currentTab === 'trending') {
+    } else if (activeTab === 'trending') {
       matchesTab = item.trending === true;
     }
 
@@ -135,7 +140,8 @@ const MoviesTV = () => {
 
       <ModernTabSystem 
         tabs={tabs} 
-        defaultTab={initialTab}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
         className="mb-8"
       />
 
