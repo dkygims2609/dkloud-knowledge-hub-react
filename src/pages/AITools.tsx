@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -110,7 +111,7 @@ const AITools = () => {
                 <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div className="flex-1">
-                <CardTitle className="text-lg font-bold text-green-400 group-hover:text-green-300 transition-colors duration-300 line-clamp-2">
+                <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
                   {tool["Toolname"]}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -127,10 +128,9 @@ const AITools = () => {
         </CardHeader>
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
-          <div className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
-            <span className="text-green-400 font-semibold">Purpose: </span>
-            <span>{tool["Purpose"]}</span>
-          </div>
+          <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
+            {tool["Purpose"]}
+          </CardDescription>
 
           <div className="space-y-3 mt-auto">
             <div className="flex flex-wrap gap-2">
