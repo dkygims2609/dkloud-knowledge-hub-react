@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Calendar, Star, TrendingUp, Film, Tv, Trophy, ExternalLink, Play, ChevronLeft, ChevronRight, Award, User, Globe } from "lucide-react";
+import { Search, Filter, Calendar, Star, TrendingUp, Film, Tv, Trophy, ExternalLink, Play, ChevronLeft, ChevronRight, Award, User, Globe, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { ModernTabSystem } from "@/components/ModernTabSystem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -71,13 +72,13 @@ const MoviesTV = () => {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [data, setData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [selectedPlatform, setSelectedPlatform] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedLanguage, setSelectedLanguage] = useState("all");
   const [selectedAward, setSelectedAward] = useState("all");
-  const [minRating, setMinRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [dkcloudRating, setDkcloudRating] = useState([7.5]);
 
@@ -90,8 +91,9 @@ const MoviesTV = () => {
     navigate(`/movies-tv?tab=${tabId}`, { replace: true });
   };
 
-  const fetchDataForTab = async (tab: string) => {
+  const fetchDataForTab = async (tab: string, retryCount = 0) => {
     setLoading(true);
+    setError(null);
     try {
       const endpoint = API_ENDPOINTS[tab as keyof typeof API_ENDPOINTS];
       console.log(`Fetching data from ${tab} endpoint:`, endpoint);
@@ -109,10 +111,25 @@ const MoviesTV = () => {
       
       const result = await response.json();
       console.log(`${tab} API response:`, result);
+      console.log(`First ${tab} item structure:`, result[0]);
       
-      setData(Array.isArray(result) ? result : []);
+      if (!Array.isArray(result)) {
+        throw new Error("Invalid data format received");
+      }
+      
+      setData(result);
+      setError(null);
     } catch (error) {
       console.error(`Error fetching ${tab} data:`, error);
+      const errorMessage = error instanceof Error ? error.message : `Failed to load ${tab} data`;
+      setError(errorMessage);
+      
+      if (retryCount < 2) {
+        console.log(`Retrying ${tab}... attempt ${retryCount + 1}`);
+        setTimeout(() => fetchDataForTab(tab, retryCount + 1), 2000);
+        return;
+      }
+      
       toast.error(`Failed to load ${tab} data. Please try again later.`);
       setData([]);
     } finally {
@@ -165,7 +182,7 @@ const MoviesTV = () => {
         trendingItem.Type,
         trendingItem.Summary
       ].filter(Boolean).join(" ").toLowerCase();
-      rating = parseFloat(String(trendingItem["dKloud rating"] || '0'));
+      // No rating filter for trending as requested
     } else if (activeTab === 'ultimate') {
       const ultimateItem = item as UltimateItem;
       searchableText = [
@@ -196,10 +213,6 @@ const MoviesTV = () => {
       matchesRating = rating >= dkcloudRating[0];
     }
 
-    if (activeTab === 'trending') {
-      matchesRating = rating >= dkcloudRating[0];
-    }
-
     return matchesSearch && matchesGenre && matchesPlatform && matchesType && 
            matchesLanguage && matchesAward && matchesRating;
   });
@@ -225,7 +238,6 @@ const MoviesTV = () => {
     setSelectedType("all");
     setSelectedLanguage("all");
     setSelectedAward("all");
-    setMinRating(0);
     setDkcloudRating([7.5]);
   };
 
@@ -371,7 +383,7 @@ const MoviesTV = () => {
               <img
                 src={trending["poster url"]}
                 alt={trending.Title || "Poster"}
-                className="w-full h-full object-contain bg-gray-100 dark:bg-gray-800 transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover bg-gray-100 dark:bg-gray-800 transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -386,7 +398,7 @@ const MoviesTV = () => {
               <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300">
                 {trending.Title}
               </CardTitle>
-              {trending["dKloud rating"] && (
+              {trending["dKloud rating"] && trending["dKloud rating"] !== "under review" && (
                 <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
                   <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                   <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">{trending["dKloud rating"]}</span>
@@ -432,7 +444,7 @@ const MoviesTV = () => {
               <img
                 src={ultimate["Poster URL"]}
                 alt={ultimate.Title || "Poster"}
-                className="w-full h-full object-contain bg-gray-100 dark:bg-gray-800 transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover bg-gray-100 dark:bg-gray-800 transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -668,36 +680,24 @@ const MoviesTV = () => {
               </div>
             </>
           )}
-
-          {(activeTab === 'trending') && (
-            <div className="flex items-center space-x-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <div className="flex-1">
-                <Label htmlFor="dkcloudRating" className="text-sm text-muted-foreground">
-                  DKcloud Rating: {dkcloudRating[0]}+
-                </Label>
-                <Slider
-                  id="dkcloudRating"
-                  value={dkcloudRating}
-                  max={10}
-                  min={7.5}
-                  step={0.1}
-                  onValueChange={setDkcloudRating}
-                  className="mt-1"
-                />
-              </div>
-            </div>
-          )}
         </div>
         
         <div className="flex justify-between items-center">
           <p className="text-sm text-muted-foreground">
             Showing {currentItems.length} of {filteredData.length} items
           </p>
-          <Button variant="outline" size="sm" onClick={clearFilters}>
-            <Filter className="h-4 w-4 mr-2" />
-            Clear Filters
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={clearFilters}>
+              <Filter className="h-4 w-4 mr-2" />
+              Clear Filters
+            </Button>
+            {error && (
+              <Button variant="outline" size="sm" onClick={() => fetchDataForTab(activeTab)}>
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Retry
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -705,6 +705,15 @@ const MoviesTV = () => {
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-muted-foreground">Loading {activeTab}...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <h3 className="text-2xl font-semibold mb-2 text-destructive">Failed to Load {activeTab}</h3>
+          <p className="text-muted-foreground mb-4">{error}</p>
+          <Button onClick={() => fetchDataForTab(activeTab)}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Try Again
+          </Button>
         </div>
       ) : filteredData.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
