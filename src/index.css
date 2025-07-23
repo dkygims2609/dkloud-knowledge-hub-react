@@ -54,15 +54,15 @@
   }
 
   .dark {
-    /* Portfolio-synced Dark Theme - Blueish Gray */
-    --background: 220 15% 8%;
-    --foreground: 220 8% 95%;
+    /* Minimalistic Dark Theme - Clean Charcoal */
+    --background: 220 12% 9%;
+    --foreground: 220 6% 92%;
     
-    --card: 220 13% 10%;
-    --card-foreground: 220 8% 95%;
+    --card: 220 10% 11%;
+    --card-foreground: 220 6% 92%;
     
-    --popover: 220 13% 10%;
-    --popover-foreground: 220 8% 95%;
+    --popover: 220 10% 11%;
+    --popover-foreground: 220 6% 92%;
     
     /* Enhanced Primary Colors */
     --primary: 225 100% 70%; /* Brighter Cornflower for dark mode */
@@ -73,19 +73,19 @@
     --secondary: 270 70% 75%; /* Brighter Deep Lilac */
     --secondary-foreground: 220 15% 8%;
     
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 8% 70%;
+    --muted: 220 10% 16%;
+    --muted-foreground: 220 5% 65%;
     
-    /* Enhanced Accent */
-    --accent: 220 100% 65%; /* Brighter Clear Blue */
-    --accent-foreground: 220 15% 8%;
+    /* Cleaner Accent */
+    --accent: 220 85% 60%;
+    --accent-foreground: 220 12% 9%;
     
-    --destructive: 0 70% 60%;
-    --destructive-foreground: 220 8% 95%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 220 6% 92%;
     
-    --border: 220 13% 20%;
-    --input: 220 13% 20%;
-    --ring: 225 100% 70%;
+    --border: 220 10% 18%;
+    --input: 220 10% 18%;
+    --ring: 225 85% 65%;
     
     /* Enhanced Custom Colors for Dark Mode */
     --amethyst: 270 60% 70%;
@@ -179,18 +179,9 @@
 
 /* Enhanced Component Styles with Your Color Palette */
 @layer components {
-  /* Enhanced Landing Page Background */
+  /* Minimalistic Landing Page Background */
   .enhanced-landing-background {
-    background: linear-gradient(135deg, 
-      hsl(var(--background)) 0%, 
-      hsl(var(--muted) / 0.3) 15%,
-      hsl(var(--primary) / 0.05) 30%,
-      hsl(var(--background)) 45%,
-      hsl(var(--secondary) / 0.08) 60%,
-      hsl(var(--muted) / 0.2) 75%,
-      hsl(var(--background)) 100%);
-    background-size: 600% 600%;
-    animation: enhancedGradientFlow 25s ease-in-out infinite;
+    background: hsl(var(--background));
     position: relative;
   }
 
@@ -202,27 +193,8 @@
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, hsl(var(--secondary) / 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, hsl(var(--accent) / 0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .enhanced-landing-background::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-      linear-gradient(45deg, transparent 25%, hsl(var(--muted) / 0.02) 25%),
-      linear-gradient(-45deg, transparent 25%, hsl(var(--muted) / 0.02) 25%),
-      linear-gradient(45deg, hsl(var(--muted) / 0.02) 75%, transparent 75%),
-      linear-gradient(-45deg, hsl(var(--muted) / 0.02) 75%, transparent 75%);
-    background-size: 60px 60px;
-    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
-    opacity: 0.3;
+      radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, hsl(var(--accent) / 0.04) 0%, transparent 50%);
     pointer-events: none;
   }
 

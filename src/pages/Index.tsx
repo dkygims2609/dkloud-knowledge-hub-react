@@ -73,17 +73,10 @@ const Index = () => {
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       
-      {/* Hero Section with Enhanced Background */}
+      {/* Hero Section with Minimalistic Background */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/12 via-secondary/8 to-accent/12" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.2)_0%,_transparent_60%)]" />
-        </div>
-        
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-primary/25 to-secondary/20 blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-accent/20 to-primary/25 blur-3xl animate-pulse" style={{animationDelay: "1s"}} />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/12 to-transparent rounded-full blur-2xl"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
