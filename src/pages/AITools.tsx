@@ -11,11 +11,16 @@ import { ModernLoader, SkeletonCard } from "@/components/ui/modern-loader";
 
 interface AITool {
   "Toolname"?: string;
+  "Tool name"?: string;
+  "toolname"?: string;
+  "name"?: string;
+  "Name"?: string;
   "Category"?: string;
   "Purpose"?: string;
   "Pricingmodel"?: string;
   "EstimatedCost (per month)"?: string;
   "Tools Link"?: string;
+  [key: string]: any;
 }
 
 const AITools = () => {
@@ -49,6 +54,13 @@ const AITools = () => {
       const jsonData = await response.json();
       console.log("AI Tools API response:", jsonData);
       console.log("First item structure:", jsonData[0]);
+      console.log("All available keys in first item:", jsonData[0] ? Object.keys(jsonData[0]) : "No data");
+      
+      // Debug column names
+      if (jsonData && jsonData.length > 0) {
+        console.log("Sample item keys:", Object.keys(jsonData[0]));
+        console.log("Sample item values:", Object.values(jsonData[0]));
+      }
       
       if (!Array.isArray(jsonData)) {
         throw new Error("Invalid data format received");
@@ -77,12 +89,18 @@ const AITools = () => {
     fetchData();
   }, []);
 
+  // Helper function to get tool name from various possible column names
+  const getToolName = (tool: AITool): string => {
+    return tool["Toolname"] || tool["Tool name"] || tool["toolname"] || tool["name"] || tool["Name"] || "Unknown Tool";
+  };
+
   const getUniqueValues = (key: keyof AITool) => {
     return [...new Set(data.map(tool => tool[key]).filter(Boolean))].sort();
   };
 
   const filteredTools = data.filter(tool => {
-    const searchMatch = (tool["Toolname"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    const toolName = getToolName(tool);
+    const searchMatch = toolName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         (tool["Category"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
                         (tool["Purpose"]?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
                         (tool["Pricingmodel"]?.toLowerCase() || '').includes(searchTerm.toLowerCase());
@@ -114,9 +132,11 @@ const AITools = () => {
   };
 
   const renderAIToolCard = (tool: AITool) => {
+    const toolName = getToolName(tool);
+    
     return (
       <Card 
-        key={tool["Toolname"]} 
+        key={toolName} 
         className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] aspect-square flex flex-col"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -128,12 +148,12 @@ const AITools = () => {
                 <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div className="flex-1">
-                <CardTitle className="text-lg font-bold text-green-500 group-hover:text-green-400 transition-colors duration-300 line-clamp-2">
-                  {tool["Toolname"]}
+                <CardTitle className="text-lg font-bold text-primary group-hover:text-primary/80 transition-colors duration-300 line-clamp-2">
+                  {toolName}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   {tool["Category"] && (
-                    <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                    <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
                       <Target className="h-3 w-3 mr-1" />
                       {tool["Category"]}
                     </Badge>
@@ -146,7 +166,7 @@ const AITools = () => {
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
           <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
-            <span className="text-green-500 font-medium">Purpose:</span> {tool["Purpose"]}
+            <span className="text-primary font-medium">Purpose:</span> {tool["Purpose"]}
           </CardDescription>
 
           <div className="space-y-3 mt-auto">
@@ -154,14 +174,14 @@ const AITools = () => {
               {tool["Pricingmodel"] && (
                 <Badge 
                   variant={tool["Pricingmodel"].toLowerCase().includes('free') ? 'default' : 'secondary'} 
-                  className={`text-xs ${tool["Pricingmodel"].toLowerCase().includes('free') ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300' : ''}`}
+                  className={`text-xs ${tool["Pricingmodel"].toLowerCase().includes('free') ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-700' : 'bg-secondary/50 text-secondary-foreground'}`}
                 >
                   <Zap className="h-3 w-3 mr-1" />
                   {tool["Pricingmodel"]}
                 </Badge>
               )}
               {tool["EstimatedCost (per month)"] && (
-                <Badge variant="outline" className="text-xs bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+                <Badge variant="outline" className="text-xs bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-300">
                   <DollarSign className="h-3 w-3 mr-1" />
                   {tool["EstimatedCost (per month)"]}
                 </Badge>
@@ -172,7 +192,7 @@ const AITools = () => {
               <Button 
                 asChild 
                 size="sm" 
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-white font-medium"
+                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-primary-foreground font-medium"
               >
                 <a href={tool["Tools Link"]} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-4 w-4 mr-2" />

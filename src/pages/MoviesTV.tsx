@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -183,7 +182,6 @@ const MoviesTV = () => {
         trendingItem.Type,
         trendingItem.Summary
       ].filter(Boolean).join(" ").toLowerCase();
-      // No rating filter for trending as requested
     } else if (activeTab === 'ultimate') {
       const ultimateItem = item as UltimateItem;
       searchableText = [
@@ -251,11 +249,11 @@ const MoviesTV = () => {
           
           <CardHeader className="pb-3 relative z-10">
             <div className="flex justify-between items-start">
-              <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+              <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300 text-foreground">
                 {movie.Name}
               </CardTitle>
               {movie.DKcloudRating && (
-                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
+                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/30 px-2 py-1 rounded-full shrink-0 border border-yellow-200 dark:border-yellow-700">
                   <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                   <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">{movie.DKcloudRating}</span>
                 </div>
@@ -268,18 +266,18 @@ const MoviesTV = () => {
 
           <CardContent className="pt-0 space-y-3 relative z-10">
             <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-              <span className="text-green-500 font-medium">Why to Watch:</span> {movie["Why to Watch"]}
+              <span className="text-primary font-medium">Why to Watch:</span> {movie["Why to Watch"]}
             </p>
             
             <div className="flex flex-wrap gap-2">
               {movie.Platform && (
-                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
                   <Globe className="h-3 w-3 mr-1" />
                   {movie.Platform}
                 </Badge>
               )}
               {movie.Language && (
-                <Badge variant="secondary" className="text-xs bg-green-50 dark:bg-green-900/20">
+                <Badge variant="secondary" className="text-xs bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium">
                   {movie.Language}
                 </Badge>
               )}
@@ -289,7 +287,7 @@ const MoviesTV = () => {
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Award className="h-3 w-3 text-amber-500" />
-                  <span className="font-medium text-green-500">Achievements:</span>
+                  <span className="font-medium text-primary">Achievements:</span>
                 </div>
                 <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
                   {movie.Achievements}
@@ -316,11 +314,11 @@ const MoviesTV = () => {
           
           <CardHeader className="pb-3 relative z-10">
             <div className="flex justify-between items-start">
-              <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+              <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300 text-foreground">
                 {tvShow.Name}
               </CardTitle>
               {tvShow.DKcloudRating && (
-                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
+                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/30 px-2 py-1 rounded-full shrink-0 border border-yellow-200 dark:border-yellow-700">
                   <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                   <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">{tvShow.DKcloudRating}</span>
                 </div>
@@ -333,18 +331,18 @@ const MoviesTV = () => {
 
           <CardContent className="pt-0 space-y-3 relative z-10">
             <p className="text-sm text-muted-foreground line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300">
-              <span className="text-green-500 font-medium">Why to Watch:</span> {tvShow["Why to Watch"]}
+              <span className="text-primary font-medium">Why to Watch:</span> {tvShow["Why to Watch"]}
             </p>
             
             <div className="flex flex-wrap gap-2">
               {tvShow.Platform && (
-                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
                   <Globe className="h-3 w-3 mr-1" />
                   {tvShow.Platform}
                 </Badge>
               )}
               {tvShow.Language && (
-                <Badge variant="secondary" className="text-xs bg-green-50 dark:bg-green-900/20">
+                <Badge variant="secondary" className="text-xs bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium">
                   {tvShow.Language}
                 </Badge>
               )}
@@ -354,7 +352,7 @@ const MoviesTV = () => {
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Award className="h-3 w-3 text-amber-500" />
-                  <span className="font-medium text-green-500">Achievements:</span>
+                  <span className="font-medium text-primary">Achievements:</span>
                 </div>
                 <p className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors duration-300">
                   {tvShow.Achievements}
@@ -380,11 +378,11 @@ const MoviesTV = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           
           {trending["poster url"] && (
-            <div className="relative overflow-hidden h-48">
+            <div className="relative overflow-hidden h-48 bg-muted">
               <img
                 src={trending["poster url"]}
                 alt={trending.Title || "Poster"}
-                className="w-full h-full object-cover bg-gray-100 dark:bg-gray-800 transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -396,11 +394,11 @@ const MoviesTV = () => {
 
           <CardHeader className="pb-3 relative z-10">
             <div className="flex justify-between items-start">
-              <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+              <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300 text-foreground">
                 {trending.Title}
               </CardTitle>
               {trending["dKloud rating"] && trending["dKloud rating"] !== "under review" && (
-                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full shrink-0">
+                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/30 px-2 py-1 rounded-full shrink-0 border border-yellow-200 dark:border-yellow-700">
                   <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                   <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">{trending["dKloud rating"]}</span>
                 </div>
@@ -418,13 +416,13 @@ const MoviesTV = () => {
             
             <div className="flex flex-wrap gap-2">
               {trending.Platform && (
-                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
                   <Globe className="h-3 w-3 mr-1" />
                   {trending.Platform}
                 </Badge>
               )}
               {trending.Type && (
-                <Badge variant="secondary" className="text-xs bg-purple-50 dark:bg-purple-900/20">
+                <Badge variant="secondary" className="text-xs bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700">
                   {trending.Type}
                 </Badge>
               )}
@@ -441,11 +439,11 @@ const MoviesTV = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           
           {ultimate["Poster URL"] && (
-            <div className="relative overflow-hidden h-48">
+            <div className="relative overflow-hidden h-48 bg-muted">
               <img
                 src={ultimate["Poster URL"]}
                 alt={ultimate.Title || "Poster"}
-                className="w-full h-full object-cover bg-gray-100 dark:bg-gray-800 transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -456,7 +454,7 @@ const MoviesTV = () => {
           )}
 
           <CardHeader className="pb-3 relative z-10">
-            <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+            <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300 text-foreground">
               {ultimate.Title}
             </CardTitle>
             <CardDescription className="text-sm font-medium text-primary/80 group-hover:text-primary transition-colors duration-300">
@@ -471,13 +469,13 @@ const MoviesTV = () => {
             
             <div className="flex flex-wrap gap-2">
               {ultimate.Platform && (
-                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
                   <Globe className="h-3 w-3 mr-1" />
                   {ultimate.Platform}
                 </Badge>
               )}
               {ultimate.Type && (
-                <Badge variant="secondary" className="text-xs bg-purple-50 dark:bg-purple-900/20">
+                <Badge variant="secondary" className="text-xs bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700">
                   {ultimate.Type}
                 </Badge>
               )}

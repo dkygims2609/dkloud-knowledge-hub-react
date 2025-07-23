@@ -153,9 +153,9 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation - Single Line with Scroll */}
+          {/* Desktop Navigation - Enhanced with larger width and text */}
           <div className="hidden lg:flex items-center flex-1 justify-center mx-4">
-            <div className="flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-1 shadow-lg overflow-x-auto max-w-5xl">
+            <div className="flex items-center space-x-1 bg-background/40 backdrop-blur-md border border-border/30 rounded-2xl p-2 shadow-lg overflow-x-auto max-w-7xl">
               {navigation.map((item) => (
                 <div key={item.name} className="relative flex-shrink-0">
                   {item.dropdownItems ? (
@@ -163,15 +163,15 @@ export function Navbar() {
                       <DropdownMenuTrigger asChild>
                         <button
                           className={cn(
-                            "relative flex items-center space-x-1 px-2 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap",
+                            "relative flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[48px] touch-manipulation",
                             location.pathname === item.href
                               ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
                               : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
                           )}
                         >
-                          <item.icon className="h-3 w-3" />
-                          <span className="hidden xl:inline text-xs">{item.name}</span>
-                          <span className="xl:hidden text-[10px] font-semibold">
+                          <item.icon className="h-4 w-4" />
+                          <span className="hidden xl:inline text-sm font-medium">{item.name}</span>
+                          <span className="xl:hidden text-sm font-semibold">
                             {item.name.split(' ')[0]}
                           </span>
                           <ChevronDown className="h-3 w-3" />
@@ -223,15 +223,15 @@ export function Navbar() {
                     <Link
                       to={item.href}
                       className={cn(
-                        "relative flex items-center space-x-1 px-2 py-2 rounded-xl text-xs font-medium transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap",
+                        "relative flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[48px] touch-manipulation",
                         location.pathname === item.href
                           ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
                           : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
                       )}
                     >
-                      <item.icon className="h-3 w-3" />
-                      <span className="hidden xl:inline text-xs">{item.name}</span>
-                      <span className="xl:hidden text-[10px] font-semibold">
+                      <item.icon className="h-4 w-4" />
+                      <span className="hidden xl:inline text-sm font-medium">{item.name}</span>
+                      <span className="xl:hidden text-sm font-semibold">
                         {item.name.split(' ')[0]}
                       </span>
                     </Link>
