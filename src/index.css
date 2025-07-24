@@ -114,6 +114,14 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
+  /* Enhanced Typography Sizes */
+  .text-xs { font-size: 0.875rem; } /* was 0.75rem */
+  .text-sm { font-size: 1rem; } /* was 0.875rem */
+  .text-base { font-size: 1.125rem; } /* was 1rem */
+  .text-lg { font-size: 1.25rem; } /* was 1.125rem */
+  .text-xl { font-size: 1.375rem; } /* was 1.25rem */
+  .text-2xl { font-size: 1.75rem; } /* was 1.5rem */
+
   /* Enhanced Scrollbar with Your Palette */
   ::-webkit-scrollbar {
     width: 6px;
@@ -179,23 +187,40 @@
 
 /* Enhanced Component Styles with Your Color Palette */
 @layer components {
+  /* Navigation Tab Enhancements */
+  .nav-tab-gradient {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-tab-gradient:hover {
+    background: linear-gradient(135deg, 
+      hsl(var(--primary) / 0.15) 0%, 
+      hsl(var(--secondary) / 0.12) 50%, 
+      hsl(var(--accent) / 0.15) 100%);
+    border-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary)) !important;
+    transform: scale(1.05);
+  }
+
+  .active-tab-glow {
+    box-shadow: 
+      0 0 20px hsl(var(--primary) / 0.4),
+      0 0 40px hsl(var(--secondary) / 0.3),
+      0 4px 20px hsl(var(--foreground) / 0.1);
+  }
+
+  /* Navbar Backdrop */
+  .navbar-backdrop {
+    background: hsl(var(--background) / 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid hsl(var(--border) / 0.5);
+  }
+
   /* Minimalistic Landing Page Background */
   .enhanced-landing-background {
     background: hsl(var(--background));
     position: relative;
-  }
-
-  .enhanced-landing-background::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, hsl(var(--accent) / 0.04) 0%, transparent 50%);
-    pointer-events: none;
   }
 
   @keyframes enhancedGradientFlow {

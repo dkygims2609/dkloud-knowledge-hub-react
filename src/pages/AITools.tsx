@@ -91,7 +91,9 @@ const AITools = () => {
 
   // Helper function to get tool name from various possible column names
   const getToolName = (tool: AITool): string => {
-    return tool["Toolname"] || tool["Tool name"] || tool["toolname"] || tool["name"] || tool["Name"] || "Unknown Tool";
+    const toolName = tool["Toolname"] || tool["Tool name"] || tool["toolname"] || tool["name"] || tool["Name"];
+    console.log("Getting tool name for:", tool, "Found:", toolName);
+    return toolName || "Unknown Tool";
   };
 
   const getUniqueValues = (key: keyof AITool) => {
@@ -148,9 +150,9 @@ const AITools = () => {
                 <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div className="flex-1">
-                <CardTitle className="text-lg font-bold text-primary group-hover:text-primary/80 transition-colors duration-300 line-clamp-2">
-                  {toolName}
-                </CardTitle>
+        <CardTitle className="text-xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300 line-clamp-2">
+          {toolName}
+        </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   {tool["Category"] && (
                     <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
@@ -165,7 +167,7 @@ const AITools = () => {
         </CardHeader>
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
-          <CardDescription className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
+          <CardDescription className="text-base text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
             <span className="text-primary font-medium">Purpose:</span> {tool["Purpose"]}
           </CardDescription>
 
@@ -216,7 +218,7 @@ const AITools = () => {
             AI Tools
           </h1>
         </div>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+        <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
           Explore a curated selection of AI tools to enhance your productivity and creativity.
         </p>
       </div>

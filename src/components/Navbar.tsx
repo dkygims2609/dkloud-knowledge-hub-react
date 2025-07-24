@@ -162,12 +162,12 @@ export function Navbar() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button
-                          className={cn(
-                            "relative flex items-center space-x-3 px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[52px] min-w-[140px] touch-manipulation",
-                            location.pathname === item.href
-                              ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                              : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
-                          )}
+                           className={cn(
+                             "relative flex items-center space-x-3 px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[52px] min-w-[140px] touch-manipulation cursor-pointer",
+                             location.pathname === item.href
+                               ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
+                               : "text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-105"
+                           )}
                         >
                           <item.icon className="h-5 w-5" />
                           <span className="hidden xl:inline text-base font-semibold">{item.name}</span>
@@ -222,12 +222,12 @@ export function Navbar() {
                   ) : (
                     <Link
                       to={item.href}
-                      className={cn(
-                        "relative flex items-center space-x-3 px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[52px] min-w-[140px] touch-manipulation",
-                        location.pathname === item.href
-                          ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                          : "text-muted-foreground hover:text-foreground hover:bg-background/80 hover:scale-105"
-                      )}
+                       className={cn(
+                         "relative flex items-center space-x-3 px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[52px] min-w-[140px] touch-manipulation",
+                         location.pathname === item.href
+                           ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
+                           : "text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-105"
+                       )}
                     >
                       <item.icon className="h-5 w-5" />
                       <span className="hidden xl:inline text-base font-semibold">{item.name}</span>

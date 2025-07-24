@@ -7,6 +7,7 @@ import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
 import { ServicesSidebar } from "./ServicesSidebar";
 import { BackgroundQuestions } from "./BackgroundQuestions";
+import { AnimatedHomeButton } from "./AnimatedHomeButton";
 
 interface LayoutProps {
   children: ReactNode;
@@ -25,6 +26,7 @@ export function Layout({ children }: LayoutProps) {
       <ScrollToTop />
       <WhatsAppButton />
       <ServicesSidebar />
+      <AnimatedHomeButton />
     </div>
   );
 }
