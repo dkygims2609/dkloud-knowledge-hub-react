@@ -125,7 +125,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-16 w-full z-40 navbar-backdrop">
       <div className="w-full mx-auto px-2 sm:px-3 lg:px-4 xl:px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-12">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group flex-shrink-0">
             <div className="relative">
@@ -153,9 +153,9 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation - Fully responsive */}
+          {/* Desktop Navigation - Modern Minimalistic */}
           <div className="hidden md:flex items-center flex-1 justify-center mx-2 xl:mx-4">
-            <div className="flex items-center space-x-1 xl:space-x-2 bg-background/60 backdrop-blur-lg border border-border/40 rounded-3xl p-2 xl:p-3 shadow-xl overflow-x-auto scrollbar-hide min-w-0 max-w-full">
+            <div className="flex items-center space-x-1 xl:space-x-2 bg-background/70 backdrop-blur-md border border-border/30 rounded-2xl p-1.5 xl:p-2 shadow-lg overflow-x-auto scrollbar-hide min-w-0 max-w-full">
               {navigation.map((item) => (
                 <div key={item.name} className="relative flex-shrink-0 min-w-fit">
                   {item.dropdownItems ? (

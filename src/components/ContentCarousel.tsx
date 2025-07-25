@@ -103,7 +103,21 @@ export function ContentCarousel({ title, items, type, viewAllLink, maxItems = 6 
         <CarouselContent className="-ml-2 md:-ml-4">
           {limitedItems.map((item, index) => (
             <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-              <Card className="dkloud-card h-full cursor-pointer group" onClick={() => handleItemClick(getItemLink(item))}>
+              <Card className="dkloud-card h-full cursor-pointer group overflow-hidden" onClick={() => handleItemClick(getItemLink(item))}>
+                {/* Optimized Image Container */}
+                {item.image && (
+                  <div className="relative w-full h-32 sm:h-36 lg:h-40 overflow-hidden bg-muted">
+                    <img 
+                      src={item.image} 
+                      alt={getItemTitle(item)}
+                      className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-2 flex-1 mr-2">

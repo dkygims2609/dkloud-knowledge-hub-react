@@ -232,12 +232,32 @@
     touch-action: manipulation;
   }
 
-  /* Responsive container improvements */
+  /* Enhanced responsive optimizations */
   @media (max-width: 768px) {
     .navbar-backdrop {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
+    
+    /* Optimized card spacing for mobile */
+    .dkloud-card {
+      margin-bottom: 1rem;
+    }
+    
+    /* Better touch targets */
+    .touch-manipulation {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+  
+  /* Enhanced card animations */
+  .dkloud-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .dkloud-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px hsl(var(--foreground) / 0.1);
   }
 
   /* Minimalistic Landing Page Background */
