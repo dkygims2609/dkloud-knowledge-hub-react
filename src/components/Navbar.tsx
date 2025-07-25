@@ -162,16 +162,16 @@ export function Navbar() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button
-                           className={cn(
-                             "relative flex items-center space-x-3 px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[52px] min-w-[140px] touch-manipulation cursor-pointer",
-                             location.pathname === item.href
-                               ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                               : "text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-105"
-                           )}
+                          className={cn(
+                            "flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap min-h-[32px] min-w-fit nav-tab-gradient",
+                            location.pathname === item.href
+                              ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-md active-tab-glow"
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                          )}
                         >
-                          <item.icon className="h-5 w-5" />
-                          <span className="hidden xl:inline text-base font-semibold">{item.name}</span>
-                          <span className="xl:hidden text-base font-bold">
+                          <item.icon className="h-4 w-4" />
+                          <span className="hidden lg:inline text-sm font-medium">{item.name}</span>
+                          <span className="lg:hidden text-sm font-medium">
                             {item.name.split(' ')[0]}
                           </span>
                           <ChevronDown className="h-3 w-3" />
@@ -223,15 +223,15 @@ export function Navbar() {
                     <Link
                       to={item.href}
                        className={cn(
-                         "relative flex items-center space-x-3 px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden nav-tab-gradient whitespace-nowrap min-h-[52px] min-w-[140px] touch-manipulation",
+                         "flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap min-h-[32px] min-w-fit nav-tab-gradient",
                          location.pathname === item.href
-                           ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg scale-105 active-tab-glow"
-                           : "text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-105"
+                           ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-md active-tab-glow"
+                           : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
                        )}
-                    >
-                      <item.icon className="h-5 w-5" />
-                      <span className="hidden xl:inline text-base font-semibold">{item.name}</span>
-                      <span className="xl:hidden text-base font-bold">
+                     >
+                      <item.icon className="h-4 w-4" />
+                      <span className="hidden lg:inline text-sm font-medium">{item.name}</span>
+                      <span className="lg:hidden text-sm font-medium">
                         {item.name.split(' ')[0]}
                       </span>
                     </Link>
