@@ -124,7 +124,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-16 w-full z-40 navbar-backdrop">
-      <div className="max-w-full mx-auto px-2 sm:px-4 lg:px-6">
+      <div className="w-full mx-auto px-2 sm:px-3 lg:px-4 xl:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group flex-shrink-0">
@@ -153,11 +153,11 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation - Extended width with improved spacing */}
-          <div className="hidden lg:flex items-center flex-1 justify-center mx-4">
-            <div className="flex items-center space-x-2 bg-background/60 backdrop-blur-lg border border-border/40 rounded-3xl p-3 shadow-xl overflow-x-auto w-full max-w-none">
+          {/* Desktop Navigation - Fully responsive */}
+          <div className="hidden md:flex items-center flex-1 justify-center mx-2 xl:mx-4">
+            <div className="flex items-center space-x-1 xl:space-x-2 bg-background/60 backdrop-blur-lg border border-border/40 rounded-3xl p-2 xl:p-3 shadow-xl overflow-x-auto scrollbar-hide min-w-0 max-w-full">
               {navigation.map((item) => (
-                <div key={item.name} className="relative flex-shrink-0">
+                <div key={item.name} className="relative flex-shrink-0 min-w-fit">
                   {item.dropdownItems ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -247,7 +247,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden h-9 w-9 p-0"
+              className="md:hidden h-10 w-10 p-0 touch-manipulation"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
@@ -258,7 +258,7 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-lg">
+          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg">
             <div className="px-2 pt-2 pb-3 space-y-1 max-h-96 overflow-y-auto">
               {navigation.map((item) => (
                 <div key={item.name} className="space-y-1">
@@ -266,7 +266,7 @@ export function Navbar() {
                     to={item.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors nav-tab-gradient",
+                      "flex items-center space-x-2 px-4 py-3 rounded-lg text-base font-medium transition-colors nav-tab-gradient touch-manipulation min-h-[48px]",
                       location.pathname === item.href
                         ? "bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 text-white shadow-lg active-tab-glow"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"

@@ -217,6 +217,29 @@
     border-bottom: 1px solid hsl(var(--border) / 0.5);
   }
 
+  /* Hide scrollbar for horizontal navigation */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Touch optimization */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Responsive container improvements */
+  @media (max-width: 768px) {
+    .navbar-backdrop {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
   /* Minimalistic Landing Page Background */
   .enhanced-landing-background {
     background: hsl(var(--background));

@@ -91,8 +91,29 @@ const AITools = () => {
 
   // Helper function to get tool name from various possible column names
   const getToolName = (tool: AITool): string => {
-    const toolName = tool["Toolname"] || tool["Tool name"] || tool["toolname"] || tool["name"] || tool["Name"];
-    console.log("Getting tool name for:", tool, "Found:", toolName);
+    // Check all possible column name variations including the exact one from your sheet
+    const possibleKeys = [
+      "Toolname", 
+      "Tool name", 
+      "toolname", 
+      "name", 
+      "Name",
+      "Tool Name",
+      "TOOLNAME"
+    ];
+    
+    let toolName = "";
+    for (const key of possibleKeys) {
+      if (tool[key] && typeof tool[key] === 'string' && tool[key].trim()) {
+        toolName = tool[key].trim();
+        break;
+      }
+    }
+    
+    console.log("Tool object keys:", Object.keys(tool));
+    console.log("Tool name search result:", toolName);
+    console.log("Full tool object:", tool);
+    
     return toolName || "Unknown Tool";
   };
 
