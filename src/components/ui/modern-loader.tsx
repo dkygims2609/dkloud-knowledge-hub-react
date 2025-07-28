@@ -71,20 +71,36 @@ export function ModernLoader({
   );
 }
 
-// Skeleton loader for cards
+// Enhanced Skeleton loader for compact cards
 export function SkeletonCard({ className }: { className?: string }) {
   return (
-    <div className={cn("dkloud-card animate-pulse", className)}>
-      <div className="space-y-4">
-        <div className="h-48 bg-muted rounded-lg animate-[shimmer_2s_ease-in-out_infinite]" />
-        <div className="space-y-2">
-          <div className="h-4 bg-muted rounded animate-[shimmer_2s_ease-in-out_infinite] [animation-delay:0.2s]" />
-          <div className="h-4 bg-muted rounded w-3/4 animate-[shimmer_2s_ease-in-out_infinite] [animation-delay:0.4s]" />
+    <div className={cn("relative overflow-hidden bg-card/90 backdrop-blur-sm border border-border/40 shadow-sm aspect-[4/3] flex flex-col rounded-lg", className)}>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
+      
+      <div className="p-4 space-y-3">
+        {/* Header with icon and title */}
+        <div className="flex items-start gap-2">
+          <div className="w-8 h-8 rounded-md bg-muted animate-pulse" />
+          <div className="flex-1 space-y-1">
+            <div className="h-3 bg-muted rounded animate-pulse" />
+            <div className="h-3 bg-muted rounded w-2/3 animate-pulse [animation-delay:0.1s]" />
+          </div>
         </div>
-        <div className="flex gap-2">
-          <div className="h-6 bg-muted rounded w-16 animate-[shimmer_2s_ease-in-out_infinite] [animation-delay:0.6s]" />
-          <div className="h-6 bg-muted rounded w-20 animate-[shimmer_2s_ease-in-out_infinite] [animation-delay:0.8s]" />
+        
+        {/* Badge */}
+        <div className="h-4 bg-muted rounded w-16 animate-pulse [animation-delay:0.2s]" />
+        
+        {/* Description lines */}
+        <div className="space-y-1">
+          <div className="h-2 bg-muted rounded animate-pulse [animation-delay:0.3s]" />
+          <div className="h-2 bg-muted rounded w-4/5 animate-pulse [animation-delay:0.4s]" />
         </div>
+        
+        {/* Bottom elements */}
+        <div className="flex gap-1 mt-auto">
+          <div className="h-4 bg-muted rounded w-12 animate-pulse [animation-delay:0.5s]" />
+        </div>
+        <div className="h-7 bg-muted rounded animate-pulse [animation-delay:0.6s]" />
       </div>
     </div>
   );

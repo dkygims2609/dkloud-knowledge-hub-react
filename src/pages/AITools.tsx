@@ -160,53 +160,41 @@ const AITools = () => {
     return (
       <Card 
         key={toolName} 
-        className="group relative overflow-hidden bg-gradient-to-br from-card/95 to-card/85 backdrop-blur-md border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] aspect-square flex flex-col"
+        className="group relative overflow-hidden bg-card/90 backdrop-blur-sm border border-border/40 shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.01] aspect-[4/3] flex flex-col"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         
-        <CardHeader className="pb-3 relative z-10 flex-shrink-0">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-border/50 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
-                <Brain className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
-              </div>
-              <div className="flex-1">
-        <CardTitle className="text-xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300 line-clamp-2">
-          {toolName}
-        </CardTitle>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  {tool["Category"] && (
-                    <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
-                      <Target className="h-3 w-3 mr-1" />
-                      {tool["Category"]}
-                    </Badge>
-                  )}
-                </div>
-              </div>
+        <CardHeader className="pb-2 relative z-10 flex-shrink-0">
+          <div className="flex items-start gap-2">
+            <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Brain className="h-4 w-4 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-sm font-semibold text-foreground line-clamp-2 leading-snug">
+                {toolName}
+              </CardTitle>
+              {tool["Category"] && (
+                <Badge variant="outline" className="text-xs mt-1 h-4 px-1.5">
+                  {tool["Category"]}
+                </Badge>
+              )}
             </div>
           </div>
         </CardHeader>
 
         <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
-          <CardDescription className="text-base text-muted-foreground leading-relaxed mb-4 line-clamp-3 group-hover:text-foreground/80 transition-colors duration-300 flex-1">
-            <span className="text-primary font-medium">Purpose:</span> {tool["Purpose"]}
+          <CardDescription className="text-xs text-muted-foreground leading-relaxed line-clamp-2 flex-1 mb-2">
+            {tool["Purpose"]}
           </CardDescription>
 
-          <div className="space-y-3 mt-auto">
-            <div className="flex flex-wrap gap-2">
+          <div className="space-y-2 mt-auto">
+            <div className="flex flex-wrap gap-1">
               {tool["Pricingmodel"] && (
                 <Badge 
                   variant={tool["Pricingmodel"].toLowerCase().includes('free') ? 'default' : 'secondary'} 
-                  className={`text-xs ${tool["Pricingmodel"].toLowerCase().includes('free') ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-700' : 'bg-secondary/50 text-secondary-foreground'}`}
+                  className="text-xs h-4 px-1.5"
                 >
-                  <Zap className="h-3 w-3 mr-1" />
                   {tool["Pricingmodel"]}
-                </Badge>
-              )}
-              {tool["EstimatedCost (per month)"] && (
-                <Badge variant="outline" className="text-xs bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-300">
-                  <DollarSign className="h-3 w-3 mr-1" />
-                  {tool["EstimatedCost (per month)"]}
                 </Badge>
               )}
             </div>
@@ -215,12 +203,11 @@ const AITools = () => {
               <Button 
                 asChild 
                 size="sm" 
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 text-primary-foreground font-medium"
+                className="w-full h-7 text-xs bg-primary/90 hover:bg-primary transition-colors duration-200"
               >
                 <a href={tool["Tools Link"]} target="_blank" rel="noopener noreferrer">
-                  <Globe className="h-4 w-4 mr-2" />
-                  Visit Tool
-                  <ExternalLink className="h-3 w-3 ml-2" />
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  Visit
                 </a>
               </Button>
             )}
@@ -344,8 +331,8 @@ const AITools = () => {
             variant="gradient" 
             size="lg"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-50">
-            {[...Array(6)].map((_, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 opacity-50">
+            {[...Array(10)].map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </div>
@@ -360,8 +347,19 @@ const AITools = () => {
           </Button>
         </div>
       ) : filteredTools.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          {currentItems.map(renderAIToolCard)}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-6">
+          {currentItems.map((tool, index) => (
+            <div 
+              key={getToolName(tool)} 
+              className="animate-[fadeInStagger_0.5s_ease-out_forwards]"
+              style={{ 
+                animationDelay: `${index * 0.1}s`,
+                opacity: 0
+              }}
+            >
+              {renderAIToolCard(tool)}
+            </div>
+          ))}
         </div>
       ) : (
         <div className="text-center py-12">

@@ -957,13 +957,18 @@
   50% { background-position: 100% 50%; }
 }
 
-/* Modern loader animations */
+/* Enhanced Modern loader animations */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
   }
   100% {
     background-position: 200% 0;
+    opacity: 0.3;
   }
 }
 
@@ -973,6 +978,28 @@
   }
   100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes fadeInStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
