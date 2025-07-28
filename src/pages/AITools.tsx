@@ -32,7 +32,7 @@ const AITools = () => {
   const [selectedPricing, setSelectedPricing] = useState("all");
   const [currentPage, setCurrentPage] = useState(0);
   
-  const toolsPerPage = 6;
+  const toolsPerPage = 6; // 3 columns x 2 rows
 
   const fetchData = async (retryCount = 0) => {
     try {
@@ -160,21 +160,26 @@ const AITools = () => {
     return (
       <Card 
         key={toolName} 
-        className="group relative overflow-hidden bg-card/90 backdrop-blur-sm border border-border/40 shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.01] aspect-[4/3] flex flex-col"
+        className="group relative overflow-hidden bg-card border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 aspect-[4/3] flex flex-col"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Bright gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-green-400/10 via-cyan-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none" />
         
-        <CardHeader className="pb-2 relative z-10 flex-shrink-0">
-          <div className="flex items-start gap-2">
-            <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Brain className="h-4 w-4 text-primary" />
+        {/* Glowing border effect */}
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm -z-10" />
+        
+        <CardHeader className="pb-3 relative z-10 flex-shrink-0">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Brain className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-sm font-semibold text-foreground line-clamp-2 leading-snug">
+              <CardTitle className="text-base font-bold text-foreground line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors duration-300">
                 {toolName}
               </CardTitle>
               {tool["Category"] && (
-                <Badge variant="outline" className="text-xs mt-1 h-4 px-1.5">
+                <Badge variant="outline" className="text-xs mt-2 bg-gradient-to-r from-blue-100 to-purple-100 border-blue-200 text-blue-700 group-hover:bg-gradient-to-r group-hover:from-blue-200 group-hover:to-purple-200">
                   {tool["Category"]}
                 </Badge>
               )}
@@ -182,32 +187,45 @@ const AITools = () => {
           </div>
         </CardHeader>
 
-        <CardContent className="pt-0 relative z-10 flex-1 flex flex-col">
-          <CardDescription className="text-xs text-muted-foreground leading-relaxed line-clamp-2 flex-1 mb-2">
+        <CardContent className="pt-0 relative z-10 flex-1 flex flex-col space-y-3">
+          {/* Purpose */}
+          <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2 flex-1 group-hover:text-foreground transition-colors duration-300">
             {tool["Purpose"]}
           </CardDescription>
 
-          <div className="space-y-2 mt-auto">
-            <div className="flex flex-wrap gap-1">
+          {/* Pricing and Cost */}
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
               {tool["Pricingmodel"] && (
                 <Badge 
                   variant={tool["Pricingmodel"].toLowerCase().includes('free') ? 'default' : 'secondary'} 
-                  className="text-xs h-4 px-1.5"
+                  className={`text-xs transition-all duration-300 ${
+                    tool["Pricingmodel"].toLowerCase().includes('free') 
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700' 
+                      : 'bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700'
+                  }`}
                 >
                   {tool["Pricingmodel"]}
                 </Badge>
               )}
+              {tool["EstimatedCost (per month)"] && (
+                <Badge variant="outline" className="text-xs bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-300 text-yellow-700">
+                  <DollarSign className="h-3 w-3 mr-1" />
+                  {tool["EstimatedCost (per month)"]}
+                </Badge>
+              )}
             </div>
 
+            {/* Visit Button */}
             {tool["Tools Link"] && (
               <Button 
                 asChild 
                 size="sm" 
-                className="w-full h-7 text-xs bg-primary/90 hover:bg-primary transition-colors duration-200"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
               >
                 <a href={tool["Tools Link"]} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  Visit
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Visit Tool
                 </a>
               </Button>
             )}
@@ -331,7 +349,7 @@ const AITools = () => {
             variant="gradient" 
             size="lg"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 opacity-50">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-50">
             {[...Array(10)].map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -347,7 +365,7 @@ const AITools = () => {
           </Button>
         </div>
       ) : filteredTools.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           {currentItems.map((tool, index) => (
             <div 
               key={getToolName(tool)} 

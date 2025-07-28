@@ -13,7 +13,6 @@ import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { AudioPlayer } from "@/components/AudioPlayer";
 import TeamSection from "@/components/TeamSection";
-import founderPhoto from "/lovable-uploads/40571043-185c-427c-a07e-f75d19054750.png";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
