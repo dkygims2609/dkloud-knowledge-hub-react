@@ -68,28 +68,28 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative enhanced-landing-background">
+    <div className="min-h-screen relative enhanced-landing-background particle-bg">
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       
-      {/* Hero Section with Minimalistic Background */}
+      {/* Enhanced Hero Section with Modern Effects */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
-          <div className="fade-in">
-            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
+          <div className="scroll-reveal">
+            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up float-gentle" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="hero-title-enhanced font-black tracking-wider"
+                className="hero-title-enhanced font-black tracking-wider text-gradient-rainbow"
                 delay={1000}
               />
             </div>
             
-            <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="hero-subtitle-enhanced font-bold tracking-wide">
+            <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide magnetic-hover" style={{animationDelay: "0.3s"}}>
+              <span className="hero-subtitle-enhanced font-bold tracking-wide text-gradient-primary">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -115,13 +115,13 @@ const Index = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in mb-12" style={{animationDelay: "0.7s"}}>
-              <Button asChild size="lg" className="neon-outline-btn text-lg px-10 py-4">
+              <Button asChild size="lg" className="neon-outline-btn btn-glow text-lg px-10 py-4 magnetic-hover">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
-                  <ArrowRight className="ml-3 h-6 w-6" />
+                  <ArrowRight className="ml-3 h-6 w-6 float-gentle" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="animated-border-glow text-lg px-10 py-4">
+              <Button asChild variant="outline" size="lg" className="animated-border-glow btn-glow text-lg px-10 py-4 tilt-3d">
                 <Link to="/portfolio">View Portfolio</Link>
               </Button>
             </div>
@@ -153,13 +153,13 @@ const Index = () => {
                       duration: 2000 
                     })}
                   >
-                    <div className="ai-tools-card-enhanced fade-in glass-tab neon-card-hover animated-tab-gradient" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="card-modern glass-card neon-glow stagger-item magnetic-hover tilt-3d" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative p-4 text-center">
-                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center">
-                          <tab.Icon className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300" />
+                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center float-gentle">
+                          <tab.Icon className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300 neon-glow" />
                         </div>
                         <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
                           {tab.name}
@@ -188,25 +188,25 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            <Card className="ai-tools-card-enhanced bounce-in text-center">
+            <Card className="card-modern glass-card neon-glow bounce-in text-center magnetic-hover">
               <CardHeader className="pb-8">
-                <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
-                <CardTitle className="text-2xl text-primary">Google Sheets</CardTitle>
+                <Database className="h-16 w-16 text-primary mx-auto mb-6 float-gentle neon-glow" />
+                <CardTitle className="text-2xl text-primary text-gradient-primary">Google Sheets</CardTitle>
                 <CardDescription className="text-lg">Data stored and managed in organized spreadsheets</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="ai-tools-card-enhanced bounce-in text-center" style={{ animationDelay: "0.2s" }}>
+            <Card className="card-modern glass-card neon-glow-accent bounce-in text-center tilt-3d" style={{ animationDelay: "0.2s" }}>
               <CardHeader className="pb-8">
-                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
+                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float-dramatic neon-glow-accent" style={{animationDelay: "1s"}} />
                 <CardTitle className="text-2xl text-accent">Live APIs</CardTitle>
                 <CardDescription className="text-lg">Real-time data fetching via Google Apps Script</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="ai-tools-card-enhanced bounce-in text-center" style={{ animationDelay: "0.4s" }}>
+            <Card className="card-modern glass-card neon-glow-secondary bounce-in text-center magnetic-hover" style={{ animationDelay: "0.4s" }}>
               <CardHeader className="pb-8">
-                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
+                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float-gentle neon-glow-secondary" style={{animationDelay: "2s"}} />
                 <CardTitle className="text-2xl text-success">Dynamic Site</CardTitle>
                 <CardDescription className="text-lg">Always up-to-date content without manual updates</CardDescription>
               </CardHeader>
