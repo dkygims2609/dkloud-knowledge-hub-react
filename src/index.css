@@ -1298,7 +1298,6 @@
     transparent 40%);
   animation: parallax-slow 20s ease-in-out infinite;
   pointer-events: none;
-  }
 }
 
 @keyframes cardEntrance {
