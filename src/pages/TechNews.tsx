@@ -5,6 +5,8 @@ import { ExternalLink, Clock, Tag, Filter, Loader2, Calendar, RefreshCw } from "
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRealTechNews } from "@/hooks/useRealTechNews";
+import { SunWukongLoader } from "@/components/SunWukongLoader";
+import { useSunWukong } from "@/components/SunWukongProvider";
 import { useState, useEffect } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 import { ErrorState, EmptyState } from "@/components/ui/error-boundary";
@@ -16,6 +18,7 @@ const TechNews = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedSource, setSelectedSource] = useState<string>('all');
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const { triggerCelebration, showCharacter } = useSunWukong();
 
   const handleFilterChange = async () => {
     await fetchNews({
@@ -170,11 +173,10 @@ const TechNews = () => {
 
         {/* Loading State */}
         {loading ? (
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 9 }).map((_, i) => (
-              <SkeletonLoader key={i} variant="card" />
-            ))}
-          </div>
+          <SunWukongLoader 
+            message="Sun Wukong is collecting the latest tech news from across the digital realm..."
+            size="large"
+          />
         ) : (
           <>
             {/* News Grid */}

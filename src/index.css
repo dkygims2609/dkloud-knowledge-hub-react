@@ -1311,6 +1311,86 @@
   }
 }
 
+/* Sun Wukong Character Animations */
+@keyframes idle-bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes spin-staff {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fly-across {
+  0% { transform: translateX(-100px) translateY(20px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100px) translateY(-20px); opacity: 0; }
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  50% { transform: scale(1.2) rotate(5deg); }
+  75% { transform: scale(1.1) rotate(-5deg); }
+}
+
+@keyframes think {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes tail-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(10deg); }
+}
+
+@keyframes staff-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes staff-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+@keyframes cloud-float {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 0.6; }
+}
+
+@keyframes wink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@keyframes wink-delay {
+  0%, 85%, 100% { transform: scaleY(1); }
+  90% { transform: scaleY(0.1); }
+}
+
+@keyframes particle-burst {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1) translate(20px, -20px); opacity: 0.8; }
+  100% { transform: scale(0) translate(40px, -40px); opacity: 0; }
+}
+
+.animate-idle-bounce { animation: idle-bounce 3s ease-in-out infinite; }
+.animate-spin-staff { animation: spin-staff 1s linear infinite; }
+.animate-fly-across { animation: fly-across 3s ease-in-out; }
+.animate-celebrate { animation: celebrate 1s ease-in-out 3; }
+.animate-think { animation: think 2s ease-in-out infinite; }
+.animate-tail-sway { animation: tail-sway 4s ease-in-out infinite; }
+.animate-staff-spin { animation: staff-spin 2s linear infinite; }
+.animate-staff-wave { animation: staff-wave 1s ease-in-out infinite; }
+.animate-cloud-float { animation: cloud-float 3s ease-in-out infinite; }
+.animate-wink { animation: wink 3s ease-in-out infinite; }
+.animate-wink-delay { animation: wink-delay 3s ease-in-out infinite; }
+.animate-particle-burst { animation: particle-burst 1s ease-out forwards; }
+
 @keyframes float-up {
   0% {
     transform: translateY(100vh) rotate(0deg);

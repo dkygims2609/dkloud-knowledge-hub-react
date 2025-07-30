@@ -13,6 +13,7 @@ import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { AudioPlayer } from "@/components/AudioPlayer";
 import TeamSection from "@/components/TeamSection";
+import { useSunWukong } from "@/components/SunWukongProvider";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
@@ -23,6 +24,7 @@ const Index = () => {
     smarttech: [],
     technews: []
   });
+  const { triggerCelebration, triggerFlying, showCharacter } = useSunWukong();
 
   useEffect(() => {
     const fetchPreviewData = async () => {
@@ -148,10 +150,13 @@ const Index = () => {
                     key={tab.name} 
                     to={tab.href} 
                     className="group relative"
-                    onClick={() => toast.success(`${tab.name} activated`, { 
-                      description: `Loading ${tab.desc.toLowerCase()}...`,
-                      duration: 2000 
-                    })}
+                    onClick={() => {
+                      toast.success(`${tab.name} activated`, { 
+                        description: `Loading ${tab.desc.toLowerCase()}...`,
+                        duration: 2000 
+                      });
+                      triggerFlying(); // Sun Wukong flies when navigating
+                    }}
                   >
                     <div className="card-modern glass-card neon-glow stagger-item magnetic-hover tilt-3d" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
