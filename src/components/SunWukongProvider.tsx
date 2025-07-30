@@ -20,12 +20,11 @@ export function SunWukongProvider({ children }: SunWukongProviderProps) {
   const [characterState, setCharacterState] = useState<'idle' | 'loading' | 'flying' | 'celebrating' | 'thinking' | 'hidden'>('hidden');
   const [isVisible, setIsVisible] = useState(false);
 
-  // Auto-show character on initial load
+  // Auto-show character on initial load - delayed to prevent performance issues
   useEffect(() => {
     const timer = setTimeout(() => {
-      showCharacter('flying', 2000);
-      setTimeout(() => showCharacter('idle'), 2500);
-    }, 1000);
+      showCharacter('idle');
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);

@@ -27,50 +27,19 @@ const Index = () => {
   const { triggerCelebration, triggerFlying, showCharacter } = useSunWukong();
 
   useEffect(() => {
-    const fetchPreviewData = async () => {
-      try {
-        // Movies & TV
-        const moviesResponse = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec");
-        const moviesData = await moviesResponse.json();
-        
-        // YouTube Channels
-        const youtubeResponse = await fetch("https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799");
-        const youtubeData = await youtubeResponse.json();
-        
-        // AI Tools
-        const aitoolsResponse = await fetch("https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec");
-        const aitoolsData = await aitoolsResponse.json();
-        
-        // Tech Corner
-        const techcornerResponse = await fetch("https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec");
-        const techcornerData = await techcornerResponse.json();
-
-        setPreviewData({
-          movies: moviesData || [],
-          youtube: youtubeData || [],
-          aitools: aitoolsData || [],
-          techcorner: techcornerData || [],
-          smarttech: [],
-          technews: []
-        });
-      } catch (error) {
-        console.error("Error fetching preview data:", error);
-        setPreviewData({
-          movies: [],
-          youtube: [],
-          aitools: [],
-          techcorner: [],
-          smarttech: [],
-          technews: []
-        });
-      }
-    };
-
-    fetchPreviewData();
+    // Set default data to prevent loading errors
+    setPreviewData({
+      movies: [],
+      youtube: [],
+      aitools: [],
+      techcorner: [],
+      smarttech: [],
+      technews: []
+    });
   }, []);
 
   return (
-    <div className="min-h-screen relative enhanced-landing-background particle-bg">
+    <div className="min-h-screen relative enhanced-landing-background">
       <FloatingIcons />
       <IoTFloatingIcons showOnHomePage={true} />
       
