@@ -8,8 +8,6 @@ import { Search, Filter, Star, ExternalLink, Brain, ChevronLeft, ChevronRight, G
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ModernLoader, SkeletonCard } from "@/components/ui/modern-loader";
-import { SunWukongLoader } from "@/components/SunWukongLoader";
-import { useSunWukong } from "@/components/SunWukongProvider";
 
 interface AITool {
   "Toolname"?: string;
@@ -35,7 +33,6 @@ const AITools = () => {
   const [currentPage, setCurrentPage] = useState(0);
   
   const toolsPerPage = 6; // 3 columns x 2 rows
-  const { triggerCelebration, showCharacter } = useSunWukong();
 
   const fetchData = async (retryCount = 0) => {
     try {
@@ -346,10 +343,18 @@ const AITools = () => {
       </div>
       
       {loading ? (
-        <SunWukongLoader 
-          message="Sun Wukong is gathering AI tools from across the digital realm..."
-          size="large"
-        />
+        <div className="flex flex-col items-center justify-center min-h-[400px] space-y-8">
+          <ModernLoader 
+            text="Loading AI Tools..." 
+            variant="gradient" 
+            size="lg"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-50">
+            {[...Array(10)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </div>
       ) : error ? (
         <div className="text-center py-12">
           <h3 className="text-2xl font-semibold mb-2 text-destructive">Failed to Load AI Tools</h3>

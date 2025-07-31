@@ -13,7 +13,6 @@ import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
 import { ColorBandSection } from "@/components/ColorBandSection";
 import { AudioPlayer } from "@/components/AudioPlayer";
 import TeamSection from "@/components/TeamSection";
-import { useSunWukong } from "@/components/SunWukongProvider";
 
 const Index = () => {
   const [previewData, setPreviewData] = useState({
@@ -24,42 +23,73 @@ const Index = () => {
     smarttech: [],
     technews: []
   });
-  const { triggerCelebration, triggerFlying, showCharacter } = useSunWukong();
 
   useEffect(() => {
-    // Set default data to prevent loading errors
-    setPreviewData({
-      movies: [],
-      youtube: [],
-      aitools: [],
-      techcorner: [],
-      smarttech: [],
-      technews: []
-    });
+    const fetchPreviewData = async () => {
+      try {
+        // Movies & TV
+        const moviesResponse = await fetch("https://script.google.com/macros/s/AKfycbwiNhiUq6yWcGQ5dUwMwclRYt_pTsz_8nNXSsYsZClcmdLJGFp3kZYZdSkfqW0LtGWd7A/exec");
+        const moviesData = await moviesResponse.json();
+        
+        // YouTube Channels
+        const youtubeResponse = await fetch("https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799");
+        const youtubeData = await youtubeResponse.json();
+        
+        // AI Tools
+        const aitoolsResponse = await fetch("https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec");
+        const aitoolsData = await aitoolsResponse.json();
+        
+        // Tech Corner
+        const techcornerResponse = await fetch("https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec");
+        const techcornerData = await techcornerResponse.json();
+
+        setPreviewData({
+          movies: moviesData || [],
+          youtube: youtubeData || [],
+          aitools: aitoolsData || [],
+          techcorner: techcornerData || [],
+          smarttech: [],
+          technews: []
+        });
+      } catch (error) {
+        console.error("Error fetching preview data:", error);
+        setPreviewData({
+          movies: [],
+          youtube: [],
+          aitools: [],
+          techcorner: [],
+          smarttech: [],
+          technews: []
+        });
+      }
+    };
+
+    fetchPreviewData();
   }, []);
 
   return (
-    <div className="min-h-screen relative bg-background">
-      {/* Simplified background effects */}
+    <div className="min-h-screen relative enhanced-landing-background">
+      <FloatingIcons />
+      <IoTFloatingIcons showOnHomePage={true} />
       
-      {/* Enhanced Hero Section with Modern Effects */}
+      {/* Hero Section with Minimalistic Background */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
         </div>
         
         <div className="relative max-w-7xl mx-auto text-center">
-          <div className="scroll-reveal">
-            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up float-gentle" style={{animationDelay: "0.2s"}}>
+          <div className="fade-in">
+            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
               <DecodingAnimation 
                 text="Decoding Knowledge" 
-                className="hero-title-enhanced font-black tracking-wider text-gradient-rainbow"
+                className="hero-title-enhanced font-black tracking-wider"
                 delay={1000}
               />
             </div>
             
-            <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide magnetic-hover" style={{animationDelay: "0.3s"}}>
-              <span className="hero-subtitle-enhanced font-bold tracking-wide text-gradient-primary">
+            <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
+              <span className="hero-subtitle-enhanced font-bold tracking-wide">
                 Library Of Unique Discoveries
               </span>
             </div>
@@ -85,13 +115,13 @@ const Index = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in mb-12" style={{animationDelay: "0.7s"}}>
-              <Button asChild size="lg" className="neon-outline-btn btn-glow text-lg px-10 py-4 magnetic-hover">
+              <Button asChild size="lg" className="neon-outline-btn text-lg px-10 py-4">
                 <Link to="/aitools">
                   Dive into dKloud Tech Universe
-                  <ArrowRight className="ml-3 h-6 w-6 float-gentle" />
+                  <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="animated-border-glow btn-glow text-lg px-10 py-4 tilt-3d">
+              <Button asChild variant="outline" size="lg" className="animated-border-glow text-lg px-10 py-4">
                 <Link to="/portfolio">View Portfolio</Link>
               </Button>
             </div>
@@ -117,21 +147,19 @@ const Index = () => {
                   <Link 
                     key={tab.name} 
                     to={tab.href} 
-                     className="group relative"
-                     onClick={() => {
-                       toast.success(`${tab.name} activated`, { 
-                         description: `Loading ${tab.desc.toLowerCase()}...`,
-                         duration: 2000 
-                       });
-                     }}
+                    className="group relative"
+                    onClick={() => toast.success(`${tab.name} activated`, { 
+                      description: `Loading ${tab.desc.toLowerCase()}...`,
+                      duration: 2000 
+                    })}
                   >
-                    <div className="card-modern glass-card neon-glow stagger-item magnetic-hover tilt-3d" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="ai-tools-card-enhanced fade-in glass-tab neon-card-hover animated-tab-gradient" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative p-4 text-center">
-                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center float-gentle">
-                          <tab.Icon className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300 neon-glow" />
+                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center">
+                          <tab.Icon className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300" />
                         </div>
                         <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
                           {tab.name}
@@ -160,25 +188,25 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            <Card className="card-modern glass-card neon-glow bounce-in text-center magnetic-hover">
+            <Card className="ai-tools-card-enhanced bounce-in text-center">
               <CardHeader className="pb-8">
-                <Database className="h-16 w-16 text-primary mx-auto mb-6 float-gentle neon-glow" />
-                <CardTitle className="text-2xl text-primary text-gradient-primary">Google Sheets</CardTitle>
+                <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
+                <CardTitle className="text-2xl text-primary">Google Sheets</CardTitle>
                 <CardDescription className="text-lg">Data stored and managed in organized spreadsheets</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="card-modern glass-card neon-glow-accent bounce-in text-center tilt-3d" style={{ animationDelay: "0.2s" }}>
+            <Card className="ai-tools-card-enhanced bounce-in text-center" style={{ animationDelay: "0.2s" }}>
               <CardHeader className="pb-8">
-                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float-dramatic neon-glow-accent" style={{animationDelay: "1s"}} />
+                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
                 <CardTitle className="text-2xl text-accent">Live APIs</CardTitle>
                 <CardDescription className="text-lg">Real-time data fetching via Google Apps Script</CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="card-modern glass-card neon-glow-secondary bounce-in text-center magnetic-hover" style={{ animationDelay: "0.4s" }}>
+            <Card className="ai-tools-card-enhanced bounce-in text-center" style={{ animationDelay: "0.4s" }}>
               <CardHeader className="pb-8">
-                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float-gentle neon-glow-secondary" style={{animationDelay: "2s"}} />
+                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
                 <CardTitle className="text-2xl text-success">Dynamic Site</CardTitle>
                 <CardDescription className="text-lg">Always up-to-date content without manual updates</CardDescription>
               </CardHeader>

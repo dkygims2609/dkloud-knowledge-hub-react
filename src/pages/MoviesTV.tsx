@@ -67,7 +67,7 @@ const API_ENDPOINTS = {
 const MoviesTV = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get('tab') || 'movies';
+  const initialTab = searchParams.get('tab') || 'trending';
   
   const [activeTab, setActiveTab] = useState(initialTab);
   const [data, setData] = useState<ContentItem[]>([]);
@@ -382,7 +382,7 @@ const MoviesTV = () => {
               <img
                 src={trending["poster url"]}
                 alt={trending.Title || "Poster"}
-                className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105 bg-muted/50"
+                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -443,7 +443,7 @@ const MoviesTV = () => {
               <img
                 src={ultimate["Poster URL"]}
                 alt={ultimate.Title || "Poster"}
-                className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105 bg-muted/50"
+                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -490,18 +490,18 @@ const MoviesTV = () => {
 
   const tabs = [
     {
+      id: "trending",
+      label: "🔥 Trending",
+      icon: TrendingUp,
+      gradient: "from-red-500 to-orange-600",
+      description: "Popular and trending content"
+    },
+    {
       id: "movies",
       label: "🎬 Movies",
       icon: Film,
       gradient: "from-blue-500 to-purple-600",
       description: "Movie collection"
-    },
-    {
-      id: "ultimate",
-      label: "⭐ Ultimate",
-      icon: Trophy,
-      gradient: "from-yellow-500 to-amber-600",
-      description: "Ultimate collection"
     },
     {
       id: "tv",
@@ -511,11 +511,11 @@ const MoviesTV = () => {
       description: "TV series collection"
     },
     {
-      id: "trending",
-      label: "🔥 Trending",
-      icon: TrendingUp,
-      gradient: "from-red-500 to-orange-600",
-      description: "Popular and trending content"
+      id: "ultimate",
+      label: "⭐ Ultimate",
+      icon: Trophy,
+      gradient: "from-yellow-500 to-amber-600",
+      description: "Ultimate collection"
     }
   ];
 

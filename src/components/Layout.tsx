@@ -8,7 +8,6 @@ import { ScrollToTop } from "./ScrollToTop";
 import { ServicesSidebar } from "./ServicesSidebar";
 import { BackgroundQuestions } from "./BackgroundQuestions";
 import { AnimatedHomeButton } from "./AnimatedHomeButton";
-import { SunWukongProvider } from "./SunWukongProvider";
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,20 +15,18 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <SunWukongProvider>
-      <div className="min-h-screen bg-background relative">
-        <BackgroundQuestions />
-        <RunningBanner />
-        <Navbar />
-        <main className="pt-16 relative z-10">
-          {children}
-        </main>
-        <Footer />
-        <ScrollToTop />
-        <WhatsAppButton />
-        <ServicesSidebar />
-        <AnimatedHomeButton />
-      </div>
-    </SunWukongProvider>
+    <div className="min-h-screen bg-background relative">
+      <BackgroundQuestions />
+      <RunningBanner />
+      <Navbar />
+      <main className="pt-16 relative z-10">
+        {children}
+      </main>
+      <Footer />
+      <ScrollToTop />
+      <WhatsAppButton />
+      <ServicesSidebar />
+      <AnimatedHomeButton />
+    </div>
   );
 }
