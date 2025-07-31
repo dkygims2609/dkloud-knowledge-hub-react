@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ExternalLink, Play, Zap, FileText, TrendingUp, Bot, Laptop2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ModernCard } from "./ModernCard";
+import { ScrollReveal, MagneticButton } from "./ModernAnimations";
 
 interface ContentItem {
   id?: string;
@@ -114,139 +115,118 @@ export function ContentGrid({ items, type }: ContentGridProps) {
   );
 
   return (
-    <div className="relative">
-      {/* Slider Controls */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <h2 className="text-2xl font-bold">
-            {type === "movies" ? "Movies & TV Series" :
-             type === "youtube" ? "YouTube Channels" :
-             type === "aitools" ? "AI Tools" :
-             type === "techcorner" ? "Tech Corner" :
-             type === "smarttech" ? "Smart Tech" :
-             "Tech News"}
-          </h2>
-          <Badge variant="outline" className="text-xs">
-            {items.length} items
-          </Badge>
+    <ScrollReveal direction="up" delay={100}>
+      <div className="relative">
+        {/* Slider Controls */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <h2 className="text-3xl font-bold text-gradient-animated">
+              {type === "movies" ? "Movies & TV Series" :
+               type === "youtube" ? "YouTube Channels" :
+               type === "aitools" ? "AI Tools" :
+               type === "techcorner" ? "Tech Corner" :
+               type === "smarttech" ? "Smart Tech" :
+               "Tech News"}
+            </h2>
+            <Badge variant="outline" className="text-xs glass-card">
+              {items.length} items
+            </Badge>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-muted-foreground">
+              {currentIndex + 1} / {totalViews}
+            </span>
+            <MagneticButton>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={prevSlide}
+                disabled={currentIndex === 0}
+                className="h-8 w-8 p-0 hover-glow"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={nextSlide}
+                disabled={currentIndex === totalViews - 1}
+                className="h-8 w-8 p-0 hover-glow"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </MagneticButton>
+          </div>
         </div>
-        
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">
-            {currentIndex + 1} / {totalViews}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={prevSlide}
-            disabled={currentIndex === 0}
-            className="h-8 w-8 p-0"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={nextSlide}
-            disabled={currentIndex === totalViews - 1}
-            className="h-8 w-8 p-0"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
 
       {/* Content Grid - 2 Rows with Horizontal Scroll */}
       <div 
         ref={scrollContainerRef}
         className="overflow-hidden mb-6"
       >
-        <div className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 pb-4" style={{ 
+        <div className="grid grid-rows-2 grid-flow-col auto-cols-max gap-6 pb-4" style={{ 
           gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
           width: `${Math.ceil(currentItems.length / 2) * 320}px`,
-          transition: 'transform 0.3s ease-in-out',
+          transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
           transform: `translateX(-${currentIndex * (Math.ceil(itemsPerView / 2) * 320)}px)`
         }}>
           {currentItems.map((item, index) => (
-            <Card 
-              key={index} 
-              className={cn(
-                "dkloud-card dkloud-card-interactive cursor-pointer group transition-all duration-500 w-72 flex-shrink-0",
-                getCardCategory() === "movies" && "card-movies",
-                getCardCategory() === "aitools" && "card-aitools", 
-                getCardCategory() === "tech" && "card-tech",
-                getCardCategory() === "youtube" && "card-youtube"
-              )}
-              onClick={() => handleItemClick(getItemLink(item))}
-            >
-            <CardHeader className="pb-2">
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center space-x-1 flex-1 mr-1">
-                  {renderIcon()}
-                  <CardTitle className="text-sm group-hover:text-primary transition-colors line-clamp-2 leading-tight">
-                    {getItemTitle(item)}
-                  </CardTitle>
+            <ScrollReveal key={index} direction="up" delay={index * 50}>
+              <ModernCard
+                title={getItemTitle(item)}
+                description={getItemDescription(item)}
+                category={getCardCategory()}
+                badge={getItemCategory(item) || undefined}
+                href={getItemLink(item)}
+                icon={renderIcon()}
+                className="w-72 flex-shrink-0 h-full"
+                onClick={() => handleItemClick(getItemLink(item))}
+              >
+                <div className="space-y-3">
+                  {getItemRating(item) && (
+                    <Badge variant="outline" className="text-xs animate-shimmer">
+                      ⭐ {getItemRating(item)}
+                    </Badge>
+                  )}
+                  
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <div className="flex items-center space-x-1">
+                      {renderIcon()}
+                      <span>
+                        {type === "youtube" ? "Channel" : 
+                         type === "aitools" ? "AI Tool" : 
+                         type === "movies" ? "Content" :
+                         "Resource"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                {getItemCategory(item) && (
-                  <Badge variant="secondary" className="text-[10px] flex-shrink-0 px-1 py-0">
-                    {getItemCategory(item)}
-                  </Badge>
-                )}
-              </div>
-              {getItemRating(item) && (
-                <Badge variant="outline" className="text-[10px] w-fit">
-                  ⭐ {getItemRating(item)}
-                </Badge>
-              )}
-            </CardHeader>
-            
-            <CardContent className="pt-0">
-              {getItemDescription(item) && (
-                <CardDescription className="text-xs mb-3 line-clamp-2 leading-relaxed">
-                  {getItemDescription(item)}
-                </CardDescription>
-              )}
-              
-              <div className="flex items-center justify-between pt-2 border-t border-border">
-                <div className="flex items-center space-x-1 text-[10px] text-muted-foreground">
-                  {renderIcon()}
-                  <span>
-                    {type === "youtube" ? "Channel" : 
-                     type === "aitools" ? "AI Tool" : 
-                     type === "movies" ? "Content" :
-                     "Resource"}
-                  </span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleItemClick(getItemLink(item));
-                  }}
-                >
-                  <ExternalLink className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardContent>
-            </Card>
+              </ModernCard>
+            </ScrollReveal>
           ))}
         </div>
       </div>
 
-      {/* Progress Indicators */}
-      <div className="flex justify-center space-x-2">
-        {Array.from({ length: totalViews }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              index === currentIndex ? 'bg-primary' : 'bg-muted'
-            }`}
-          />
-        ))}
+        {/* Progress Indicators */}
+        <div className="flex justify-center space-x-2 mt-8">
+          {Array.from({ length: totalViews }).map((_, index) => (
+            <MagneticButton key={index}>
+              <button
+                onClick={() => setCurrentIndex(index)}
+                className={cn(
+                  "w-3 h-3 rounded-full transition-all duration-300 hover:scale-125",
+                  index === currentIndex 
+                    ? 'bg-primary shadow-lg shadow-primary/50 animate-pulse-glow' 
+                    : 'bg-muted hover:bg-muted-foreground/50'
+                )}
+              />
+            </MagneticButton>
+          ))}
+        </div>
       </div>
-    </div>
+    </ScrollReveal>
   );
 }

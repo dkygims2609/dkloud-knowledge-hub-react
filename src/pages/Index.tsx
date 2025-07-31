@@ -1,17 +1,14 @@
 
 import { useState, useEffect } from "react";
-import { ArrowRight, Database, Zap, Users, BookOpen, Sparkles, Music, Code, Brain, Clapperboard, Youtube, Newspaper, Briefcase, Package } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Database, Zap, Sparkles } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { ContentGrid } from "@/components/ContentGrid";
-import { DecodingAnimation } from "@/components/DecodingAnimation";
 import { InfographicAnimation } from "@/components/InfographicAnimation";
-import { FloatingIcons } from "@/components/FloatingIcons";
-import { IoTFloatingIcons } from "@/components/IoTFloatingIcons";
-import { ColorBandSection } from "@/components/ColorBandSection";
-import { AudioPlayer } from "@/components/AudioPlayer";
+import { EnhancedHeroSection } from "@/components/EnhancedHeroSection";
+import { ModernExploreGrid } from "@/components/ModernExploreGrid";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
+import { ScrollReveal, FloatingElement } from "@/components/ModernAnimations";
 import TeamSection from "@/components/TeamSection";
 
 const Index = () => {
@@ -68,149 +65,92 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative enhanced-landing-background">
-      <FloatingIcons />
-      <IoTFloatingIcons showOnHomePage={true} />
-      
-      {/* Hero Section with Minimalistic Background */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto text-center">
-          <div className="fade-in">
-            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 slide-up" style={{animationDelay: "0.2s"}}>
-              <DecodingAnimation 
-                text="Decoding Knowledge" 
-                className="hero-title-enhanced font-black tracking-wider"
-                delay={1000}
-              />
-            </div>
-            
-            <div className="text-lg md:text-xl lg:text-2xl font-bold mb-8 bounce-in tracking-wide" style={{animationDelay: "0.3s"}}>
-              <span className="hero-subtitle-enhanced font-bold tracking-wide">
-                Library Of Unique Discoveries
-              </span>
-            </div>
+    <div className="min-h-screen relative bg-background">
+      {/* Enhanced Hero Section */}
+      <EnhancedHeroSection />
 
-            <div className="mb-8 fade-in" style={{animationDelay: "0.4s"}}>
-              <AudioPlayer 
-                audioSrc="/dKloudaudio.wav"
-                title="Listen: What is dKloud?"
-                description="Hear directly from the founder about dKloud's vision"
-              />
-            </div>
-            
-            <div className="text-center mb-8 fade-in max-w-2xl mx-auto" style={{animationDelay: "0.5s"}}>
-              <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-                <span className="text-foreground">
-                  At dKloud, we're crafting a <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent font-semibold">universe</span> where <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-semibold">creativity meets the cloud</span>, <span className="neon-gradient-text font-semibold">AI fuels curiosity</span>, and <span className="bg-gradient-to-r from-accent via-secondary to-primary bg-clip-text text-transparent font-semibold">learning becomes a shared adventure</span>.
-                </span>
+      {/* Modern Explore Grid */}
+      <ModernExploreGrid />
+
+      {/* About Section - Enhanced */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-br from-muted/20 via-background to-muted/30" />
+        
+        {/* Floating elements */}
+        {Array.from({ length: 5 }).map((_, i) => (
+          <FloatingElement
+            key={i}
+            delay={i * 0.8}
+            className="absolute opacity-20"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+          >
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl" />
+          </FloatingElement>
+        ))}
+
+        <div className="relative max-w-7xl mx-auto">
+          <ScrollReveal direction="up" delay={100}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-black mb-6 text-gradient-animated">
+                About dKloud
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                A comprehensive platform combining{" "}
+                <span className="text-shimmer font-semibold text-primary">entertainment</span>,{" "}
+                <span className="text-gradient-animated font-semibold">education</span>, and{" "}
+                <span className="text-shimmer font-semibold text-accent">technology</span>. 
+                All data is dynamically powered by{" "}
+                <span className="text-gradient-animated font-semibold">Google Sheets APIs</span> for{" "}
+                <span className="text-shimmer font-semibold text-primary">real-time updates</span>.
               </p>
             </div>
+          </ScrollReveal>
 
-            <div className="fade-in mb-8" style={{animationDelay: "0.6s"}}>
-              <ColorBandSection />
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center scale-in mb-12" style={{animationDelay: "0.7s"}}>
-              <Button asChild size="lg" className="neon-outline-btn text-lg px-10 py-4">
-                <Link to="/aitools">
-                  Dive into dKloud Tech Universe
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="animated-border-glow text-lg px-10 py-4">
-                <Link to="/portfolio">View Portfolio</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore Our Sections */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-muted/40 to-background">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-6xl mx-auto p-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 w-full">
-                {[
-                  { name: "Movies & TV", href: "/movies-tv", Icon: Clapperboard, desc: "Films & Series", color: "from-primary to-secondary" },
-                  { name: "YouTube Picks", href: "/ytchannels", Icon: Youtube, desc: "Top Channels", color: "from-red-500 to-rose-600" },
-                  { name: "AI Tools", href: "/aitools", Icon: Brain, desc: "Latest AI", color: "from-accent to-primary" },
-                  { name: "Tech Corner", href: "/techcorner", Icon: BookOpen, desc: "SOPs & Tips", color: "from-green-500 to-emerald-600" },
-                  { name: "SmartTech", href: "/smarttech", Icon: Zap, desc: "Smart Gadgets", color: "from-secondary to-accent" },
-                  { name: "Digi Products", href: "/digi-products", Icon: Package, desc: "My Products", color: "from-orange-500 to-red-600" },
-                  { name: "Portfolio", href: "/portfolio", Icon: Briefcase, desc: "My Work", color: "from-secondary to-primary" },
-                ].map((tab, index) => (
-                  <Link 
-                    key={tab.name} 
-                    to={tab.href} 
-                    className="group relative"
-                    onClick={() => toast.success(`${tab.name} activated`, { 
-                      description: `Loading ${tab.desc.toLowerCase()}...`,
-                      duration: 2000 
-                    })}
-                  >
-                    <div className="ai-tools-card-enhanced fade-in glass-tab neon-card-hover animated-tab-gradient" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-primary/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      <div className="relative p-4 text-center">
-                        <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500 group-hover:drop-shadow-lg flex justify-center">
-                          <tab.Icon className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300" />
-                        </div>
-                        <h4 className="font-bold text-sm mb-2 group-hover:text-primary transition-colors duration-300 relative text-sharp-bright">
-                          {tab.name}
-                          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500" />
-                        </h4>
-                        <p className="text-xs text-muted-foreground group-hover:text-foreground transition-colors duration-300">{tab.desc}</p>
-                      </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            {[
+              {
+                icon: Database,
+                title: "Google Sheets",
+                description: "Data stored and managed in organized spreadsheets",
+                color: "text-primary",
+                delay: 200
+              },
+              {
+                icon: Zap,
+                title: "Live APIs", 
+                description: "Real-time data fetching via Google Apps Script",
+                color: "text-accent",
+                delay: 400
+              },
+              {
+                icon: Sparkles,
+                title: "Dynamic Site",
+                description: "Always up-to-date content without manual updates", 
+                color: "text-success",
+                delay: 600
+              }
+            ].map((item, index) => (
+              <ScrollReveal key={item.title} direction="up" delay={item.delay}>
+                <Card className="glass-card hover-lift text-center h-full border-primary/20 hover:border-primary/40 transition-all duration-500">
+                  <CardHeader className="pb-8">
+                    <div className="relative mb-6">
+                      <item.icon className={`h-16 w-16 ${item.color} mx-auto animate-float`} style={{animationDelay: `${index}s`}} />
+                      <div className={`absolute inset-0 ${item.color.replace('text-', 'bg-')}/20 rounded-full blur-xl animate-pulse-glow`} />
                     </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted/30 via-background to-muted/40">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-sharp-bright">About <span className="neon-gradient-text font-black">dKloud</span></h2>
-            <p className="text-xl text-hero-bright max-w-3xl mx-auto">
-              A comprehensive platform combining <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent font-semibold">entertainment</span>, <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent font-semibold">education</span>, and <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-semibold">technology</span>. 
-              All data is dynamically powered by <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent font-semibold">Google Sheets APIs</span> for <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">real-time updates</span>.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            <Card className="ai-tools-card-enhanced bounce-in text-center">
-              <CardHeader className="pb-8">
-                <Database className="h-16 w-16 text-primary mx-auto mb-6 float" />
-                <CardTitle className="text-2xl text-primary">Google Sheets</CardTitle>
-                <CardDescription className="text-lg">Data stored and managed in organized spreadsheets</CardDescription>
-              </CardHeader>
-            </Card>
-            
-            <Card className="ai-tools-card-enhanced bounce-in text-center" style={{ animationDelay: "0.2s" }}>
-              <CardHeader className="pb-8">
-                <Zap className="h-16 w-16 text-accent mx-auto mb-6 float" style={{animationDelay: "1s"}} />
-                <CardTitle className="text-2xl text-accent">Live APIs</CardTitle>
-                <CardDescription className="text-lg">Real-time data fetching via Google Apps Script</CardDescription>
-              </CardHeader>
-            </Card>
-            
-            <Card className="ai-tools-card-enhanced bounce-in text-center" style={{ animationDelay: "0.4s" }}>
-              <CardHeader className="pb-8">
-                <Sparkles className="h-16 w-16 text-success mx-auto mb-6 float" style={{animationDelay: "2s"}} />
-                <CardTitle className="text-2xl text-success">Dynamic Site</CardTitle>
-                <CardDescription className="text-lg">Always up-to-date content without manual updates</CardDescription>
-              </CardHeader>
-            </Card>
+                    <CardTitle className={`text-2xl ${item.color} font-bold`}>
+                      {item.title}
+                    </CardTitle>
+                    <CardDescription className="text-lg text-muted-foreground">
+                      {item.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </ScrollReveal>
+            ))}
           </div>
 
           <div className="text-center mb-20">
@@ -261,6 +201,9 @@ const Index = () => {
 
       {/* Team Section */}
       <TeamSection />
+
+      {/* Floating Action Button */}
+      <FloatingActionButton />
     </div>
   );
 };
