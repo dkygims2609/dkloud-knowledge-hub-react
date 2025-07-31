@@ -39,9 +39,8 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative enhanced-landing-background">
-      <FloatingIcons />
-      <IoTFloatingIcons showOnHomePage={true} />
+    <div className="min-h-screen relative bg-background">
+      {/* Simplified background effects */}
       
       {/* Enhanced Hero Section with Modern Effects */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -118,14 +117,13 @@ const Index = () => {
                   <Link 
                     key={tab.name} 
                     to={tab.href} 
-                    className="group relative"
-                    onClick={() => {
-                      toast.success(`${tab.name} activated`, { 
-                        description: `Loading ${tab.desc.toLowerCase()}...`,
-                        duration: 2000 
-                      });
-                      triggerFlying(); // Sun Wukong flies when navigating
-                    }}
+                     className="group relative"
+                     onClick={() => {
+                       toast.success(`${tab.name} activated`, { 
+                         description: `Loading ${tab.desc.toLowerCase()}...`,
+                         duration: 2000 
+                       });
+                     }}
                   >
                     <div className="card-modern glass-card neon-glow stagger-item magnetic-hover tilt-3d" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className={`absolute inset-0 bg-gradient-to-br ${tab.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />

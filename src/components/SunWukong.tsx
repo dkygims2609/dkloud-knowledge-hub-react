@@ -157,28 +157,28 @@ export function SunWukong({
         {/* Gradients */}
         <defs>
           <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--warning))" />
-            <stop offset="100%" stopColor="hsl(var(--warning) / 0.8)" />
+            <stop offset="0%" stopColor="#FFD700" />
+            <stop offset="100%" stopColor="#FFA500" />
           </linearGradient>
           <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--warning))" />
-            <stop offset="100%" stopColor="hsl(var(--warning) / 0.9)" />
+            <stop offset="0%" stopColor="#FFD700" />
+            <stop offset="100%" stopColor="#FFAA00" />
           </linearGradient>
           <linearGradient id="tailGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--warning) / 0.8)" />
-            <stop offset="100%" stopColor="hsl(var(--warning) / 0.6)" />
+            <stop offset="0%" stopColor="#FFA500" />
+            <stop offset="100%" stopColor="#FF8C00" />
           </linearGradient>
           <linearGradient id="staffGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--primary))" />
-            <stop offset="100%" stopColor="hsl(var(--primary) / 0.7)" />
+            <stop offset="0%" stopColor="#8B4513" />
+            <stop offset="100%" stopColor="#A0522D" />
           </linearGradient>
           <radialGradient id="orbGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(var(--primary))" />
-            <stop offset="100%" stopColor="hsl(var(--primary) / 0.5)" />
+            <stop offset="0%" stopColor="#00BFFF" />
+            <stop offset="100%" stopColor="#0080FF" />
           </radialGradient>
           <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--muted))" />
-            <stop offset="100%" stopColor="hsl(var(--muted) / 0.5)" />
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="100%" stopColor="#E6E6E6" />
           </linearGradient>
         </defs>
       </svg>

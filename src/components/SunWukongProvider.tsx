@@ -24,7 +24,7 @@ export function SunWukongProvider({ children }: SunWukongProviderProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       showCharacter('idle');
-    }, 5000); // Further delayed to ensure smooth loading
+    }, 8000); // Significantly delayed for performance
 
     return () => clearTimeout(timer);
   }, []);
