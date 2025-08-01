@@ -81,7 +81,7 @@ export const FloatingElement = ({
   delay = 0,
   style
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   delay?: number;
   style?: React.CSSProperties;
