@@ -382,7 +382,7 @@ const MoviesTV = () => {
               <img
                 src={trending["poster url"]}
                 alt={trending.Title || "Poster"}
-                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -443,7 +443,7 @@ const MoviesTV = () => {
               <img
                 src={ultimate["Poster URL"]}
                 alt={ultimate.Title || "Poster"}
-                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -497,6 +497,13 @@ const MoviesTV = () => {
       description: "Popular and trending content"
     },
     {
+      id: "ultimate",
+      label: "⭐ Ultimate",
+      icon: Trophy,
+      gradient: "from-yellow-500 to-amber-600",
+      description: "Ultimate collection"
+    },
+    {
       id: "movies",
       label: "🎬 Movies",
       icon: Film,
@@ -509,13 +516,6 @@ const MoviesTV = () => {
       icon: Tv,
       gradient: "from-green-500 to-teal-600",
       description: "TV series collection"
-    },
-    {
-      id: "ultimate",
-      label: "⭐ Ultimate",
-      icon: Trophy,
-      gradient: "from-yellow-500 to-amber-600",
-      description: "Ultimate collection"
     }
   ];
 

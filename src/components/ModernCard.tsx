@@ -137,6 +137,8 @@ export function ModernCard({
         className={cn(
           "group relative overflow-hidden cursor-pointer transition-all duration-500 transform-gpu",
           "border border-border/50 backdrop-blur-sm",
+          "hover-lift perspective-1000 transform-3d will-change-transform",
+          "glass-card animate-float",
           categoryStyles[category],
           "hover:shadow-2xl hover:shadow-primary/10",
           glowColors[category],

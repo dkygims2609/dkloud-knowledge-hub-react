@@ -16,15 +16,6 @@ const exploreItems = [
     gradient: "from-violet-500/20 via-purple-500/20 to-fuchsia-500/20"
   },
   { 
-    name: "YouTube Picks", 
-    href: "/ytchannels", 
-    Icon: Youtube, 
-    desc: "Top channels worth following", 
-    color: "from-red-500 to-rose-600",
-    category: "youtube" as const,
-    gradient: "from-red-500/20 via-rose-500/20 to-pink-500/20"
-  },
-  { 
     name: "AI Tools", 
     href: "/aitools", 
     Icon: Brain, 
@@ -32,6 +23,15 @@ const exploreItems = [
     color: "from-cyan-500 to-blue-600",
     category: "aitools" as const,
     gradient: "from-cyan-500/20 via-blue-500/20 to-indigo-500/20"
+  },
+  { 
+    name: "YouTube Picks", 
+    href: "/ytchannels", 
+    Icon: Youtube, 
+    desc: "Top channels worth following", 
+    color: "from-red-500 to-rose-600",
+    category: "youtube" as const,
+    gradient: "from-red-500/20 via-rose-500/20 to-pink-500/20"
   },
   { 
     name: "Tech Corner", 

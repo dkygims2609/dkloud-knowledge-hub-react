@@ -35,6 +35,7 @@ export const MagneticButton = ({
 }: any) => {
   const ref = useRef<HTMLButtonElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -42,10 +43,10 @@ export const MagneticButton = ({
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const maxDistance = 20;
+    const maxDistance = 25;
     
-    const deltaX = (e.clientX - centerX) * 0.15;
-    const deltaY = (e.clientY - centerY) * 0.15;
+    const deltaX = (e.clientX - centerX) * 0.2;
+    const deltaY = (e.clientY - centerY) * 0.2;
     
     setPosition({
       x: Math.max(-maxDistance, Math.min(maxDistance, deltaX)),
@@ -55,17 +56,27 @@ export const MagneticButton = ({
 
   const handleMouseLeave = () => {
     setPosition({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
   };
 
   return (
     <button
       ref={ref}
-      className={cn("transition-transform duration-200 ease-out", className)}
+      className={cn(
+        "transition-all duration-300 ease-out magnetic-hover",
+        "hover:animate-pulse-glow transform-3d will-change-transform",
+        className
+      )}
       style={{
-        transform: `translate3d(${position.x}px, ${position.y}px, 0)`
+        transform: `translate3d(${position.x}px, ${position.y}px, 0) ${isHovered ? 'scale(1.05) rotateX(5deg)' : 'scale(1) rotateX(0deg)'}`
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
       onClick={onClick}
       {...props}
     >
