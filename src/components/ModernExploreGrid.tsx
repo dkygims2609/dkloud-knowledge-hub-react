@@ -90,50 +90,58 @@ export function ModernExploreGrid() {
           </div>
         </ScrollReveal>
 
-        {/* Grid Layout - Responsive */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-          {exploreItems.map((item, index) => (
-            <ScrollReveal 
-              key={item.name} 
-              direction={index % 2 === 0 ? "left" : "right"}
-              delay={index * 100}
-            >
-              <ModernCard
-                title={item.name}
-                description={item.desc}
-                category={item.category}
-                href={item.href}
-                gradient={item.gradient}
-                icon={<item.Icon className="h-6 w-6 text-primary" />}
-                className="h-full hover-lift"
-                onClick={() => {
-                  toast.success(`${item.name} activated`, { 
-                    description: `Loading ${item.desc.toLowerCase()}...`,
-                    duration: 2000 
-                  });
-                }}
-                flipContent={
-                  <div className="text-center space-y-4">
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10">
-                      <item.Icon className="h-12 w-12 text-primary mx-auto animate-pulse-glow" />
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Double-click to flip back
-                    </p>
-                    <MagneticButton
-                      className="w-full py-2 px-4 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
-                      onClick={(e: React.MouseEvent) => {
-                        e.stopPropagation();
-                        window.open(item.href, '_blank');
-                      }}
-                    >
-                      Quick Access
-                    </MagneticButton>
-                  </div>
-                }
-              />
-            </ScrollReveal>
-          ))}
+        {/* Horizontal Scrollable Layout */}
+        <div className="relative mb-12">
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2">
+            {exploreItems.map((item, index) => (
+              <ScrollReveal 
+                key={item.name} 
+                direction="up"
+                delay={index * 50}
+              >
+                <div className="flex-shrink-0 w-64 sm:w-72">
+                  <ModernCard
+                    title={item.name}
+                    description={item.desc}
+                    category={item.category}
+                    href={item.href}
+                    gradient={item.gradient}
+                    icon={<item.Icon className="h-5 w-5 text-primary" />}
+                    className="h-36 hover-lift compact-card"
+                    onClick={() => {
+                      toast.success(`${item.name} activated`, { 
+                        description: `Loading ${item.desc.toLowerCase()}...`,
+                        duration: 2000 
+                      });
+                    }}
+                    flipContent={
+                      <div className="text-center space-y-2">
+                        <div className="p-2 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10">
+                          <item.Icon className="h-8 w-8 text-primary mx-auto animate-pulse-glow" />
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Double-click to flip back
+                        </p>
+                        <MagneticButton
+                          className="w-full py-1.5 px-3 bg-primary/10 hover:bg-primary/20 rounded-md transition-colors text-sm"
+                          onClick={(e: React.MouseEvent) => {
+                            e.stopPropagation();
+                            window.open(item.href, '_blank');
+                          }}
+                        >
+                          Quick Access
+                        </MagneticButton>
+                      </div>
+                    }
+                  />
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+          
+          {/* Scroll indicators */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-gradient-to-l from-background via-background/90 to-transparent w-8 h-full pointer-events-none" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-background via-background/90 to-transparent w-8 h-full pointer-events-none" />
         </div>
 
         {/* Featured Stats */}

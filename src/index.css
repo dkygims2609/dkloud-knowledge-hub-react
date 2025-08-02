@@ -227,6 +227,19 @@
     display: none;
   }
 
+  /* Compact card styles for horizontal layout */
+  .compact-card {
+    @apply transition-all duration-300;
+  }
+
+  .compact-card .card-header {
+    @apply pb-2;
+  }
+
+  .compact-card .card-content {
+    @apply pt-1;
+  }
+
   /* Touch optimization */
   .touch-manipulation {
     touch-action: manipulation;

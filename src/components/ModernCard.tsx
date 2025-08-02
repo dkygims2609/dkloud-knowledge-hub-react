@@ -79,19 +79,28 @@ export function ModernCard({
           </div>
         )}
         
-        <CardHeader className="pb-4 relative">
+        <CardHeader className={cn("pb-4 relative", className?.includes('compact-card') && "pb-2")}>
           <div className="flex items-start gap-3">
             {icon && (
-              <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
+              <div className={cn(
+                "p-2 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20",
+                className?.includes('compact-card') && "p-1.5"
+              )}>
                 {icon}
               </div>
             )}
             <div className="flex-1">
-              <CardTitle className="text-lg font-semibold leading-tight group-hover:text-primary transition-colors duration-300">
+              <CardTitle className={cn(
+                "font-semibold leading-tight group-hover:text-primary transition-colors duration-300",
+                className?.includes('compact-card') ? "text-base" : "text-lg"
+              )}>
                 {title}
               </CardTitle>
               {description && (
-                <CardDescription className="text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors duration-300 mt-1">
+                <CardDescription className={cn(
+                  "text-muted-foreground group-hover:text-foreground/80 transition-colors duration-300 mt-1",
+                  className?.includes('compact-card') ? "text-xs" : "text-sm"
+                )}>
                   {description}
                 </CardDescription>
               )}
