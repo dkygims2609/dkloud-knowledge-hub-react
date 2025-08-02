@@ -337,6 +337,27 @@
     opacity: 1;
   }
 
+  /* Minimal Card Styles */
+  .minimal-card {
+    @apply w-full h-24 transition-all duration-200;
+  }
+
+  .minimal-card:hover {
+    @apply transform translate-y-[-1px] shadow-md;
+  }
+
+  .minimal-card .card-content {
+    @apply px-3 py-2;
+  }
+
+  .minimal-card .card-title {
+    @apply text-sm font-medium leading-tight;
+  }
+
+  .minimal-card .card-description {
+    @apply text-xs leading-tight hidden;
+  }
+
   /* Text Enhancement Classes */
   .text-sharp-bright {
     color: hsl(var(--foreground));

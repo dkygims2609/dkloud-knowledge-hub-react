@@ -141,41 +141,43 @@ export function ModernCard({
   );
 
   return (
-    <TiltCard>
-      <Card 
-        className={cn(
-          "group relative overflow-hidden cursor-pointer transition-all duration-500 transform-gpu",
-          "border border-border/50 backdrop-blur-sm",
-          "hover-lift perspective-1000 transform-3d will-change-transform",
-          "glass-card animate-float",
-          categoryStyles[category],
-          "hover:shadow-2xl hover:shadow-primary/10",
-          glowColors[category],
-          isHovered && "scale-105",
-          className
-        )}
-        onClick={handleClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onDoubleClick={() => flipContent && setIsFlipped(!isFlipped)}
-      >
-        {/* Animated background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-transparent to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        
-        {/* Shimmer effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-        
-        {/* Glow effect */}
-        <div className={cn(
-          "absolute -inset-1 bg-gradient-to-r opacity-0 group-hover:opacity-70 transition-opacity duration-500 blur-sm -z-10",
-          gradient || "from-primary/20 via-secondary/20 to-accent/20"
-        )} />
-        
-        {cardContent}
-        
-        {/* Corner accent */}
-        <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      </Card>
-    </TiltCard>
+    <Card 
+      className={cn(
+        "group relative overflow-hidden cursor-pointer transition-all duration-200",
+        "border border-border/50 backdrop-blur-sm",
+        className?.includes('minimal-card') 
+          ? "bg-card/80 hover:bg-card/90 hover:shadow-md hover:-translate-y-0.5"
+          : "glass-card animate-float hover-lift perspective-1000 transform-3d will-change-transform",
+        !className?.includes('minimal-card') && categoryStyles[category],
+        !className?.includes('minimal-card') && "hover:shadow-2xl hover:shadow-primary/10",
+        !className?.includes('minimal-card') && glowColors[category],
+        className
+      )}
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onDoubleClick={() => flipContent && setIsFlipped(!isFlipped)}
+    >
+      {!className?.includes('minimal-card') && (
+        <>
+          {/* Animated background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-transparent to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+          
+          {/* Glow effect */}
+          <div className={cn(
+            "absolute -inset-1 bg-gradient-to-r opacity-0 group-hover:opacity-70 transition-opacity duration-500 blur-sm -z-10",
+            gradient || "from-primary/20 via-secondary/20 to-accent/20"
+          )} />
+          
+          {/* Corner accent */}
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </>
+      )}
+      
+      {cardContent}
+    </Card>
   );
 }

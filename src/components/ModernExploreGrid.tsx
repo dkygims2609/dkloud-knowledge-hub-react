@@ -90,58 +90,31 @@ export function ModernExploreGrid() {
           </div>
         </ScrollReveal>
 
-        {/* Horizontal Scrollable Layout */}
-        <div className="relative mb-12">
-          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2">
-            {exploreItems.map((item, index) => (
-              <ScrollReveal 
-                key={item.name} 
-                direction="up"
-                delay={index * 50}
-              >
-                <div className="flex-shrink-0 w-64 sm:w-72">
-                  <ModernCard
-                    title={item.name}
-                    description={item.desc}
-                    category={item.category}
-                    href={item.href}
-                    gradient={item.gradient}
-                    icon={<item.Icon className="h-5 w-5 text-primary" />}
-                    className="h-36 hover-lift compact-card"
-                    onClick={() => {
-                      toast.success(`${item.name} activated`, { 
-                        description: `Loading ${item.desc.toLowerCase()}...`,
-                        duration: 2000 
-                      });
-                    }}
-                    flipContent={
-                      <div className="text-center space-y-2">
-                        <div className="p-2 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10">
-                          <item.Icon className="h-8 w-8 text-primary mx-auto animate-pulse-glow" />
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          Double-click to flip back
-                        </p>
-                        <MagneticButton
-                          className="w-full py-1.5 px-3 bg-primary/10 hover:bg-primary/20 rounded-md transition-colors text-sm"
-                          onClick={(e: React.MouseEvent) => {
-                            e.stopPropagation();
-                            window.open(item.href, '_blank');
-                          }}
-                        >
-                          Quick Access
-                        </MagneticButton>
-                      </div>
-                    }
-                  />
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-          
-          {/* Scroll indicators */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-gradient-to-l from-background via-background/90 to-transparent w-8 h-full pointer-events-none" />
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-background via-background/90 to-transparent w-8 h-full pointer-events-none" />
+        {/* Compact Grid Layout */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-12 max-w-6xl mx-auto">
+          {exploreItems.map((item, index) => (
+            <ScrollReveal 
+              key={item.name} 
+              direction="up"
+              delay={index * 30}
+            >
+              <ModernCard
+                title={item.name}
+                description={item.desc}
+                category={item.category}
+                href={item.href}
+                gradient={item.gradient}
+                icon={<item.Icon className="h-4 w-4 text-primary" />}
+                className="h-24 minimal-card"
+                onClick={() => {
+                  toast.success(`${item.name} activated`, { 
+                    description: `Loading ${item.desc.toLowerCase()}...`,
+                    duration: 2000 
+                  });
+                }}
+              />
+            </ScrollReveal>
+          ))}
         </div>
 
         {/* Featured Stats */}
